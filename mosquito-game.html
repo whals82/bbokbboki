@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>모기 잡기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#f0fff4; --card:#fff; --text:#191f28; --text2:#6b7684;
+  --text3:#b0b8c1; --border:#e8ecf0; --green:#22aa44; --blue:#3182f6;
+}
+body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:100vh; max-width:430px; margin:0 auto; overflow-x:hidden; }
+
+.header { display:flex;align-items:center;justify-content:space-between; padding:14px 20px;background:var(--card); border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100; }
+.header-back { width:36px;height:36px;border:none;background:none;font-size:20px;color:var(--text);cursor:pointer; }
+.header-title { display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--text); }
+.header-icon { width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#86efac,#22aa44);display:flex;align-items:center;justify-content:center;font-size:16px; }
+.header-btn { width:36px;height:36px;border:none;background:none;font-size:18px;color:var(--text2);cursor:pointer; }
+
+.point-banner { margin:14px 16px 0;background:var(--card);border-radius:16px; padding:13px 16px;display:flex;align-items:center;gap:10px;border:1px solid var(--border); }
+.point-icon { width:30px;height:30px;border-radius:50%;background:#fff9e6;display:flex;align-items:center;justify-content:center;font-size:15px; }
+.point-text { font-size:14px;color:var(--text); }
+.point-text b { color:var(--blue);font-weight:700; }
+
+/* 시작 화면 */
+.start-screen { margin:14px 16px 0;background:var(--card);border-radius:24px; padding:28px 20px 24px;text-align:center;border:1px solid var(--border); }
+.start-emoji { font-size:64px;margin-bottom:14px;animation:fly 2s ease-in-out infinite; }
+@keyframes fly { 0%,100%{transform:translate(0,0) rotate(-10deg);} 25%{transform:translate(8px,-6px) rotate(5deg);} 75%{transform:translate(-6px,4px) rotate(-5deg);} }
+.start-title { font-size:24px;font-weight:900;color:var(--text);margin-bottom:8px; }
+.start-sub { font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:22px; }
+.rule-box { background:#f0fff4;border-radius:14px;padding:14px 16px;margin-bottom:20px;text-align:left;border:1px solid #bbf7d0; }
+.rule-row { display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);margin-bottom:8px; }
+.rule-row:last-child { margin-bottom:0; }
+.rule-row b { color:var(--green); }
+.hiscore-box { background:#f8f9ff;border-radius:14px;padding:14px 16px;margin-bottom:20px; display:flex;align-items:center;justify-content:space-between; }
+.hiscore-label { font-size:13px;color:var(--text2); }
+.hiscore-val { font-size:22px;font-weight:900;color:var(--blue); }
+.start-btn { width:100%;padding:15px;border:none;border-radius:16px; background:var(--green);color:#fff; font-size:17px;font-weight:700;cursor:pointer;font-family:inherit; box-shadow:0 4px 20px rgba(34,170,68,0.3); transition:transform 0.1s; }
+.start-btn:active { transform:scale(0.97); }
+
+/* 게임 화면 */
+#gameScreen { display:none; }
+
+.game-header { margin:12px 16px 0;background:var(--card);border-radius:16px; padding:11px 16px;border:1px solid var(--border); display:flex;align-items:center;justify-content:space-between;gap:6px; }
+.gh-item { text-align:center; }
+.gh-label { font-size:10px;color:var(--text2);margin-bottom:1px; }
+.gh-val { font-size:20px;font-weight:900; }
+.gh-val.green { color:var(--green); }
+.gh-val.gold { color:#f5a623; }
+.gh-val.red { color:#ff4444; }
+.gh-divider { width:1px;height:32px;background:var(--border); }
+.lives-row { display:flex;gap:3px; }
+.heart { font-size:20px;transition:all 0.3s; }
+.heart.lost { filter:grayscale(1);opacity:0.3; }
+.heart.shake { animation:hShake 0.4s ease; }
+@keyframes hShake { 0%{transform:scale(1)} 25%{transform:scale(1.4) rotate(-15deg)} 75%{transform:scale(0.9) rotate(8deg)} 100%{transform:scale(1)} }
+
+.timer-wrap { margin:8px 16px 0;background:var(--card);border-radius:12px; padding:8px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:10px; }
+.timer-num { font-size:18px;font-weight:900;color:var(--text);min-width:28px;text-align:center;transition:color 0.3s; }
+.timer-num.red { color:#ff4444; }
+.timer-bar { flex:1;height:10px;background:#f0f2f5;border-radius:5px;overflow:hidden; }
+.timer-fill { height:100%;border-radius:5px;width:100%; background:linear-gradient(90deg,#22aa44,#86efac); transition:width 0.1s linear,background 0.3s; }
+.timer-fill.warn { background:linear-gradient(90deg,#ff8800,#ffbb44)!important; }
+.timer-fill.danger { background:linear-gradient(90deg,#ff3333,#ff7777)!important;animation:tPulse 0.5s ease-in-out infinite alternate; }
+@keyframes tPulse { from{opacity:1} to{opacity:0.6} }
+
+/* 모기 게임 영역 */
+.mosquito-zone {
+  margin:8px 16px 0;
+  border-radius:22px;
+  border:1px solid #bbf7d0;
+  position:relative;
+  overflow:hidden;
+  height:340px;
+  cursor:none;
+  transition:background 0.5s;
+}
+
+/* 배경 SVG 레이어 */
+.bg-layer {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* 테마1: 여름밤 거실 */
+.theme-room .bg-layer { background: linear-gradient(180deg, #1a0a00 0%, #2d1500 40%, #3d2000 70%, #2a1800 100%); }
+
+/* 테마2: 달뜬 밤하늘 */
+.theme-night .bg-layer { background: linear-gradient(180deg, #0a0a1a 0%, #0d1025 30%, #1a1535 60%, #0f2040 100%); }
+
+/* 테마3: 창문 너머 달밤 */
+.theme-window .bg-layer { background: linear-gradient(180deg, #0d0d1f 0%, #141428 40%, #1a1f35 70%, #0f1520 100%); }
+.fly-swatter {
+  position:absolute;
+  pointer-events:none;
+  font-size:44px;
+  z-index:50;
+  transform:translate(-10px,-10px) rotate(-35deg);
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+  display:none;
+  line-height:1;
+  transition:transform 0.06s;
+}
+.fly-swatter.swat {
+  animation:swatAnim 0.18s ease-out forwards;
+}
+@keyframes swatAnim {
+  0%  {transform:translate(-10px,-10px) rotate(-35deg) scale(1);}
+  35% {transform:translate(-10px,-10px) rotate(25deg) scale(1.4);}
+  100%{transform:translate(-10px,-10px) rotate(-35deg) scale(1);}
+}
+/* 탭 순간 팍! 이펙트 */
+.swat-effect {
+  position:absolute;
+  pointer-events:none;
+  z-index:60;
+  display:flex;align-items:center;justify-content:center;
+  animation:swatEffect 0.4s ease-out forwards;
+}
+@keyframes swatEffect {
+  0%  {opacity:0; transform:translate(-50%,-50%) scale(0.4) rotate(-45deg);}
+  25% {opacity:1; transform:translate(-50%,-50%) scale(1.7) rotate(20deg);}
+  55% {opacity:0.8; transform:translate(-50%,-50%) scale(1.1) rotate(-8deg);}
+  100%{opacity:0; transform:translate(-50%,-50%) scale(0.6) rotate(5deg);}
+}
+.swat-effect .swat-icon {
+  font-size:58px;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+}
+.swat-effect .swat-ring {
+  position:absolute;
+  border:3px solid rgba(180,140,60,0.7);
+  border-radius:50%;
+  animation:swatRing 0.4s ease-out forwards;
+}
+@keyframes swatRing {
+  0%  {width:10px;height:10px;opacity:0.9;}
+  100%{width:100px;height:100px;opacity:0;}
+}
+/* 전기충격 이펙트 */
+.swat-effect.electric .swat-icon { font-size:58px; filter:drop-shadow(0 0 12px #ffff00) drop-shadow(0 0 24px #ffaa00); }
+@keyframes electricEffect {
+  0%  {opacity:0; transform:translate(-50%,-50%) scale(0.2) rotate(-30deg);}
+  20% {opacity:1; transform:translate(-50%,-50%) scale(1.8) rotate(15deg);}
+  40% {opacity:0.5; transform:translate(-50%,-50%) scale(1.2) rotate(-10deg);}
+  60% {opacity:1; transform:translate(-50%,-50%) scale(1.5) rotate(5deg);}
+  100%{opacity:0; transform:translate(-50%,-50%) scale(0.5) rotate(0deg);}
+}
+.swat-effect.electric { animation:electricEffect 0.4s ease-out forwards; }
+.swat-effect.electric .swat-ring {
+  border:3px solid rgba(255,255,0,0.8);
+  animation:electricRing 0.4s ease-out forwards;
+  box-shadow:0 0 10px #ffff00;
+}
+@keyframes electricRing {
+  0%  {width:8px;height:8px;opacity:1;}
+  100%{width:110px;height:110px;opacity:0;}
+}
+.swat-effect.electric .star { color:#ffff44; font-size:20px; }
+
+/* 손바닥 이펙트 */
+@keyframes handEffect {
+  0%  {opacity:0; transform:translate(-50%,-50%) scale(0.3) rotate(20deg);}
+  30% {opacity:1; transform:translate(-50%,-50%) scale(1.5) rotate(-10deg);}
+  60% {opacity:0.8; transform:translate(-50%,-50%) scale(1.1) rotate(5deg);}
+  100%{opacity:0; transform:translate(-50%,-50%) scale(0.7) rotate(0deg);}
+}
+.swat-effect.hand { animation:handEffect 0.38s ease-out forwards; }
+.swat-effect.hand .swat-icon { font-size:60px; filter:drop-shadow(0 4px 12px rgba(255,200,150,0.6)); }
+.swat-effect.hand .swat-ring {
+  border:3px solid rgba(255,200,150,0.6);
+  animation:swatRing 0.38s ease-out forwards;
+}
+.swat-effect.hand .star { color:#ffddaa; }
+.zone-top { display:flex;justify-content:space-between;align-items:center;padding:12px 14px 8px; }
+.zone-title { font-size:13px;font-weight:700;color:var(--text); }
+.combo-badge { font-size:12px;font-weight:900;padding:3px 10px;border-radius:20px; background:#ff4444;color:#fff;opacity:0;transition:opacity 0.2s; }
+.combo-badge.show { opacity:1; }
+
+/* 모기 */
+.mosquito {
+  position:absolute;
+  font-size:32px;
+  cursor:pointer;
+  user-select:none;
+  transition:none;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  z-index:10;
+  line-height:1;
+}
+.mosquito.squished {
+  animation:squish 0.3s ease-out forwards;
+}
+@keyframes squish {
+  0%{transform:scale(1);opacity:1;}
+  30%{transform:scale(1.8,0.3);opacity:0.8;}
+  60%{transform:scale(0.5,1.5);opacity:0.5;}
+  100%{transform:scale(0);opacity:0;}
+}
+.mosquito.miss {
+  animation:missAnim 0.5s ease-out forwards;
+}
+@keyframes missAnim {
+  0%{opacity:1;transform:scale(1);}
+  100%{opacity:0;transform:scale(0.3) translateY(-30px);}
+}
+
+/* 혈흔 이펙트 */
+.blood {
+  position:absolute;
+  pointer-events:none;
+  font-size:20px;
+  animation:bloodSplat 0.6s ease-out forwards;
+  z-index:20;
+}
+@keyframes bloodSplat {
+  0%{opacity:1;transform:scale(0.5);}
+  40%{opacity:1;transform:scale(1.5);}
+  100%{opacity:0;transform:scale(1) translateY(-20px);}
+}
+
+/* 파티클 */
+.spark { position:fixed;pointer-events:none;border-radius:50%; animation:sparkFly 0.5s ease-out forwards;z-index:9999; }
+@keyframes sparkFly { 0%{opacity:1;transform:translate(0,0) scale(1.2);} 100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0);} }
+
+/* 점수 플로팅 */
+.float-score { position:fixed;pointer-events:none;font-size:20px;font-weight:900;z-index:9999; animation:floatUp 0.7s ease-out forwards; }
+@keyframes floatUp { 0%{opacity:1;transform:translateY(0) scale(1.3);} 100%{opacity:0;transform:translateY(-55px) scale(0.9);} }
+
+/* 미스 텍스트 */
+.miss-text { position:absolute;pointer-events:none;font-size:14px;font-weight:700;color:#ff4444; animation:missFloat 0.8s ease-out forwards;z-index:20; }
+@keyframes missFloat { 0%{opacity:1;transform:translateY(0);} 100%{opacity:0;transform:translateY(-40px);} }
+
+/* 광고 */
+.ad-wrap { margin:8px 16px 0;background:var(--card);border-radius:14px; padding:12px 15px;display:flex;align-items:center;gap:10px; cursor:pointer;border:1px solid var(--border);transition:background 0.15s; }
+.ad-wrap:active { background:var(--bg); }
+.ad-badge { background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 7px;border-radius:5px;flex-shrink:0; }
+.ad-content { flex:1; }
+.ad-title { font-size:13px;font-weight:700;color:var(--text); }
+.ad-sub { font-size:11px;color:var(--text2);margin-top:1px; }
+
+/* 카드 */
+.cards { padding:10px 16px;display:flex;flex-direction:column;gap:10px; }
+.card-row { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+.card-half { background:var(--card);border-radius:14px;padding:14px;cursor:pointer;border:1px solid var(--border); }
+.card-half-icon { font-size:20px;margin-bottom:7px; }
+.card-half-label { font-size:11px;color:var(--text2);margin-bottom:2px; }
+.card-half-title { font-size:13px;font-weight:700;color:var(--text); }
+.card-item { background:var(--card);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid var(--border); }
+.card-icon { width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0; }
+.card-content { flex:1; }
+.card-label { font-size:11px;color:var(--text2);margin-bottom:1px; }
+.card-title { font-size:14px;font-weight:700;color:var(--text); }
+.card-sub { font-size:12px;color:var(--blue);font-weight:500;margin-top:1px; }
+.card-arrow { color:var(--text3);font-size:17px; }
+
+/* 게임오버 */
+.overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;align-items:center;justify-content:center; }
+.overlay.show { display:flex; }
+.over-card { background:#fff;border-radius:24px;padding:26px 22px;text-align:center;margin:20px;max-width:320px;width:100%;animation:cardIn 0.35s cubic-bezier(0.34,1.3,0.64,1); }
+@keyframes cardIn { from{transform:scale(0.7);opacity:0;} to{transform:scale(1);opacity:1;} }
+.over-emoji { font-size:56px;margin-bottom:10px; }
+.over-title { font-size:22px;font-weight:900;color:var(--text);margin-bottom:4px; }
+.over-hiscore { font-size:13px;color:#f5a623;font-weight:700;margin-bottom:14px; }
+.over-stats { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px; }
+.over-stat { background:#f8f9ff;border-radius:12px;padding:11px; }
+.over-stat-label { font-size:11px;color:var(--text2);margin-bottom:2px; }
+.over-stat-val { font-size:20px;font-weight:900;color:var(--text); }
+.over-point { font-size:17px;font-weight:700;color:#f5a623;background:#fff9e6;border-radius:12px;padding:11px;margin-bottom:12px; }
+.life-ad-btn { width:100%;padding:13px;border:none;border-radius:14px;background:#ff4444;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px; }
+.over-btn { width:100%;padding:13px;border:none;border-radius:14px;background:var(--green);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px; }
+.over-btn2 { width:100%;padding:11px;border:1px solid var(--border);border-radius:14px;background:#fff;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit; }
+
+/* 토스트 */
+.toast { position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(25,31,40,0.92);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:500;z-index:9999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;opacity:0;white-space:nowrap; }
+.toast.show { transform:translateX(-50%) translateY(0);opacity:1; }
+.bottom-pad { height:32px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="header-back" onclick="goHome()">←</button>
+  <div class="header-title">
+    <div class="header-icon">🦟</div>
+    모기 잡기
+  </div>
+  <div style="display:flex;gap:4px">
+    <button class="header-btn">···</button>
+    <button class="header-btn">✕</button>
+  </div>
+</div>
+
+<div class="point-banner">
+  <div class="point-icon">🪙</div>
+  <div class="point-text">지금까지 총 <b id="totalPoints">0</b> 포인트 받았어요.</div>
+</div>
+
+<!-- 시작 화면 -->
+<div class="start-screen" id="startScreen">
+  <div class="start-emoji">🦟</div>
+  <div class="start-title">모기 잡기!</div>
+  <div class="start-sub">날아다니는 모기를 빠르게 잡아요.<br>놓치면 목숨이 깎여요!</div>
+
+  <div class="rule-box">
+    <div class="rule-row">⏱️ <span><b>15초</b> 안에 최대한 많이 잡아요</span></div>
+    <div class="rule-row">🦟 <span>모기는 <b>계속 움직여요</b> — 빠르게!</span></div>
+    <div class="rule-row">❤️ <span>모기가 도망가면 <b>목숨 1개</b> 잃어요</span></div>
+    <div class="rule-row">🔥 <span>연속으로 잡으면 <b>콤보 보너스!</b></span></div>
+    <div class="rule-row">🩸 <span>잡을수록 <b>모기가 빨라져요</b></span></div>
+  </div>
+
+  <div class="hiscore-box">
+    <div>
+      <div class="hiscore-label">🏆 최고 기록</div>
+      <div class="hiscore-val" id="hiscoreDisplay">0마리</div>
+    </div>
+    <div style="text-align:right">
+      <div class="hiscore-label">오늘 판 수</div>
+      <div style="font-size:18px;font-weight:900;color:var(--text2)" id="playsDisplay">0판</div>
+    </div>
+  </div>
+
+  <button class="start-btn" onclick="startGame()">🦟 모기 잡으러 가기!</button>
+</div>
+
+<!-- 게임 화면 -->
+<div id="gameScreen">
+  <div class="game-header">
+    <div class="gh-item">
+      <div class="gh-label">잡은 수</div>
+      <div class="gh-val green" id="catchVal">0</div>
+    </div>
+    <div class="gh-divider"></div>
+    <div class="gh-item">
+      <div class="gh-label">점수</div>
+      <div class="gh-val" style="color:var(--blue)" id="scoreVal">0</div>
+    </div>
+    <div class="gh-divider"></div>
+    <div class="gh-item">
+      <div class="gh-label">콤보</div>
+      <div class="gh-val gold" id="comboVal">x1</div>
+    </div>
+    <div class="gh-divider"></div>
+    <div class="gh-item">
+      <div class="gh-label">목숨</div>
+      <div class="lives-row" id="livesRow">
+        <span class="heart" id="h0">❤️</span>
+        <span class="heart" id="h1">❤️</span>
+        <span class="heart" id="h2">❤️</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timer-wrap">
+    <div class="timer-num" id="timerNum">15</div>
+    <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+  </div>
+
+  <div class="mosquito-zone" id="mosquitoZone"
+       onpointermove="moveSwatter(event)"
+       onpointerenter="showSwatter()"
+       onpointerleave="hideSwatter()"
+       onpointerdown="triggerSwat(); spawnSwatEffect(event)">
+    <div class="bg-layer" id="bgLayer"></div>
+    <div class="zone-top" style="position:relative;z-index:5">
+      <div class="zone-title" id="zoneTitle" style="color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.5)">🦟 모기를 잡아요!</div>
+      <div class="combo-badge" id="comboBadge">🔥 COMBO!</div>
+    </div>
+    <div class="fly-swatter" id="flySwatter">📰</div>
+  </div>
+</div>
+
+<!-- 광고 -->
+<div class="ad-wrap" onclick="watchAd()">
+  <div class="ad-badge">AD</div>
+  <div class="ad-content">
+    <div class="ad-title">광고 보고 목숨 +1 · 시간 +5초</div>
+    <div class="ad-sub">게임 중 언제든 사용 가능</div>
+  </div>
+  <div style="font-size:18px;color:var(--text3)">›</div>
+</div>
+
+<div class="cards">
+  <div class="card-row">
+    <div class="card-half" onclick="doCheckin()">
+      <div class="card-half-icon">🎟️</div>
+      <div class="card-half-label">매일 출석하면</div>
+      <div class="card-half-title">출석 포인트</div>
+    </div>
+    <div class="card-half" onclick="doShare()">
+      <div class="card-half-icon">📤</div>
+      <div class="card-half-label">기록 공유하고</div>
+      <div class="card-half-title">친구와 대결!</div>
+    </div>
+  </div>
+  <div class="card-item" onclick="doExchange()">
+    <div class="card-icon" style="background:#fff9e6">💰</div>
+    <div class="card-content">
+      <div class="card-label">모은 포인트를</div>
+      <div class="card-title">토스 포인트로 교환</div>
+      <div class="card-sub" id="exchangeInfo">모기 잡고 포인트 적립!</div>
+    </div>
+    <div class="card-arrow">›</div>
+  </div>
+</div>
+
+<!-- 게임오버 -->
+<div class="overlay" id="gameOverlay">
+  <div class="over-card">
+    <div class="over-emoji" id="overEmoji">🦟</div>
+    <div class="over-title" id="overTitle">게임 종료!</div>
+    <div class="over-hiscore" id="overHiscore"></div>
+    <div class="over-stats">
+      <div class="over-stat"><div class="over-stat-label">잡은 모기</div><div class="over-stat-val green" id="overCatch">0마리</div></div>
+      <div class="over-stat"><div class="over-stat-label">최고 콤보</div><div class="over-stat-val gold" id="overCombo">x1</div></div>
+      <div class="over-stat"><div class="over-stat-label">최종 점수</div><div class="over-stat-val blue" id="overScore">0점</div></div>
+      <div class="over-stat"><div class="over-stat-label">놓친 수</div><div class="over-stat-val red" id="overMiss">0마리</div></div>
+    </div>
+    <div class="over-point" id="overPoint">+0P 획득!</div>
+    <button class="life-ad-btn" onclick="continueWithAd()">📺 광고 보고 목숨 3개로 계속하기</button>
+    <button class="over-btn" onclick="restartGame()">🔄 다시 잡으러 가기!</button>
+    <button class="over-btn2" onclick="closeOverlay()">나중에 하기</button>
+  </div>
+</div>
+
+<div class="bottom-pad"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── 랜덤 배경 ─────────────────────────
+const THEMES = ['room','night','window'];
+let currentTheme = '';
+
+function applyRandomBackground() {
+  const zone = document.getElementById('mosquitoZone');
+  const bg = document.getElementById('bgLayer');
+  const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
+  currentTheme = theme;
+
+  // 기존 테마 클래스 제거
+  zone.classList.remove('theme-room','theme-night','theme-window');
+  zone.classList.add('theme-' + theme);
+
+  if (theme === 'room') {
+    bg.innerHTML = `
+      <svg width="100%" height="100%" viewBox="0 0 398 340" xmlns="http://www.w3.org/2000/svg">
+        <!-- 벽 -->
+        <rect width="398" height="340" fill="#2d1500"/>
+        <!-- 천장 -->
+        <rect width="398" height="30" fill="#1a0a00"/>
+        <!-- 바닥 -->
+        <rect y="280" width="398" height="60" fill="#1f0e00"/>
+        <!-- 형광등 -->
+        <rect x="150" y="8" width="98" height="14" rx="7" fill="#fffde0" opacity="0.95"/>
+        <!-- 형광등 빛 퍼짐 -->
+        <ellipse cx="199" cy="22" rx="140" ry="80" fill="#fffde0" opacity="0.04"/>
+        <ellipse cx="199" cy="22" rx="100" ry="50" fill="#fffde0" opacity="0.06"/>
+        <ellipse cx="199" cy="22" rx="60" ry="30" fill="#fffde0" opacity="0.09"/>
+        <!-- TV -->
+        <rect x="30" y="180" width="100" height="70" rx="4" fill="#111" stroke="#333" stroke-width="1.5"/>
+        <rect x="35" y="185" width="90" height="58" rx="2" fill="#1a3a5c" opacity="0.8"/>
+        <!-- TV 화면 빛 -->
+        <rect x="35" y="185" width="90" height="58" rx="2" fill="#4488ff" opacity="0.15"/>
+        <rect x="75" y="250" width="20" height="8" rx="2" fill="#222"/>
+        <!-- 소파 -->
+        <rect x="20" y="240" width="160" height="42" rx="8" fill="#5c2d00"/>
+        <rect x="20" y="240" width="160" height="16" rx="6" fill="#6b3500"/>
+        <rect x="20" y="240" width="18" height="42" rx="6" fill="#6b3500"/>
+        <rect x="162" y="240" width="18" height="42" rx="6" fill="#6b3500"/>
+        <!-- 화분 -->
+        <rect x="340" y="230" width="30" height="38" rx="4" fill="#7a3b00"/>
+        <ellipse cx="355" cy="228" rx="22" ry="10" fill="#5c2900"/>
+        <path d="M355 228 Q340 200 330 190 Q345 195 355 215 Q365 195 380 190 Q370 200 355 228Z" fill="#2d5a1b"/>
+        <path d="M355 220 Q342 205 338 195" stroke="#2d5a1b" stroke-width="2" fill="none"/>
+        <!-- 책장 -->
+        <rect x="330" y="150" width="60" height="80" rx="3" fill="#3d1f00" stroke="#2a1500" stroke-width="1"/>
+        <rect x="335" y="155" width="50" height="12" rx="1" fill="#8b0000"/>
+        <rect x="335" y="170" width="50" height="12" rx="1" fill="#00449e"/>
+        <rect x="335" y="185" width="50" height="12" rx="1" fill="#1a5c1a"/>
+        <rect x="335" y="200" width="50" height="12" rx="1" fill="#5c4400"/>
+        <!-- 창문 (빛샘) -->
+        <rect x="160" y="60" width="80" height="100" rx="4" fill="#0a1a2e" stroke="#3a2a1a" stroke-width="2"/>
+        <line x1="200" y1="60" x2="200" y2="160" stroke="#3a2a1a" stroke-width="1.5"/>
+        <line x1="160" y1="110" x2="240" y2="110" stroke="#3a2a1a" stroke-width="1.5"/>
+        <!-- 창문 달빛 -->
+        <rect x="162" y="62" width="36" height="46" fill="#0d2035" opacity="0.7"/>
+        <rect x="202" y="62" width="36" height="46" fill="#112840" opacity="0.6"/>
+        <circle cx="220" cy="82" r="14" fill="#fffde0" opacity="0.18"/>
+        <!-- 벽 질감 -->
+        <line x1="0" y1="170" x2="398" y2="170" stroke="#1a0a00" stroke-width="1" opacity="0.4"/>
+        <!-- 모기장 힌트 -->
+        <rect x="160" y="58" width="80" height="104" fill="none" stroke="#888" stroke-width="0.5" opacity="0.3" stroke-dasharray="3,3"/>
+      </svg>`;
+    document.getElementById('zoneTitle').textContent = '🏠 거실에 모기가!';
+    document.getElementById('flySwatter').textContent = '📰';
+
+  } else if (theme === 'night') {
+    bg.innerHTML = `
+      <svg width="100%" height="100%" viewBox="0 0 398 340" xmlns="http://www.w3.org/2000/svg">
+        <!-- 밤하늘 -->
+        <rect width="398" height="260" fill="#050818"/>
+        <!-- 지평선 -->
+        <rect y="245" width="398" height="95" fill="#0a1a08"/>
+        <!-- 달 -->
+        <circle cx="320" cy="55" r="36" fill="#fffde0" opacity="0.95"/>
+        <circle cx="333" cy="44" r="30" fill="#050818"/>
+        <!-- 달 표면 크레이터 -->
+        <circle cx="308" cy="62" r="5" fill="#e8e0b0" opacity="0.3"/>
+        <circle cx="298" cy="48" r="3" fill="#e8e0b0" opacity="0.25"/>
+        <!-- 달빛 번짐 -->
+        <circle cx="320" cy="55" r="55" fill="#fffde0" opacity="0.04"/>
+        <circle cx="320" cy="55" r="75" fill="#fffde0" opacity="0.02"/>
+        <!-- 별들 -->
+        <circle cx="30" cy="25" r="1.5" fill="white" opacity="0.9"/>
+        <circle cx="75" cy="15" r="1" fill="white" opacity="0.8"/>
+        <circle cx="120" cy="35" r="1.5" fill="white" opacity="0.7"/>
+        <circle cx="180" cy="12" r="1" fill="white" opacity="0.9"/>
+        <circle cx="55" cy="55" r="1" fill="white" opacity="0.6"/>
+        <circle cx="145" cy="55" r="1.5" fill="white" opacity="0.8"/>
+        <circle cx="240" cy="20" r="1" fill="white" opacity="0.7"/>
+        <circle cx="270" cy="40" r="1.5" fill="white" opacity="0.9"/>
+        <circle cx="15" cy="80" r="1" fill="white" opacity="0.6"/>
+        <circle cx="90" cy="90" r="1.5" fill="white" opacity="0.5"/>
+        <circle cx="200" cy="70" r="1" fill="white" opacity="0.8"/>
+        <circle cx="350" cy="100" r="1" fill="white" opacity="0.6"/>
+        <circle cx="380" cy="30" r="1.5" fill="white" opacity="0.7"/>
+        <!-- 반짝이는 별 -->
+        <circle cx="60" cy="38" r="2" fill="white" opacity="0.95"/>
+        <line x1="60" y1="32" x2="60" y2="44" stroke="white" stroke-width="0.8" opacity="0.5"/>
+        <line x1="54" y1="38" x2="66" y2="38" stroke="white" stroke-width="0.8" opacity="0.5"/>
+        <circle cx="210" cy="45" r="2" fill="white" opacity="0.9"/>
+        <line x1="210" y1="39" x2="210" y2="51" stroke="white" stroke-width="0.8" opacity="0.5"/>
+        <line x1="204" y1="45" x2="216" y2="45" stroke="white" stroke-width="0.8" opacity="0.5"/>
+        <!-- 산 실루엣 -->
+        <polygon points="0,260 60,150 120,220 180,130 250,210 310,140 370,190 398,155 398,260" fill="#0a1a08"/>
+        <!-- 나무들 -->
+        <polygon points="30,260 50,200 70,260" fill="#061005"/>
+        <polygon points="330,260 355,195 380,260" fill="#061005"/>
+        <polygon points="350,260 370,210 390,260" fill="#061005"/>
+        <!-- 풀밭 -->
+        <rect y="260" width="398" height="80" fill="#061005"/>
+        <ellipse cx="199" cy="260" rx="200" ry="8" fill="#082008" opacity="0.5"/>
+        <!-- 반딧불이 -->
+        <circle cx="80" cy="220" r="3" fill="#aaffaa" opacity="0.7"/>
+        <circle cx="80" cy="220" r="7" fill="#aaffaa" opacity="0.15"/>
+        <circle cx="150" cy="200" r="2.5" fill="#aaffaa" opacity="0.6"/>
+        <circle cx="260" cy="230" r="3" fill="#aaffaa" opacity="0.65"/>
+        <circle cx="320" cy="210" r="2" fill="#aaffaa" opacity="0.5"/>
+      </svg>`;
+    document.getElementById('zoneTitle').textContent = '🌙 밤하늘에 모기가!';
+    document.getElementById('flySwatter').textContent = '⚡';
+
+  } else {
+    bg.innerHTML = `
+      <svg width="100%" height="100%" viewBox="0 0 398 340" xmlns="http://www.w3.org/2000/svg">
+        <!-- 실내 어두운 벽 -->
+        <rect width="398" height="340" fill="#0d0d1f"/>
+        <!-- 바닥 -->
+        <rect y="285" width="398" height="55" fill="#08080f"/>
+        <!-- 큰 창문 -->
+        <rect x="60" y="30" width="278" height="210" rx="6" fill="#0a1530" stroke="#1a1a2e" stroke-width="3"/>
+        <!-- 창문 프레임 -->
+        <line x1="199" y1="30" x2="199" y2="240" stroke="#1a1a2e" stroke-width="3"/>
+        <line x1="60" y1="135" x2="338" y2="135" stroke="#1a1a2e" stroke-width="3"/>
+        <!-- 밤하늘 (창문 안) -->
+        <rect x="63" y="33" width="134" height="100" fill="#060614"/>
+        <rect x="201" y="33" width="134" height="100" fill="#060614"/>
+        <rect x="63" y="138" width="134" height="99" fill="#080820"/>
+        <rect x="201" y="138" width="134" height="99" fill="#080820"/>
+        <!-- 창문 달 -->
+        <circle cx="270" cy="80" r="28" fill="#fffde0" opacity="0.9"/>
+        <circle cx="282" cy="70" r="23" fill="#060614"/>
+        <!-- 달 빛번짐 (창문 안) -->
+        <ellipse cx="270" cy="80" rx="50" ry="50" fill="#fffde0" opacity="0.05"/>
+        <!-- 별들 (창문 안) -->
+        <circle cx="80" cy="50" r="1.2" fill="white" opacity="0.8"/>
+        <circle cx="110" cy="65" r="1" fill="white" opacity="0.7"/>
+        <circle cx="140" cy="42" r="1.5" fill="white" opacity="0.9"/>
+        <circle cx="100" cy="85" r="1" fill="white" opacity="0.6"/>
+        <circle cx="170" cy="70" r="1" fill="white" opacity="0.7"/>
+        <circle cx="90" cy="115" r="1.2" fill="white" opacity="0.6"/>
+        <circle cx="130" cy="100" r="1" fill="white" opacity="0.8"/>
+        <circle cx="160" cy="120" r="1.5" fill="white" opacity="0.7"/>
+        <circle cx="220" cy="50" r="1" fill="white" opacity="0.8"/>
+        <circle cx="310" cy="45" r="1.2" fill="white" opacity="0.7"/>
+        <circle cx="330" cy="100" r="1" fill="white" opacity="0.6"/>
+        <!-- 나무 실루엣 (창문 하단) -->
+        <polygon points="70,237 90,180 110,237" fill="#040410"/>
+        <polygon points="100,237 125,170 150,237" fill="#040410"/>
+        <polygon points="250,237 275,175 300,237" fill="#040410"/>
+        <polygon points="290,237 315,185 340,237" fill="#040410"/>
+        <!-- 창문 반사광 (실내) -->
+        <rect x="60" y="30" width="278" height="210" rx="6" fill="#4488ff" opacity="0.02"/>
+        <!-- 창문 밖 달빛이 실내로 -->
+        <polygon points="199,135 338,33 338,237" fill="#fffde0" opacity="0.02"/>
+        <polygon points="199,135 60,33 60,237" fill="#fffde0" opacity="0.01"/>
+        <!-- 창틀 그림자 -->
+        <rect x="57" y="27" width="284" height="216" rx="8" fill="none" stroke="#000" stroke-width="6" opacity="0.4"/>
+        <!-- 방 안 희미한 가구 실루엣 -->
+        <rect x="0" y="270" width="55" height="30" rx="3" fill="#0a0a15" opacity="0.8"/>
+        <rect x="343" y="260" width="55" height="40" rx="3" fill="#0a0a15" opacity="0.8"/>
+        <!-- 모기장 커튼 힌트 -->
+        <rect x="57" y="27" width="12" height="216" fill="#888" opacity="0.04"/>
+        <rect x="329" y="27" width="12" height="216" fill="#888" opacity="0.04"/>
+      </svg>`;
+    document.getElementById('zoneTitle').textContent = '🪟 창밖 달밤에 모기가!';
+    document.getElementById('flySwatter').textContent = '🖐️';
+  }
+}
+
+// ── 파리채 커서 ─────────────────────────
+function moveSwatter(e) {
+  const zone = document.getElementById('mosquitoZone');
+  const swatter = document.getElementById('flySwatter');
+  const rect = zone.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  swatter.style.left = (x - 22) + 'px';
+  swatter.style.top  = (y - 22) + 'px';
+}
+function showSwatter() {
+  document.getElementById('flySwatter').style.display = 'block';
+}
+function hideSwatter() {
+  document.getElementById('flySwatter').style.display = 'none';
+}
+function triggerSwat() {
+  const s = document.getElementById('flySwatter');
+  s.classList.remove('swat');
+  void s.offsetWidth;
+  s.classList.add('swat');
+  setTimeout(()=>s.classList.remove('swat'), 200);
+}
+
+function spawnSwatEffect(e) {
+  const zone = document.getElementById('mosquitoZone');
+  const rect = zone.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const el = document.createElement('div');
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+
+  const stars = ['✦','✧','★','·'];
+  const starHTML = [0,45,90,135,180,225,270,315].map((angle,i) => {
+    const rad = angle * Math.PI / 180;
+    const dist = 35 + Math.random()*20;
+    const sx = Math.cos(rad)*dist + 'px';
+    const sy = Math.sin(rad)*dist + 'px';
+    return `<div class="star" style="--sx:${sx};--sy:${sy};animation-delay:${i*0.01}s">${stars[i%4]}</div>`;
+  }).join('');
+
+  if (currentTheme === 'room') {
+    // 거실: 신문지 📰
+    el.className = 'swat-effect';
+    el.innerHTML = `<div class="swat-ring"></div><div class="swat-icon">📰</div>${starHTML}`;
+    if (navigator.vibrate) navigator.vibrate([15,5,8]);
+    playSound('catch');
+
+  } else if (currentTheme === 'night') {
+    // 밤하늘: 전기충격 ⚡
+    el.className = 'swat-effect electric';
+    const zapStars = [0,45,90,135,180,225,270,315].map((angle,i) => {
+      const rad = angle * Math.PI / 180;
+      const dist = 40 + Math.random()*25;
+      const sx = Math.cos(rad)*dist + 'px';
+      const sy = Math.sin(rad)*dist + 'px';
+      return `<div class="star" style="--sx:${sx};--sy:${sy};color:#ffff44">⚡</div>`;
+    }).join('');
+    el.innerHTML = `<div class="swat-ring"></div><div class="swat-icon">⚡</div>${zapStars}`;
+    if (navigator.vibrate) navigator.vibrate([8,4,8,4,12]);
+    // 전기 소리
+    try {
+      const ctx = getAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(200, now+0.15);
+      gain.gain.setValueAtTime(0.5, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now+0.2);
+      osc.start(now); osc.stop(now+0.2);
+    } catch(e2){}
+
+  } else {
+    // 창밖 달밤: 손바닥 🖐️
+    el.className = 'swat-effect hand';
+    const handStars = [0,60,120,180,240,300].map((angle,i) => {
+      const rad = angle * Math.PI / 180;
+      const dist = 30 + Math.random()*20;
+      const sx = Math.cos(rad)*dist + 'px';
+      const sy = Math.sin(rad)*dist + 'px';
+      return `<div class="star" style="--sx:${sx};--sy:${sy};color:#ffddaa">✧</div>`;
+    }).join('');
+    el.innerHTML = `<div class="swat-ring"></div><div class="swat-icon">🖐️</div>${handStars}`;
+    if (navigator.vibrate) navigator.vibrate(20);
+    playSound('catch');
+  }
+
+  zone.appendChild(el);
+  setTimeout(()=>el.remove(), 450);
+}
+
+// ── Web Audio ─────────────────────
+let audioCtx = null;
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playSound(type) {
+  try {
+    const ctx = getAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const now = ctx.currentTime;
+    osc.connect(gain); gain.connect(ctx.destination);
+
+    if (type === 'catch') {
+      // 찰싹! 소리
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(400, now);
+      osc.frequency.exponentialRampToValueAtTime(80, now+0.08);
+      gain.gain.setValueAtTime(0.8, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now+0.12);
+    } else if (type === 'miss') {
+      // 앵~ 소리
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(300, now+0.3);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now+0.35);
+    } else if (type === 'combo') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, now);
+      osc.frequency.exponentialRampToValueAtTime(1000, now+0.1);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now+0.15);
+    }
+    osc.start(now); osc.stop(now+0.4);
+  } catch(e) {}
+}
+function haptic(type) {
+  if (!navigator.vibrate) return;
+  if (type === 'catch') navigator.vibrate(20);
+  else if (type === 'miss') navigator.vibrate([30,20,30]);
+  else if (type === 'combo') navigator.vibrate([10,10,20]);
+}
+
+// ── 상수 ─────────────────────────
+const GAME_TIME = 15;
+const MAX_LIVES = 3;
+const MAX_MOSQUITOES = 4;  // 동시 최대 모기 수
+const MOSQUITO_EMOJIS = ['🦟'];
+const MOSQUITO_LIFETIME = 2800; // ms - 이 시간 안에 못 잡으면 도망
+
+// ── 상태 ─────────────────────────
+let score=0, caught=0, missed=0, combo=1, maxCombo=1;
+let lives=MAX_LIVES, points=0, hiscore=0, totalPlays=0;
+let timeLeft=GAME_TIME, gameRunning=false;
+let timerInterval=null, spawnInterval=null, comboTimer=null;
+let mosquitoes=[];  // {el, x, y, vx, vy, lifetime, timer, moveInterval}
+let animFrame=null;
+let speed=1; // 난이도 배율
+
+// ── 시작 ─────────────────────────
+function startGame() {
+  document.getElementById('startScreen').style.display='none';
+  document.getElementById('gameScreen').style.display='block';
+
+  score=0; caught=0; missed=0; combo=1; maxCombo=1;
+  lives=MAX_LIVES; timeLeft=GAME_TIME; gameRunning=true; speed=1;
+  totalPlays++;
+  mosquitoes=[];
+
+  // 랜덤 배경 적용
+  applyRandomBackground();
+
+  // 기존 모기 다 제거
+  const zone = document.getElementById('mosquitoZone');
+  zone.querySelectorAll('.mosquito').forEach(m=>m.remove());
+
+  updateUI();
+  spawnMosquito();
+  spawnInterval = setInterval(()=>{
+    if (mosquitoes.length < MAX_MOSQUITOES) spawnMosquito();
+  }, 1200);
+
+  timerInterval = setInterval(()=>{
+    timeLeft -= 0.1;
+    updateTimerBar();
+    if (timeLeft <= 0) endGame();
+  }, 100);
+
+  // 모기 이동 애니메이션
+  moveMosquitoes();
+}
+
+// ── 모기 생성 ─────────────────────────
+function spawnMosquito() {
+  if (!gameRunning) return;
+  const zone = document.getElementById('mosquitoZone');
+  const zw = zone.clientWidth - 60;
+  const zh = zone.clientHeight - 80;
+
+  const el = document.createElement('div');
+  el.className = 'mosquito';
+  el.textContent = '🦟';
+
+  const x = 30 + Math.random() * zw;
+  const y = 50 + Math.random() * zh;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+
+  // 랜덤 방향
+  const angle = Math.random() * Math.PI * 2;
+  const spd = (1.5 + Math.random() * 1.5) * speed;
+  const vx = Math.cos(angle) * spd;
+  const vy = Math.sin(angle) * spd;
+
+  // 랜덤 크기 (약간 다양하게)
+  const sz = 28 + Math.random() * 12;
+  el.style.fontSize = sz + 'px';
+
+  // 깜빡임 (곧 도망갈 예고)
+  const blinkTimeout = setTimeout(()=>{
+    if (el.parentNode) el.style.animation = 'missAnim 0.5s ease-out forwards';
+  }, MOSQUITO_LIFETIME - 500);
+
+  // 도망가기
+  const escapeTimer = setTimeout(()=>{
+    if (el.parentNode) {
+      missedMosquito(el, x, y);
+    }
+  }, MOSQUITO_LIFETIME);
+
+  el.addEventListener('pointerdown', (e)=>{
+    e.stopPropagation();
+    triggerSwat();
+    spawnSwatEffect(e);
+    catchMosquito(el, e.clientX, e.clientY, escapeTimer, blinkTimeout);
+  });
+
+  zone.appendChild(el);
+  mosquitoes.push({ el, x, y, vx, vy, escapeTimer, blinkTimeout });
+}
+
+// ── 모기 이동 ─────────────────────────
+function moveMosquitoes() {
+  if (!gameRunning) return;
+  const zone = document.getElementById('mosquitoZone');
+  const zw = zone.clientWidth;
+  const zh = zone.clientHeight;
+
+  mosquitoes = mosquitoes.filter(m => m.el.parentNode);
+
+  mosquitoes.forEach(m => {
+    m.x += m.vx;
+    m.y += m.vy;
+
+    // 벽 반사
+    if (m.x < 10 || m.x > zw - 50) { m.vx *= -1; m.x = Math.max(10, Math.min(zw-50, m.x)); }
+    if (m.y < 40 || m.y > zh - 50) { m.vy *= -1; m.y = Math.max(40, Math.min(zh-50, m.y)); }
+
+    // 약간 방향 흔들림 (자연스러운 비행)
+    m.vx += (Math.random()-0.5) * 0.3;
+    m.vy += (Math.random()-0.5) * 0.3;
+
+    // 속도 제한
+    const spd = Math.sqrt(m.vx*m.vx + m.vy*m.vy);
+    const maxSpd = 3 * speed;
+    if (spd > maxSpd) { m.vx = (m.vx/spd)*maxSpd; m.vy = (m.vy/spd)*maxSpd; }
+
+    m.el.style.left = m.x + 'px';
+    m.el.style.top = m.y + 'px';
+
+    // 방향에 따라 좌우 반전
+    m.el.style.transform = m.vx > 0 ? 'scaleX(1)' : 'scaleX(-1)';
+  });
+
+  animFrame = requestAnimationFrame(moveMosquitoes);
+}
+
+// ── 잡기 ─────────────────────────
+function catchMosquito(el, cx, cy, escapeTimer, blinkTimeout) {
+  clearTimeout(escapeTimer);
+  clearTimeout(blinkTimeout);
+  mosquitoes = mosquitoes.filter(m => m.el !== el);
+
+  caught++;
+  combo = Math.min(combo+1, 10);
+  maxCombo = Math.max(maxCombo, combo);
+  clearTimeout(comboTimer);
+  comboTimer = setTimeout(()=>{ combo=1; updateUI(); hideComboBadge(); }, 1500);
+
+  const mult = combo>=7?3:combo>=5?2:combo>=3?1.5:1;
+  const gained = Math.round(5 * mult);
+  score += gained;
+
+  // 난이도 상승
+  speed = 1 + caught * 0.08;
+
+  playSound('catch'); haptic('catch');
+  if (combo>=3) { playSound('combo'); haptic('combo'); showComboBadge(combo); }
+
+  // 혈흔 이펙트
+  const zone = document.getElementById('mosquitoZone');
+  const zoneRect = zone.getBoundingClientRect();
+  const bx = cx - zoneRect.left - 15;
+  const by = cy - zoneRect.top - 15;
+  const blood = document.createElement('div');
+  blood.className = 'blood';
+  blood.textContent = '🩸';
+  blood.style.left = bx + 'px';
+  blood.style.top = by + 'px';
+  zone.appendChild(blood);
+  setTimeout(()=>blood.remove(), 700);
+
+  // 파티클
+  spawnSparks(cx, cy, '#ff4444', '#ffaaaa');
+  showFloatScore(cx, cy, combo>=3?`+${gained}🔥`:`+${gained}`, '#22aa44');
+
+  el.classList.add('squished');
+  setTimeout(()=>{ if(el.parentNode) el.remove(); }, 300);
+  updateUI();
+}
+
+// ── 놓침 ─────────────────────────
+function missedMosquito(el, x, y) {
+  mosquitoes = mosquitoes.filter(m => m.el !== el);
+  missed++;
+  lives--;
+  combo = 1;
+  playSound('miss'); haptic('miss');
+
+  // 미스 텍스트
+  const zone = document.getElementById('mosquitoZone');
+  const miss = document.createElement('div');
+  miss.className = 'miss-text';
+  miss.textContent = '놓쳤다!';
+  miss.style.left = Math.max(10, x-20) + 'px';
+  miss.style.top = Math.max(50, y-20) + 'px';
+  zone.appendChild(miss);
+  setTimeout(()=>miss.remove(), 800);
+
+  updateLives();
+  updateUI();
+  if (lives <= 0) { setTimeout(endGame, 400); return; }
+  if (el.parentNode) el.remove();
+}
+
+// ── 게임 종료 ─────────────────────────
+function endGame() {
+  gameRunning = false;
+  clearInterval(timerInterval);
+  clearInterval(spawnInterval);
+  cancelAnimationFrame(animFrame);
+
+  // 남은 모기 정리
+  mosquitoes.forEach(m => {
+    clearTimeout(m.escapeTimer);
+    clearTimeout(m.blinkTimeout);
+    if (m.el.parentNode) m.el.remove();
+  });
+  mosquitoes = [];
+
+  const isNew = caught > hiscore;
+  if (isNew) hiscore = caught;
+
+  const earned = Math.floor(score / 5);
+  points += earned;
+  document.getElementById('totalPoints').textContent = points.toLocaleString();
+  document.getElementById('exchangeInfo').textContent = `총 ${points}P 보유 중`;
+  document.getElementById('hiscoreDisplay').textContent = hiscore + '마리';
+  document.getElementById('playsDisplay').textContent = totalPlays + '판';
+
+  const emoji = lives<=0?'💔':caught>=20?'🏆':caught>=12?'🎊':caught>=6?'😊':'😅';
+  const title = lives<=0?'목숨이 다 됐어요!':caught>=20?'모기 사냥꾼!':caught>=12?'대단해요!':caught>=6?'잘 잡으셨어요!':'다시 도전해봐요!';
+
+  document.getElementById('overEmoji').textContent = emoji;
+  document.getElementById('overTitle').textContent = title;
+  document.getElementById('overHiscore').textContent = isNew ? '🎉 새 최고 기록!' : `최고 기록: ${hiscore}마리`;
+  document.getElementById('overCatch').textContent = caught + '마리';
+  document.getElementById('overCombo').textContent = 'x' + maxCombo;
+  document.getElementById('overScore').textContent = score + '점';
+  document.getElementById('overMiss').textContent = missed + '마리';
+  document.getElementById('overPoint').textContent = `+${earned}P 획득!`;
+  document.getElementById('gameOverlay').classList.add('show');
+}
+
+function continueWithAd() {
+  showToast('📺 광고 로딩 중...');
+  setTimeout(()=>{
+    document.getElementById('gameOverlay').classList.remove('show');
+    lives=MAX_LIVES; timeLeft=GAME_TIME; gameRunning=true; speed=1;
+    updateLives();
+    document.getElementById('mosquitoZone').querySelectorAll('.mosquito').forEach(m=>m.remove());
+    mosquitoes=[];
+    spawnMosquito();
+    spawnInterval=setInterval(()=>{if(mosquitoes.length<MAX_MOSQUITOES)spawnMosquito();},1200);
+    timerInterval=setInterval(()=>{timeLeft-=0.1;updateTimerBar();if(timeLeft<=0)endGame();},100);
+    moveMosquitoes();
+    showToast('✅ 목숨 3개 충전! 계속 잡아요 🦟');
+  },1800);
+}
+function restartGame(){ document.getElementById('gameOverlay').classList.remove('show'); startGame(); }
+function closeOverlay(){ document.getElementById('gameOverlay').classList.remove('show'); goHome(); }
+function goHome(){
+  gameRunning=false;
+  clearInterval(timerInterval); clearInterval(spawnInterval);
+  cancelAnimationFrame(animFrame);
+  mosquitoes.forEach(m=>{clearTimeout(m.escapeTimer);clearTimeout(m.blinkTimeout);if(m.el.parentNode)m.el.remove();});
+  mosquitoes=[];
+  document.getElementById('gameScreen').style.display='none';
+  document.getElementById('startScreen').style.display='block';
+}
+
+// ── UI ─────────────────────────
+function updateUI(){
+  document.getElementById('catchVal').textContent = caught;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('comboVal').textContent = 'x'+combo;
+}
+function updateTimerBar(){
+  const pct=(timeLeft/GAME_TIME)*100;
+  const fill=document.getElementById('timerFill');
+  fill.style.width=pct+'%';
+  fill.classList.remove('warn','danger');
+  const num=document.getElementById('timerNum');
+  if(timeLeft<=3){fill.classList.add('danger');num.classList.add('red');}
+  else if(timeLeft<=7){fill.classList.add('warn');num.classList.remove('red');}
+  else{num.classList.remove('red');}
+  num.textContent=Math.ceil(timeLeft);
+}
+function updateLives(){
+  for(let i=0;i<MAX_LIVES;i++){
+    const h=document.getElementById('h'+i);
+    if(i>=lives){h.classList.add('lost');if(i===lives)h.classList.add('shake');}
+    else h.classList.remove('lost','shake');
+  }
+}
+let comboBadgeTimer;
+function showComboBadge(c){
+  const b=document.getElementById('comboBadge');
+  b.textContent=c>=7?`🔥🔥${c}COMBO!!`:`🔥${c}COMBO!`;
+  b.style.background=c>=7?'#ff2222':'#f5a623';
+  b.classList.add('show');
+  clearTimeout(comboBadgeTimer);
+  comboBadgeTimer=setTimeout(()=>b.classList.remove('show'),900);
+}
+function hideComboBadge(){document.getElementById('comboBadge').classList.remove('show');}
+
+// ── 이펙트 ─────────────────────────
+function spawnSparks(x,y,c1,c2){
+  for(let i=0;i<8;i++){
+    const s=document.createElement('div');s.className='spark';
+    const a=Math.random()*360,d=15+Math.random()*35,sz=3+Math.random()*5;
+    s.style.cssText=`left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:${i%2?c1:c2};--sx:${Math.cos(a*Math.PI/180)*d}px;--sy:${Math.sin(a*Math.PI/180)*d}px;`;
+    document.body.appendChild(s);setTimeout(()=>s.remove(),520);
+  }
+}
+function showFloatScore(x,y,text,color){
+  const el=document.createElement('div');el.className='float-score';
+  el.textContent=text;el.style.cssText=`left:${x-16}px;top:${y-20}px;color:${color};`;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),720);
+}
+
+// ── 광고/기타 ─────────────────────────
+let adWatching=false;
+function watchAd(){
+  if(adWatching){showToast('광고가 이미 재생 중이에요!');return;}
+  adWatching=true;showToast('📺 광고 로딩 중...');
+  setTimeout(()=>{
+    adWatching=false;
+    if(gameRunning){
+      lives=Math.min(lives+1,MAX_LIVES);
+      timeLeft=Math.min(timeLeft+5,GAME_TIME);
+      updateLives();updateTimerBar();
+      showToast('✅ 목숨 +1, 시간 +5초!');
+    } else showToast('✅ 광고 완료! 모기 잡으러 가요 🦟');
+  },1800);
+}
+function doCheckin(){points+=5;document.getElementById('totalPoints').textContent=points;showToast('🎟️ 출석 완료! +5P');}
+function doShare(){
+  if(navigator.share)navigator.share({title:'모기 잡기',text:`모기 ${caught}마리 잡았어! 나보다 잘할 수 있어? 🦟`,url:location.href});
+  else showToast('링크 복사! 친구에게 공유해봐요 🦟');
+}
+function doExchange(){
+  if(points<10){showToast(`포인트가 ${10-points}P 더 필요해요!`);return;}
+  const got=Math.floor(points/10)*10;points-=got;
+  document.getElementById('totalPoints').textContent=points;
+  showToast(`💰 ${got}P 교환 완료!`);
+}
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2300);
+}
+</script>
+</body>
+</html>
