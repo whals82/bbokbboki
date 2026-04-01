@@ -30,6 +30,8 @@ let combo=0, comboTimer=0; // 콤보 시스템
 
 // 오디오
 let AC=null;
+let bgNode=null, bgGain=null;
+
 function beep(f,d,t='sine',v=0.12){
   try{
     if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
@@ -39,6 +41,55 @@ function beep(f,d,t='sine',v=0.12){
     g.gain.setValueAtTime(v,n);g.gain.exponentialRampToValueAtTime(0.001,n+d);
     o.start(n);o.stop(n+d+0.05);
   }catch(e){}
+}
+
+// 배경음 (8비트 멜로디 루프)
+function startBGM(){
+  try{
+    if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
+    stopBGM();
+    const notes=[
+      523,659,784,1047, 880,784,659,523,
+      587,740,880,1175, 988,880,740,587
+    ];
+    const dur=0.18;
+    let i=0;
+    function playNote(){
+      if(!bgGain)return;
+      const o=AC.createOscillator();
+      const g=AC.createGain();
+      o.connect(g);g.connect(bgGain);
+      o.type='square';
+      o.frequency.value=notes[i%notes.length];
+      const t=AC.currentTime;
+      g.gain.setValueAtTime(0.08,t);
+      g.gain.exponentialRampToValueAtTime(0.001,t+dur*0.85);
+      o.start(t);o.stop(t+dur);
+      i++;
+      bgTimer=setTimeout(playNote,dur*1000);
+    }
+    bgGain=AC.createGain();
+    bgGain.gain.value=1;
+    bgGain.connect(AC.destination);
+    playNote();
+  }catch(e){}
+}
+
+function stopBGM(){
+  if(bgTimer){clearTimeout(bgTimer);bgTimer=null;}
+  if(bgGain){bgGain.disconnect();bgGain=null;}
+}
+
+let bgTimer=null;
+
+// 게임오버 효과음 (내려가는 멜로디)
+function playGameOver(){
+  const seq=[[440,0.15],[370,0.15],[311,0.15],[262,0.4]];
+  let t=0;
+  seq.forEach(([f,d])=>{
+    setTimeout(()=>beep(f,d,'sawtooth',0.18),t*1000);
+    t+=d;
+  });
 }
 
 // 플레이어
@@ -249,7 +300,8 @@ function hit(){
 function die(){
   if(P.dead)return;
   P.dead=true;P.vy=-11;
-  beep(220,0.35,'sawtooth',0.2);
+  stopBGM();
+  playGameOver();
   if(score>best)best=score;
   setTimeout(()=>STATE='over',1800);
 }
@@ -480,7 +532,15 @@ function loop(ts){
   }
 }
 
-function go(){if(STATE!=='play'){STATE='play';initGame();lastTime=performance.now();return;}P.jump();}
+function go(){
+  if(STATE!=='play'){
+    STATE='play';initGame();
+    lastTime=performance.now();
+    startBGM();
+    return;
+  }
+  P.jump();
+}
 document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();go();}});
 CV.addEventListener('pointerdown',e=>{e.preventDefault();go();});
 requestAnimationFrame(loop);
