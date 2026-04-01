@@ -52,11 +52,11 @@ const P={
     beep(this.jumps===1?420:600,0.1);
     spawnFX(PX+PW/2,this.y+PH,'#ffe4cc',4);
   },
-  update(){
-    if(this.dead){this.vy+=0.45;this.y+=this.vy;this.drot+=0.1;return;}
-    this.vy+=GRAV;this.y+=this.vy;
-    this.legT+=this.onGround?0.22:0.05;
-    if(this.inv>0)this.inv--;
+  update(dt=1){
+    if(this.dead){this.vy+=0.45*dt;this.y+=this.vy*dt;this.drot+=0.1*dt;return;}
+    this.vy+=GRAV*dt;this.y+=this.vy*dt;
+    this.legT+=this.onGround?0.22*dt:0.05*dt;
+    if(this.inv>0)this.inv-=dt;
   },
   draw(){
     if(this.inv>0&&Math.floor(this.inv/4)%2===1)return;
@@ -134,14 +134,14 @@ function initGame(){
   while(rightEdge()<W*6) genChunk();
 }
 
-function gameUpdate(){
+function gameUpdate(dt){
   if(frame%180===0&&spd<4.0)spd+=0.1;
 
-  tiles.forEach(t=>t.x-=spd);
+  tiles.forEach(t=>t.x-=spd*dt);
   obs.forEach(o=>{
-    o.x-=spd;o.t+=0.1;
+    o.x-=spd*dt;o.t+=0.1*dt;
     if(o.kind==='mole'&&o.alive){
-      o.rt++;
+      o.rt+=dt;
       if(o.rt>=o.riv){
         o.rt=0;
         rocks.push({x:o.x-15,y:o.y-30,vx:-2.5-spd*0.2,vy:-5.5,alive:true});
@@ -149,9 +149,9 @@ function gameUpdate(){
       }
     }
   });
-  coins.forEach(c=>c.x-=spd);
+  coins.forEach(c=>c.x-=spd*dt);
   rocks.forEach(r=>{
-    r.x+=r.vx;r.y+=r.vy;r.vy+=0.42;
+    r.x+=r.vx*dt;r.y+=r.vy*dt;r.vy+=0.42*dt;
     if(r.y>GY-8){r.vy*=-0.38;r.y=GY-8;r.vx*=0.72;}
     if(Math.abs(r.vy)<0.7&&r.y>=GY-10)r.alive=false;
   });
@@ -160,8 +160,8 @@ function gameUpdate(){
   obs=obs.filter(o=>o.alive&&o.x>-80);
   coins=coins.filter(c=>!c.done&&c.x>-20);
   rocks=rocks.filter(r=>r.alive&&r.x>-20&&r.x<W+20);
-  fxArr=fxArr.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life--;return p.life>0;});
-  ftArr=ftArr.filter(f=>{f.y+=f.vy;f.life--;return f.life>0;});
+  fxArr=fxArr.filter(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=0.12*dt;p.life-=dt;return p.life>0;});
+  ftArr=ftArr.filter(f=>{f.y+=f.vy*dt;f.life-=dt;return f.life>0;});
 
   // 새 청크: 오른쪽 끝이 W*5 미만이면 생성
   while(rightEdge()<W*5) genChunk();
@@ -191,7 +191,7 @@ function gameUpdate(){
   }
 
   // 콤보 타이머
-  if(comboTimer>0){comboTimer--;if(comboTimer===0)combo=0;}
+  if(comboTimer>0){comboTimer-=dt;if(comboTimer<=0){comboTimer=0;combo=0;}}
 
   // 장애물 충돌
   obs.forEach(o=>{
@@ -453,11 +453,15 @@ function drawOver(){
   ctx.fillText('탭 / 스페이스로 다시!',W/2,H/2+50);ctx.textAlign='left';ctx.restore();
 }
 
-function loop(){
-  requestAnimationFrame(loop);ctx.clearRect(0,0,W,H);frame++;
+let lastTime=0;
+function loop(ts){
+  requestAnimationFrame(loop);
+  const dt=Math.min((ts-lastTime)/16.667, 2.5); // 60fps 기준, 최대 2.5배
+  lastTime=ts;
+  ctx.clearRect(0,0,W,H);frame++;
   if(STATE==='intro'){drawIntro();return;}
   if(STATE==='over'){drawOver();return;}
-  if(!P.dead)gameUpdate();else P.update();
+  if(!P.dead)gameUpdate(dt);else P.update(dt);
   drawBG();
   ctx.fillStyle='#030110';ctx.fillRect(0,GY,W,H-GY);
   tiles.forEach(t=>drawTile(t));
@@ -476,10 +480,10 @@ function loop(){
   }
 }
 
-function go(){if(STATE!=='play'){STATE='play';initGame();return;}P.jump();}
+function go(){if(STATE!=='play'){STATE='play';initGame();lastTime=performance.now();return;}P.jump();}
 document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();go();}});
 CV.addEventListener('pointerdown',e=>{e.preventDefault();go();});
-loop();
+requestAnimationFrame(loop);
 </script>
 </body>
 </html>
