@@ -8,28 +8,20 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 :root {
-  --bg:#f0f4ff; --card:#fff; --text:#191f28; --text2:#6b7684;
-  --text3:#b0b8c1; --border:#e8ecf0; --blue:#3182f6;
-  --sc:#3182f6; --sl:#eff6ff; --sb:#bfdbfe;
+--bg:#f0f4ff; --card:#fff; --text:#191f28; --text2:#6b7684;
+--text3:#b0b8c1; --border:#e8ecf0; --blue:#3182f6;
+--sc:#3182f6; --sl:#eff6ff; --sb:#bfdbfe;
 }
 body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:100vh; max-width:430px; margin:0 auto; overflow-x:hidden; }
-
-/* 헤더 */
 .header { display:flex;align-items:center;justify-content:space-between; padding:14px 20px;background:var(--card); border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100; }
 .header-title { display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--text); }
 .header-icon { width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#a5b4fc,#6366f1);display:flex;align-items:center;justify-content:center;font-size:15px; }
 .header-btn { width:36px;height:36px;border:none;background:none;font-size:18px;color:var(--text2);cursor:pointer; }
-
-/* 포인트 배너 */
 .point-banner { margin:14px 16px 0;background:var(--card);border-radius:16px;padding:13px 16px;display:flex;align-items:center;gap:10px;border:1px solid var(--border); }
 .point-icon { width:30px;height:30px;border-radius:50%;background:#fff9e6;display:flex;align-items:center;justify-content:center;font-size:15px; }
 .point-text { font-size:14px;color:var(--text); }
 .point-text b { color:var(--blue);font-weight:700; }
-
-/* ── 홈화면 ── */
 .home-screen { padding:14px 16px; }
-
-/* 출석 카드 */
 .attendance-card { background:var(--card);border-radius:20px;padding:16px 18px;border:1px solid var(--border);margin-bottom:12px; }
 .attendance-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }
 .attendance-title { font-size:14px;font-weight:700;color:var(--text); }
@@ -42,8 +34,6 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 .att-dot.today.done { background:#22aa44;border-color:#22aa44;animation:none;cursor:default; }
 .att-reward { margin-top:10px;font-size:12px;color:var(--text2);text-align:center; }
 .att-reward b { color:#f5a623; }
-
-/* 데일리 미션 */
 .mission-card { background:var(--card);border-radius:20px;padding:16px 18px;border:1px solid var(--border);margin-bottom:12px; }
 .mission-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:10px; }
 .mission-title { font-size:14px;font-weight:700;color:var(--text); }
@@ -58,8 +48,6 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 .mission-bar-fill { height:100%;border-radius:2px;background:var(--blue);transition:width 0.4s; }
 .mission-reward { font-size:12px;font-weight:700;color:#f5a623;white-space:nowrap; }
 .mission-done { font-size:18px; }
-
-/* 주간 랭킹 */
 .ranking-card { background:var(--card);border-radius:20px;padding:16px 18px;border:1px solid var(--border);margin-bottom:12px; }
 .ranking-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:10px; }
 .ranking-title { font-size:14px;font-weight:700;color:var(--text); }
@@ -73,8 +61,6 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 .rank-name { flex:1;font-size:13px;color:var(--text);font-weight:500; }
 .rank-score { font-size:13px;font-weight:700;color:var(--blue); }
 .rank-me { background:#eff6ff;border-radius:8px;padding:2px 6px; }
-
-/* 모드 선택 */
 .mode-section { margin-bottom:12px; }
 .mode-label { font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px;letter-spacing:0.04em; }
 .mode-cards { display:flex;flex-direction:column;gap:8px; }
@@ -87,8 +73,6 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 .mode-hiscore { font-size:11px;margin-top:3px;opacity:0.8; }
 .mode-arrow { font-size:20px;opacity:0.5; }
 .mode-hot { position:absolute;top:10px;right:12px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.3);color:#fff; }
-
-/* ── 게임 화면 ── */
 #gameScreen { display:none; }
 .game-header { margin:12px 16px 0;background:var(--card);border-radius:16px;padding:11px 16px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:6px; }
 .gh-item { text-align:center; }
@@ -103,48 +87,40 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 .heart.lost { filter:grayscale(1);opacity:0.3; }
 .heart.shake { animation:hShake 0.4s ease; }
 @keyframes hShake { 0%{transform:scale(1)} 25%{transform:scale(1.4) rotate(-15deg)} 75%{transform:scale(0.9) rotate(8deg)} 100%{transform:scale(1)} }
-
-/* 타이머 */
 .timer-wrap { margin:8px 16px 0;background:var(--card);border-radius:12px;padding:8px 14px;border:1px solid var(--border);display:flex;align-items:center;gap:10px; }
 .timer-num { font-size:18px;font-weight:900;color:var(--text);min-width:28px;text-align:center;transition:color 0.3s; }
 .timer-num.red { color:#ff4444; }
 .timer-bar { flex:1;height:10px;background:#f0f2f5;border-radius:5px;overflow:hidden; }
 .timer-fill { height:100%;border-radius:5px;width:100%;transition:width 0.1s linear,background 0.3s; }
 .timer-fill.normal { background:linear-gradient(90deg,var(--sc),#60a5fa); }
-.timer-fill.warn   { background:linear-gradient(90deg,#ff8800,#ffbb44); }
+.timer-fill.warn { background:linear-gradient(90deg,#ff8800,#ffbb44); }
 .timer-fill.danger { background:linear-gradient(90deg,#ff3333,#ff7777);animation:tPulse 0.5s ease-in-out infinite alternate; }
 @keyframes tPulse { from{opacity:1} to{opacity:0.6} }
-.timer-fill.bonus  { animation:tBonus 0.5s ease-out; }
-@keyframes tBonus  { 0%{filter:brightness(2);box-shadow:0 0 12px #7c3aed;} 100%{filter:brightness(1);box-shadow:none;} }
-
-/* 점수 가이드 */
+.timer-fill.bonus { animation:tBonus 0.5s ease-out; }
+@keyframes tBonus { 0%{filter:brightness(2);box-shadow:0 0 12px #7c3aed;} 100%{filter:brightness(1);box-shadow:none;} }
 .score-guide { margin:8px 16px 0;background:var(--card);border-radius:12px;padding:9px 14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between; }
 .guide-item { display:flex;align-items:center;gap:5px; }
 .guide-dot { width:18px;height:18px;border-radius:50%;flex-shrink:0;position:relative;box-shadow:0 1px 4px rgba(0,0,0,0.12); }
 .guide-dot::before { content:'';position:absolute;top:16%;left:18%;width:30%;height:20%;background:rgba(255,255,255,0.6);border-radius:50%;transform:rotate(-30deg); }
 .guide-text { font-size:11px;font-weight:700; }
 .guide-sep { color:var(--border);font-size:14px; }
-
-/* 버블 영역 */
 .bubble-zone { margin:8px 16px 0;background:var(--card);border-radius:22px;padding:12px 10px 10px;border:1px solid var(--border);position:relative;overflow:hidden; }
 .zone-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:8px; }
 .zone-title { font-size:13px;font-weight:700;color:var(--text); }
 .combo-badge { font-size:12px;font-weight:900;padding:3px 10px;border-radius:20px;background:#ff4444;color:#fff;opacity:0;transition:opacity 0.2s; }
 .combo-badge.show { opacity:1; }
 .bubble-grid { display:grid;gap:6px;user-select:none; }
-
-/* 버블 스타일 */
 .bubble { aspect-ratio:1;border-radius:50%;cursor:pointer;position:relative;transition:transform 0.06s;box-shadow:0 2px 6px rgba(0,0,0,0.1),inset 0 1px 2px rgba(255,255,255,0.7); }
 .bubble::before { content:'';position:absolute;top:16%;left:18%;width:30%;height:22%;background:rgba(255,255,255,0.65);border-radius:50%;transform:rotate(-30deg);pointer-events:none; }
 .bubble:active:not(.flat) { transform:scale(0.78); }
 .bubble.normal { background:radial-gradient(circle at 35% 32%,#dce8ff,#b8ccff);border:1.5px solid rgba(150,180,255,0.3);cursor:pointer; }
-.bubble.b-red    { background:radial-gradient(circle at 35% 32%,#ff9999,#ff2222);border:1.5px solid rgba(255,50,50,0.3);animation:gRed 0.9s ease-in-out infinite alternate;cursor:pointer; }
+.bubble.b-red { background:radial-gradient(circle at 35% 32%,#ff9999,#ff2222);border:1.5px solid rgba(255,50,50,0.3);animation:gRed 0.9s ease-in-out infinite alternate;cursor:pointer; }
 .bubble.b-yellow { background:radial-gradient(circle at 35% 32%,#ffe680,#ffcc00);border:1.5px solid rgba(255,200,0,0.3);animation:gYellow 0.9s ease-in-out infinite alternate;cursor:pointer; }
-.bubble.b-green  { background:radial-gradient(circle at 35% 32%,#88ee88,#22bb44);border:1.5px solid rgba(50,180,80,0.3);animation:gGreen 0.9s ease-in-out infinite alternate;cursor:pointer; }
+.bubble.b-green { background:radial-gradient(circle at 35% 32%,#88ee88,#22bb44);border:1.5px solid rgba(50,180,80,0.3);animation:gGreen 0.9s ease-in-out infinite alternate;cursor:pointer; }
 .bubble.b-purple { background:radial-gradient(circle at 35% 32%,#c084fc,#7c3aed);border:1.5px solid rgba(124,58,237,0.4);animation:gPurple 0.7s ease-in-out infinite alternate;cursor:pointer; }
-@keyframes gRed    { from{box-shadow:0 2px 8px rgba(255,50,50,0.25),inset 0 1px 2px rgba(255,255,255,0.6);} to{box-shadow:0 4px 20px rgba(255,50,50,0.65),inset 0 1px 2px rgba(255,255,255,0.6);} }
+@keyframes gRed { from{box-shadow:0 2px 8px rgba(255,50,50,0.25),inset 0 1px 2px rgba(255,255,255,0.6);} to{box-shadow:0 4px 20px rgba(255,50,50,0.65),inset 0 1px 2px rgba(255,255,255,0.6);} }
 @keyframes gYellow { from{box-shadow:0 2px 8px rgba(255,200,0,0.25),inset 0 1px 2px rgba(255,255,255,0.6);} to{box-shadow:0 4px 20px rgba(255,200,0,0.65),inset 0 1px 2px rgba(255,255,255,0.6);} }
-@keyframes gGreen  { from{box-shadow:0 2px 8px rgba(50,180,80,0.25),inset 0 1px 2px rgba(255,255,255,0.6);} to{box-shadow:0 4px 20px rgba(50,180,80,0.5),inset 0 1px 2px rgba(255,255,255,0.6);} }
+@keyframes gGreen { from{box-shadow:0 2px 8px rgba(50,180,80,0.25),inset 0 1px 2px rgba(255,255,255,0.6);} to{box-shadow:0 4px 20px rgba(50,180,80,0.5),inset 0 1px 2px rgba(255,255,255,0.6);} }
 @keyframes gPurple { from{box-shadow:0 2px 12px rgba(124,58,237,0.4),inset 0 1px 2px rgba(255,255,255,0.6);} to{box-shadow:0 6px 24px rgba(124,58,237,0.8),inset 0 1px 2px rgba(255,255,255,0.6);} }
 .bubble.flat { background:#e8eaed!important;box-shadow:inset 0 1px 4px rgba(0,0,0,0.1)!important;border:1.5px solid #d0d3d8!important;cursor:default!important;pointer-events:none;animation:none!important; }
 .bubble.flat::before { display:none; }
@@ -155,13 +131,9 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 @keyframes wShake { 0%{transform:scale(1)} 30%{transform:scale(1.2) rotate(-8deg)} 70%{transform:scale(0.9) rotate(6deg)} 100%{transform:scale(1)} }
 .bubble.revive { animation:revAnim 0.4s ease forwards; }
 @keyframes revAnim { 0%{transform:scale(0);opacity:0;} 60%{transform:scale(1.2);opacity:1;} 100%{transform:scale(1);} }
-
-/* 광고 */
 .ad-wrap { margin:8px 16px 0;background:var(--card);border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid var(--border); }
 .ad-badge { background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 7px;border-radius:5px;flex-shrink:0; }
 .ad-text { font-size:13px;font-weight:700;color:var(--text); }
-
-/* 게임오버 */
 .overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;align-items:center;justify-content:center; }
 .overlay.show { display:flex; }
 .over-card { background:#fff;border-radius:24px;padding:24px 20px;text-align:center;margin:20px;max-width:320px;width:100%;animation:cardIn 0.35s cubic-bezier(0.34,1.3,0.64,1); }
@@ -178,14 +150,10 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 .life-ad-btn { width:100%;padding:13px;border:none;border-radius:14px;background:#ff4444;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px; }
 .over-btn { width:100%;padding:13px;border:none;border-radius:14px;background:var(--blue);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px; }
 .over-btn2 { width:100%;padding:11px;border:1px solid var(--border);border-radius:14px;background:#fff;color:var(--text2);font-size:13px;cursor:pointer;font-family:inherit; }
-
-/* 파티클 */
 .spark { position:fixed;pointer-events:none;border-radius:50%;animation:sparkFly 0.5s ease-out forwards;z-index:9999; }
 @keyframes sparkFly { 0%{opacity:1;transform:translate(0,0) scale(1.2);} 100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0);} }
 .float-score { position:fixed;pointer-events:none;font-size:17px;font-weight:900;z-index:9999;animation:floatUp 0.7s ease-out forwards; }
 @keyframes floatUp { 0%{opacity:1;transform:translateY(0) scale(1.3);} 100%{opacity:0;transform:translateY(-52px) scale(0.9);} }
-
-/* 토스트 */
 .toast { position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(25,31,40,0.92);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:500;z-index:9999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;opacity:0;white-space:nowrap; }
 .toast.show { transform:translateX(-50%) translateY(0);opacity:1; }
 .bottom-pad { height:32px; }
@@ -193,28 +161,24 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
 </head>
 <body>
 
-<!-- 헤더 -->
 <div class="header">
   <div class="header-title">
     <div class="header-icon">🫧</div>
     뽁뽁이 힐링
   </div>
   <div style="display:flex;gap:4px">
-    <button class="header-btn" onclick="goHome()">🏠</button>
-    <button class="header-btn">✕</button>
+    <button class="header-btn" id="btnHome">🏠</button>
+    <button class="header-btn" id="btnClose">✕</button>
   </div>
 </div>
 
-<!-- 포인트 배너 -->
 <div class="point-banner">
   <div class="point-icon">🪙</div>
   <div class="point-text">총 <b id="totalPoints">0</b>P · 연속 출석 <b id="streakDisplay">0</b>일째</div>
 </div>
 
-<!-- ── 홈 화면 ── -->
 <div class="home-screen" id="homeScreen">
 
-  <!-- 출석 체크 -->
   <div class="attendance-card">
     <div class="attendance-top">
       <div class="attendance-title">🗓️ 출석 체크</div>
@@ -224,7 +188,6 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
     <div class="att-reward">3일 <b>+10P</b> · 7일 <b>+30P</b> · 30일 <b>+100P</b></div>
   </div>
 
-  <!-- 데일리 미션 -->
   <div class="mission-card">
     <div class="mission-top">
       <div class="mission-title">🎯 오늘의 미션</div>
@@ -233,7 +196,6 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
     <div id="missionList"></div>
   </div>
 
-  <!-- 주간 랭킹 -->
   <div class="ranking-card">
     <div class="ranking-top">
       <div class="ranking-title">🏆 이번 주 랭킹 (무한모드)</div>
@@ -242,13 +204,12 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
     <div id="rankList"></div>
   </div>
 
-  <!-- 모드 선택 -->
   <div class="mode-section">
     <div class="mode-label">게임 모드 선택</div>
     <div class="mode-cards">
-      <!-- 입문 -->
-      <div class="mode-card" onclick="startGame(0)"
-           style="background:linear-gradient(135deg,#f0faf3,#dcfce7);border-color:#bbf7d0">
+
+      <div class="mode-card" data-mode="0"
+        style="background:linear-gradient(135deg,#f0faf3,#dcfce7);border-color:#bbf7d0">
         <div class="mode-icon" style="background:#dcfce7">🟢</div>
         <div class="mode-content" style="color:#166534">
           <div class="mode-name">입문 모드</div>
@@ -257,9 +218,9 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
         </div>
         <div class="mode-arrow">›</div>
       </div>
-      <!-- 도전 -->
-      <div class="mode-card" onclick="startGame(1)"
-           style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fde68a">
+
+      <div class="mode-card" data-mode="1"
+        style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fde68a">
         <div class="mode-icon" style="background:#fef3c7">🟡</div>
         <div class="mode-content" style="color:#92400e">
           <div class="mode-name">도전 모드</div>
@@ -268,9 +229,9 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
         </div>
         <div class="mode-arrow">›</div>
       </div>
-      <!-- 무한 -->
-      <div class="mode-card" onclick="startGame(2)"
-           style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#c4b5fd">
+
+      <div class="mode-card" data-mode="2"
+        style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#c4b5fd">
         <div class="mode-icon" style="background:#ede9fe">♾️</div>
         <div class="mode-content" style="color:#4c1d95">
           <div class="mode-name">무한 모드</div>
@@ -280,14 +241,13 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
         <div class="mode-hot">🔥 인기</div>
         <div class="mode-arrow">›</div>
       </div>
+
     </div>
   </div>
 
-</div><!-- /homeScreen -->
+</div>
 
-<!-- ── 게임 화면 ── -->
 <div id="gameScreen">
-  <!-- 스테이지 배너 -->
   <div style="margin:12px 16px 0;border-radius:14px;padding:10px 16px;border:1px solid var(--sb);background:var(--sl);display:flex;justify-content:space-between;align-items:center;" id="stageBanner">
     <div style="font-size:14px;font-weight:700;color:var(--text)" id="bannerName">입문 모드</div>
     <div style="font-size:12px;color:var(--text2)" id="bannerGoal"></div>
@@ -315,7 +275,7 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
     <span class="guide-sep">·</span>
     <div class="guide-item"><div class="guide-dot" style="background:radial-gradient(circle at 35% 32%,#88ee88,#22bb44)"></div><span class="guide-text" style="color:#22aa44">+1</span></div>
     <span class="guide-sep">·</span>
-    <div class="guide-item"><div class="guide-dot" style="background:radial-gradient(circle at 35% 32%,#c084fc,#7c3aed)"></div><span class="guide-text" style="color:#7c3aed" id="purpleGuide" >+5⏱️</span></div>
+    <div class="guide-item"><div class="guide-dot" style="background:radial-gradient(circle at 35% 32%,#c084fc,#7c3aed)"></div><span class="guide-text" style="color:#7c3aed" id="purpleGuide">+5⏱️</span></div>
     <span class="guide-sep">·</span>
     <span style="font-size:11px;color:var(--text2)">콤보 <b id="comboGuide" style="color:#f5a623">x1</b></span>
   </div>
@@ -329,14 +289,12 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
   </div>
 </div>
 
-<!-- 광고 -->
-<div class="ad-wrap" onclick="watchAd()" id="adWrap" style="display:none">
+<div class="ad-wrap" id="adWrap" style="display:none">
   <div class="ad-badge">AD</div>
   <div class="ad-text">광고 보고 목숨 +1 · 시간 +5초</div>
   <div style="font-size:18px;color:var(--text3);margin-left:auto">›</div>
 </div>
 
-<!-- 게임오버 -->
 <div class="overlay" id="gameOverlay">
   <div class="over-card">
     <div class="over-emoji" id="overEmoji">🎊</div>
@@ -350,9 +308,9 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); min-height:1
       <div class="over-stat"><div class="over-stat-label">실수</div><div class="over-stat-val red" id="overMiss" style="color:#ff4444">0번</div></div>
     </div>
     <div class="over-point" id="overPoint">+0P 획득!</div>
-    <button class="life-ad-btn" onclick="continueWithAd()">📺 광고 보고 목숨 3개로 계속하기</button>
-    <button class="over-btn" onclick="restartGame()">🔄 다시 하기</button>
-    <button class="over-btn2" onclick="closeOverlay()">모드 선택으로</button>
+    <button class="life-ad-btn" id="btnContinueAd">📺 광고 보고 목숨 3개로 계속하기</button>
+    <button class="over-btn" id="btnRestart">🔄 다시 하기</button>
+    <button class="over-btn2" id="btnCloseOverlay">모드 선택으로</button>
   </div>
 </div>
 
@@ -376,27 +334,24 @@ const MODES = [
     reward:0, infinite:true },
 ];
 
-// 무한모드 점수별 난이도 — 버블 수는 유지, 수명만 줄어듦
 const INF_LEVELS = [
-  {counts:{red:2,yellow:3,green:3,purple:1}, interval:2000, lifetime:3000}, // 0~19
-  {counts:{red:2,yellow:2,green:3,purple:1}, interval:1800, lifetime:2400}, // 20~49
-  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1600, lifetime:1900}, // 50~99
-  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1500, lifetime:1400}, // 100~149
-  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1400, lifetime:1000}, // 150~199
-  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1300, lifetime:700},  // 200~299
-  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1200, lifetime:500},  // 300↑ 눈 깜짝할 새
+  {counts:{red:2,yellow:3,green:3,purple:1}, interval:2000, lifetime:3000},
+  {counts:{red:2,yellow:2,green:3,purple:1}, interval:1800, lifetime:2400},
+  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1600, lifetime:1900},
+  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1500, lifetime:1400},
+  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1400, lifetime:1000},
+  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1300, lifetime:700},
+  {counts:{red:2,yellow:2,green:2,purple:1}, interval:1200, lifetime:500},
 ];
 const INF_THRESHOLDS = [0,20,50,100,150,200,300];
 
-// 점수 구간별 시간 추가량
 function getTimeBonus(type, score) {
   if (score >= 200) return {red:0.6, yellow:0.3, green:0.1, purple:1.0}[type] || 0;
   if (score >= 100) return {red:1.0, yellow:0.6, green:0.3, purple:1.5}[type] || 0;
-  if (score >= 50)  return {red:1.2, yellow:0.8, green:0.4, purple:1.8}[type] || 0;
-  return              {red:1.5, yellow:1.0, green:0.5, purple:2.0}[type] || 0;
+  if (score >= 50) return {red:1.2, yellow:0.8, green:0.4, purple:1.8}[type] || 0;
+  return {red:1.5, yellow:1.0, green:0.5, purple:2.0}[type] || 0;
 }
 
-// 현재 레벨의 버블 수명
 function getCurrentLifetime() {
   return INF_LEVELS[infLevel] ? INF_LEVELS[infLevel].lifetime : 3000;
 }
@@ -408,32 +363,24 @@ function loadData() {
 function saveData(d) {
   try { localStorage.setItem('bbokData', JSON.stringify(d)); } catch(e){}
 }
-
 let data = loadData();
 if (!data.hiscores) data.hiscores=[0,0,0];
-if (!data.points)   data.points=0;
-if (!data.streak)   data.streak=0;
+if (!data.points) data.points=0;
+if (!data.streak) data.streak=0;
 if (!data.lastDate) data.lastDate='';
 if (!data.checkedToday) data.checkedToday=false;
 if (!data.missions) data.missions=[];
 if (!data.missionDate) data.missionDate='';
 if (!data.weekRanking) data.weekRanking=[];
 if (!data.weekScore) data.weekScore=0;
-
 let points = data.points;
 
-// ── 날짜 유틸 ─────────────────────────
-function todayStr() {
-  return new Date().toISOString().slice(0,10);
-}
-function getDayOfWeek() {
-  return new Date().getDay(); // 0=일
-}
+function todayStr() { return new Date().toISOString().slice(0,10); }
+function getDayOfWeek() { return new Date().getDay(); }
 
 // ── 출석 체크 ─────────────────────────
 function initAttendance() {
   const today = todayStr();
-  // 연속 출석 체크
   if (data.lastDate !== today) {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate()-1);
@@ -453,21 +400,17 @@ function renderAttendance() {
   const streak = data.streak;
   document.getElementById('streakLabel').textContent = streak + '일 연속 🔥';
   document.getElementById('streakDisplay').textContent = streak;
-
-  // 7일 표시
   dots.innerHTML = '';
-  const rewards = [0,0,10,0,0,0,30]; // 3일,7일 보상
   for (let i=0; i<7; i++) {
     const d = document.createElement('div');
     const dayNum = i+1;
     const isDone = streak >= dayNum;
     const isToday = streak+1 === dayNum || (streak===0 && dayNum===1);
     d.className = 'att-dot' + (isDone?' done':'') + (!isDone&&isToday?' today':'');
-
     if (isDone) d.textContent = '✅';
     else if (isToday && !data.checkedToday) {
       d.textContent = dayNum+'일';
-      d.onclick = doCheckin;
+      d.addEventListener('click', doCheckin);
     } else {
       d.textContent = dayNum;
       d.style.opacity = '0.4';
@@ -483,12 +426,10 @@ function doCheckin() {
     ? data.streak + 1 : 1;
   data.lastDate = today;
   data.checkedToday = true;
-
   let bonus = 1;
   if (data.streak % 30 === 0) bonus = 100;
   else if (data.streak % 7 === 0) bonus = 30;
   else if (data.streak % 3 === 0) bonus = 10;
-
   points += bonus;
   data.points = points;
   saveData(data);
@@ -499,13 +440,13 @@ function doCheckin() {
 
 // ── 데일리 미션 ─────────────────────────
 const MISSION_POOL = [
-  { id:'red20',    emoji:'🔴', name:'빨강 버블 20개 터뜨리기',  target:20, reward:15, type:'red' },
-  { id:'combo5',   emoji:'🔥', name:'콤보 5 달성하기',           target:5,  reward:10, type:'combo' },
-  { id:'pop50',    emoji:'🫧', name:'버블 총 50개 터뜨리기',     target:50, reward:12, type:'pop' },
-  { id:'inf30',    emoji:'♾️', name:'무한모드 30점 달성',         target:30, reward:20, type:'infscore' },
-  { id:'purple5',  emoji:'🟣', name:'보라 버블 5개 잡기',        target:5,  reward:25, type:'purple' },
-  { id:'yellow30', emoji:'🟡', name:'노랑 버블 30개 터뜨리기',   target:30, reward:12, type:'yellow' },
-  { id:'perfect',  emoji:'💎', name:'실수 없이 게임 완료',        target:1,  reward:30, type:'perfect' },
+  { id:'red20', emoji:'🔴', name:'빨강 버블 20개 터뜨리기', target:20, reward:15, type:'red' },
+  { id:'combo5', emoji:'🔥', name:'콤보 5 달성하기', target:5, reward:10, type:'combo' },
+  { id:'pop50', emoji:'🫧', name:'버블 총 50개 터뜨리기', target:50, reward:12, type:'pop' },
+  { id:'inf30', emoji:'♾️', name:'무한모드 30점 달성', target:30, reward:20, type:'infscore' },
+  { id:'purple5', emoji:'🟣', name:'보라 버블 5개 잡기', target:5, reward:25, type:'purple' },
+  { id:'yellow30', emoji:'🟡', name:'노랑 버블 30개 터뜨리기', target:30, reward:12, type:'yellow' },
+  { id:'perfect', emoji:'💎', name:'실수 없이 게임 완료', target:1, reward:30, type:'perfect' },
 ];
 
 let todayMissions = [];
@@ -514,7 +455,6 @@ let missionProgress = {};
 function initMissions() {
   const today = todayStr();
   if (data.missionDate !== today) {
-    // 새 미션 3개 뽑기
     const shuffled = [...MISSION_POOL].sort(()=>Math.random()-0.5);
     data.missions = shuffled.slice(0,3).map(m=>({...m, done:false}));
     data.missionDate = today;
@@ -570,7 +510,6 @@ function updateMissionProgress(type, val=1, score=0) {
 
 // ── 주간 랭킹 ─────────────────────────
 function initRanking() {
-  // 가짜 랭킹 데이터 (실제는 서버 필요)
   const fakeRanking = [
     {name:'뽁뽁이고수', score:248},
     {name:'힐링왕', score:195},
@@ -586,14 +525,11 @@ function renderRanking() {
   const list = document.getElementById('rankList');
   list.innerHTML = '';
   const myScore = data.weekScore || 0;
-
-  // 내 점수 삽입
   let ranking = [...data.weekRanking];
   const myEntry = {name:'나 (최고:'+myScore+'점)', score:myScore, isMe:true};
   ranking.push(myEntry);
   ranking.sort((a,b)=>b.score-a.score);
   ranking = ranking.slice(0,6);
-
   ranking.forEach((r,i) => {
     const el = document.createElement('div');
     el.className = 'rank-item';
@@ -621,27 +557,21 @@ let sessionRed=0, sessionYellow=0, sessionPop=0, sessionPurple=0, sessionComboMa
 function startGame(modeIdx) {
   currentMode = modeIdx;
   const m = MODES[modeIdx];
-
   document.getElementById('homeScreen').style.display='none';
   document.getElementById('gameScreen').style.display='block';
   document.getElementById('adWrap').style.display='block';
-
-  // 테마
   document.documentElement.style.setProperty('--sc', m.sc);
   document.documentElement.style.setProperty('--sl', m.light);
   document.documentElement.style.setProperty('--sb', m.border);
-
   document.getElementById('bannerName').textContent = m.emoji+' '+m.name;
   document.getElementById('bannerGoal').textContent = m.infinite ? '잡을수록 시간추가!' : '목표 '+m.goal+'점';
   document.getElementById('goalVal').textContent = m.infinite ? '∞' : m.goal;
   document.getElementById('timerNum').textContent = m.time;
   document.getElementById('purpleGuide').style.display = m.infinite ? '' : 'none';
   document.querySelectorAll('.guide-sep')[3].style.display = m.infinite ? '' : 'none';
-
   score=0; combo=1; maxCombo=1; lives=MAX_LIVES;
   totalPopped=0; totalMiss=0; timeLeft=m.time; gameRunning=true; infLevel=0;
   sessionRed=0; sessionYellow=0; sessionPop=0; sessionPurple=0; sessionComboMax=0; sessionPerfect=true;
-
   buildGrid(m);
   updateStatusUI();
   updateLives();
@@ -650,7 +580,6 @@ function startGame(modeIdx) {
   spawnInterval=setInterval(spawnWave, m.spawnInterval);
 }
 
-// ── 그리드 ─────────────────────────
 function buildGrid(m) {
   const grid=document.getElementById('bubbleGrid');
   grid.style.gridTemplateColumns=`repeat(${m.cols},1fr)`;
@@ -664,7 +593,6 @@ function buildGrid(m) {
   }
 }
 
-// ── 스폰 ─────────────────────────
 function spawnWave() {
   if(!gameRunning) return;
   const m = MODES[currentMode];
@@ -677,13 +605,10 @@ function spawnWave() {
     for(let i=0;i<cnt&&ptr<available.length;i++,ptr++){
       const idx = available[ptr];
       setType(idx, type);
-
-      // 무한모드: 수명 끝나면 일반 버블로 조용히 변환
       if(m.infinite) {
         const lifetime = getCurrentLifetime();
         const tid = setTimeout(()=>{
           if(gameRunning && bubbleTypes[idx]===type) {
-            // 깜빡임 경고
             if(bubbles[idx]) bubbles[idx].style.opacity='0.4';
             setTimeout(()=>{
               if(gameRunning && bubbleTypes[idx]===type) {
@@ -701,6 +626,7 @@ function spawnWave() {
     }
   });
 }
+
 function setType(idx,type) {
   const clsMap={red:'b-red',yellow:'b-yellow',green:'b-green',purple:'b-purple'};
   bubbleTypes[idx]=type;
@@ -708,7 +634,6 @@ function setType(idx,type) {
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 
-// ── 탭 ─────────────────────────
 const SCORES={red:3,yellow:2,green:1,purple:5};
 const COLORS={red:'#ff2222',yellow:'#cc9900',green:'#22aa44',purple:'#7c3aed'};
 const LIGHTS={red:'#ff9999',yellow:'#ffe680',green:'#88ee88',purple:'#c084fc'};
@@ -719,7 +644,6 @@ function onTap(e) {
   const idx=parseInt(e.currentTarget.dataset.idx);
   const type=bubbleTypes[idx];
   if(type==='flat') return;
-
   if(type==='normal') {
     totalMiss++; sessionPerfect=false;
     score=Math.max(0,score-1); lives--;
@@ -731,22 +655,17 @@ function onTap(e) {
     if(lives<=0){setTimeout(endGame,400);}
     return;
   }
-
   totalPopped++; sessionPop++;
   if(type==='red') sessionRed++;
   if(type==='yellow') sessionYellow++;
   if(type==='purple') sessionPurple++;
-
   combo=Math.min(combo+1,10); maxCombo=Math.max(maxCombo,combo);
   sessionComboMax=Math.max(sessionComboMax,combo);
   clearTimeout(comboTimer);
   comboTimer=setTimeout(()=>{combo=1;updateStatusUI();hideComboBadge();},1800);
-
   const mult=combo>=7?3:combo>=5?2:combo>=3?1.5:1;
   const gained=Math.round(SCORES[type]*mult);
   score+=gained;
-
-  // 무한모드 시간 추가
   if(MODES[currentMode].infinite) {
     const bonus = getTimeBonus(type, score);
     timeLeft = Math.min(timeLeft + bonus, 30);
@@ -756,8 +675,6 @@ function onTap(e) {
       fill.classList.remove('bonus');void fill.offsetWidth;fill.classList.add('bonus');
       setTimeout(()=>fill.classList.remove('bonus'),500);
     }
-
-    // 난이도 갱신
     const newLv = INF_THRESHOLDS.filter(t=>score>=t).length-1;
     if(newLv > infLevel){
       infLevel = newLv;
@@ -767,12 +684,10 @@ function onTap(e) {
       showToast(msgs[infLevel] || '🔥 난이도UP!');
     }
   }
-
   playPop(type); haptic(type);
   if(combo>=3){playPop('combo');haptic('combo');showComboBadge(combo);}
   spawnSparks(e.clientX,e.clientY,COLORS[type],LIGHTS[type]);
   showFloatScore(e.clientX,e.clientY,combo>=3?`+${gained}🔥`:`+${gained}`,COLORS[type]);
-
   bubbles[idx].classList.add('popping');
   setTimeout(()=>{
     bubbles[idx].className='bubble flat';
@@ -790,43 +705,33 @@ function reviveBubble(idx){
   setTimeout(()=>bubbles[idx].classList.remove('revive'),400);
 }
 
-// ── 게임 종료 ─────────────────────────
 function endGame() {
   gameRunning=false;
   clearInterval(timerInterval); clearInterval(spawnInterval);
   reviveTimers.forEach(t=>clearTimeout(t));
-
   const m=MODES[currentMode];
   const isNew=score>data.hiscores[currentMode];
   if(isNew) data.hiscores[currentMode]=score;
-
-  // 무한모드 주간 랭킹 갱신
   if(m.infinite && score>data.weekScore) {
     data.weekScore=score;
     renderRanking();
   }
-
   const earned=m.infinite?Math.floor(score/3):score>=m.goal?m.reward:Math.floor(score/5);
   points+=earned; data.points=points;
-
-  // 미션 업데이트
   updateMissionProgress('red',sessionRed);
   updateMissionProgress('yellow',sessionYellow);
   updateMissionProgress('pop',sessionPop);
   updateMissionProgress('purple',sessionPurple);
-  updateMissionProgress('combo',0); // 콤보는 별도
+  updateMissionProgress('combo',0);
   if(sessionComboMax>=5) updateMissionProgress('combo',sessionComboMax);
   if(m.infinite) updateMissionProgress('infscore',0,score);
   if(sessionPerfect&&totalPopped>10) updateMissionProgress('perfect',1);
-
   saveData(data);
   updatePointDisplay();
   document.getElementById('hs'+currentMode).textContent=data.hiscores[currentMode];
-
   const emoji=score>=100?'🏆':score>=50?'🎊':score>=20?'😊':'😅';
   const title=lives<=0?'목숨이 다 됐어요!':score>=100?'완전 고수!':score>=50?'대단해요!':'다시 도전!';
   const bc=[['#f0faf3','#166534'],['#fffbeb','#92400e'],['#f5f3ff','#4c1d95']];
-
   document.getElementById('overEmoji').textContent=emoji;
   document.getElementById('overBadge').textContent=m.emoji+' '+m.name;
   document.getElementById('overBadge').style.background=bc[currentMode][0];
@@ -853,6 +758,7 @@ function continueWithAd() {
     showToast('✅ 목숨 3개 충전! 계속해요 🫧');
   },1800);
 }
+
 function restartGame(){ document.getElementById('gameOverlay').classList.remove('show'); startGame(currentMode); }
 function closeOverlay(){ document.getElementById('gameOverlay').classList.remove('show'); goHome(); }
 function goHome(){
@@ -868,7 +774,6 @@ function goHome(){
   renderMissions(); renderRanking();
 }
 
-// ── UI ─────────────────────────
 function updateStatusUI(){
   document.getElementById('scoreVal').textContent=score;
   document.getElementById('comboVal').textContent='x'+combo;
@@ -908,7 +813,6 @@ function showComboBadge(c){
 }
 function hideComboBadge(){document.getElementById('comboBadge').classList.remove('show');}
 
-// ── Web Audio ─────────────────────────
 let audioCtx=null;
 function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
 function playPop(type){
@@ -936,7 +840,6 @@ function haptic(type){
   else if(type==='combo')navigator.vibrate([8,8,18]);
 }
 
-// ── 이펙트 ─────────────────────────
 function spawnSparks(x,y,c1,c2){
   for(let i=0;i<8;i++){
     const s=document.createElement('div');s.className='spark';
@@ -951,7 +854,6 @@ function showFloatScore(x,y,text,color){
   document.body.appendChild(el);setTimeout(()=>el.remove(),720);
 }
 
-// ── 광고 ─────────────────────────
 let adWatching=false;
 function watchAd(){
   if(adWatching){showToast('광고가 이미 재생 중이에요!');return;}
@@ -967,16 +869,45 @@ function watchAd(){
   },1800);
 }
 
-// ── 토스트 ─────────────────────────
 let toastTimer;
 function showToast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
 }
 
+// ── 이벤트 바인딩 (CSP 호환) ─────────────────────────
+function bindEvents() {
+  // 모드 카드 → click + touchend 둘 다 바인딩 (토스 웹뷰 대응)
+  document.querySelectorAll('.mode-card').forEach(card => {
+    const handler = (e) => {
+      e.preventDefault();
+      const m = parseInt(card.dataset.mode, 10);
+      if (!isNaN(m)) startGame(m);
+    };
+    card.addEventListener('click', handler);
+  });
+
+  // 헤더 버튼
+  const btnHome = document.getElementById('btnHome');
+  if (btnHome) btnHome.addEventListener('click', goHome);
+
+  // 광고 배너
+  const adWrap = document.getElementById('adWrap');
+  if (adWrap) adWrap.addEventListener('click', watchAd);
+
+  // 게임오버 버튼들
+  const btnContinueAd = document.getElementById('btnContinueAd');
+  if (btnContinueAd) btnContinueAd.addEventListener('click', continueWithAd);
+
+  const btnRestart = document.getElementById('btnRestart');
+  if (btnRestart) btnRestart.addEventListener('click', restartGame);
+
+  const btnCloseOverlay = document.getElementById('btnCloseOverlay');
+  if (btnCloseOverlay) btnCloseOverlay.addEventListener('click', closeOverlay);
+}
+
 // ── 초기화 ─────────────────────────
 function init(){
-  // 최고기록 표시
   data.hiscores.forEach((h,i)=>{
     const el=document.getElementById('hs'+i);
     if(el) el.textContent=h;
@@ -985,8 +916,14 @@ function init(){
   initAttendance();
   initMissions();
   initRanking();
+  bindEvents();
 }
-init();
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
