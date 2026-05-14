@@ -63,15 +63,10 @@ body {
   justify-content: flex-start;
 }
 
-/* 헤더, 스탯, 페케 무대 아래에 자동 여백 - 액션을 살짝 위로 끌어올림 */
 .main-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.main-container > .action-deck {
-  margin-top: auto;
 }
 
 /* 메인 컨테이너 (인트로 제외한 모든 요소) */
@@ -540,29 +535,13 @@ body {
    =========================================== */
 .pet-stage {
   position: relative;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  min-height: 280px;
-  max-height: 55vh;
+  min-height: 0;
   overflow: visible;
-}
-
-/* 큰 화면(태블릿/PC)에선 좀 더 넉넉하게 */
-@media (min-height: 800px) {
-  .pet-stage {
-    max-height: 60vh;
-  }
-}
-
-/* 작은 폰에선 더 컴팩트 */
-@media (max-height: 700px) {
-  .pet-stage {
-    max-height: 50vh;
-    min-height: 220px;
-  }
 }
 
 .pet-wrap {
@@ -574,7 +553,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -10px;
 }
 
 .pet-shadow {
@@ -1684,6 +1662,137 @@ body.minigame-active .pet-stage {
   50% { transform: scale(1.15); }
 }
 
+
+/* ===========================================
+   코스튬 시스템
+   =========================================== */
+.costume-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.costume-svg {
+  width: 100%;
+  height: 100%;
+  max-width: 320px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* 옷장 그리드 */
+.closet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.closet-slot {
+  aspect-ratio: 1;
+  background: #FFF8F0;
+  border: 2px solid #FFEBD8;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.closet-slot:not(.locked):active {
+  transform: scale(0.96);
+}
+
+.closet-slot.locked {
+  background: #F0E5D5;
+  border-color: #D5C5B5;
+  cursor: not-allowed;
+}
+
+.closet-slot.equipped {
+  border-color: var(--accent-warm);
+  background: #FFF0E0;
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+}
+
+.closet-slot .preview {
+  font-size: 36px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+.closet-slot.locked .preview {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.closet-slot .lock-info {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #8C7A6A;
+  background: rgba(255,255,255,0.9);
+  border-radius: 6px;
+  padding: 2px;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.closet-slot .equipped-mark {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--accent-warm);
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.closet-category {
+  font-family: 'Gowun Batang', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--txt-primary);
+  margin: 16px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.closet-category:first-child {
+  margin-top: 0;
+}
+
+.unequip-btn {
+  width: 100%;
+  padding: 10px;
+  background: #F0E5D5;
+  color: #6B5454;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+}
+
+.unequip-btn:active { transform: scale(0.98); }
+
 </style>
 </head>
 <body>
@@ -1846,6 +1955,7 @@ body.minigame-active .pet-stage {
       </svg>
       
       <img id="petImage" class="pet-image anim-breathe" alt="페케">
+      <div class="costume-overlay" id="costumeOverlay"></div>
     </div>
     
     <!-- 미니게임 HUD -->
@@ -1920,12 +2030,28 @@ body.minigame-active .pet-stage {
     </div>
   </div>
 
+  <!-- 옷장 시트 -->
+  <div class="modal-overlay" id="closetOverlay" onclick="closeCloset(event)">
+    <div class="sheet" id="closetSheet" style="max-height: 70vh; overflow-y: auto;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">👗 옷장</div>
+      <div id="closetContent"></div>
+    </div>
+  </div>
+
   <!-- 메뉴 시트 -->
   <div class="modal-overlay" id="sheetOverlay" onclick="closeMenu(event)">
     <div class="sheet" id="sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-title">메뉴</div>
       <div class="sheet-list">
+        <button class="sheet-item" onclick="openCloset(); closeMenu();" style="background:#FFF0E0; border-color:#FFD8C4;">
+          <div class="sheet-item-text">
+            <span>👗 옷장</span>
+            <span class="desc">레벨업 보상 아이템 착용</span>
+          </div>
+          <span class="sheet-item-arrow">›</span>
+        </button>
         <button class="sheet-item" id="soundMenuBtn" onclick="toggleSound(); closeMenu();">
           <div class="sheet-item-text">
             <span>🔊 소리 끄기</span>
@@ -2033,6 +2159,8 @@ let bgmInterval = null;
 let bgmGain = null;
 let bgmStartedOnce = false;
 
+let masterGain = null;
+
 function ensureAudio() {
   if (!audioCtx) {
     try {
@@ -2042,6 +2170,10 @@ function ensureAudio() {
         return null;
       }
       audioCtx = new AC();
+      // 마스터 게인 노드 - 모든 소리가 여기 통과 (한번에 차단 가능)
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = soundEnabled ? 1 : 0;
+      masterGain.connect(audioCtx.destination);
     } catch(e) {
       console.warn('Audio context 생성 실패:', e);
       return null;
@@ -2056,9 +2188,9 @@ function ensureAudio() {
 
 // 노트 → 주파수
 const NOTE_FREQS = {
-  'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00, 'A4': 440.00, 'B4': 493.88,
-  'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00, 'B5': 987.77,
-  'C6': 1046.50, 'D6': 1174.66, 'E6': 1318.51
+  'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00, 'A4': 440.00, 'Bb4': 466.16, 'B4': 493.88,
+  'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00, 'Bb5': 932.33, 'B5': 987.77,
+  'C6': 1046.50, 'D6': 1174.66, 'E6': 1318.51, 'F6': 1396.91
 };
 
 // 짧은 효과음 (탭, 잡기 등)
@@ -2071,7 +2203,7 @@ function playSfx(type) {
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.connect(gain);
-  gain.connect(ctx.destination);
+  gain.connect(masterGain || ctx.destination);
   
   if (type === 'tap') {
     // 띵! 짧고 밝은 음
@@ -2100,7 +2232,7 @@ function playSfx(type) {
       const o = ctx.createOscillator();
       const g = ctx.createGain();
       o.connect(g);
-      g.connect(ctx.destination);
+      g.connect(masterGain || ctx.destination);
       o.type = 'sine';
       o.frequency.setValueAtTime(freq, t + i * 0.1);
       g.gain.setValueAtTime(0.0001, t + i * 0.1);
@@ -2168,7 +2300,7 @@ function playSfx(type) {
     const osc2 = ctx.createOscillator();
     const gain2 = ctx.createGain();
     osc2.connect(gain2);
-    gain2.connect(ctx.destination);
+    gain2.connect(masterGain || ctx.destination);
     osc2.type = 'sine';
     osc2.frequency.setValueAtTime(1200, t);
     osc2.frequency.exponentialRampToValueAtTime(200, t + 0.1);
@@ -2186,7 +2318,7 @@ function playSfx(type) {
       const o = ctx.createOscillator();
       const g = ctx.createGain();
       o.connect(g);
-      g.connect(ctx.destination);
+      g.connect(masterGain || ctx.destination);
       o.type = 'triangle';
       o.frequency.setValueAtTime(freq, t + i * 0.12);
       g.gain.setValueAtTime(0.0001, t + i * 0.12);
@@ -2215,7 +2347,7 @@ function playSfx(type) {
       const o = ctx.createOscillator();
       const g = ctx.createGain();
       o.connect(g);
-      g.connect(ctx.destination);
+      g.connect(masterGain || ctx.destination);
       o.type = 'sine';
       o.frequency.setValueAtTime(700, t + offset);
       o.frequency.linearRampToValueAtTime(500, t + offset + 0.15);
@@ -2244,7 +2376,7 @@ function playSfx(type) {
       const o = ctx.createOscillator();
       const g = ctx.createGain();
       o.connect(g);
-      g.connect(ctx.destination);
+      g.connect(masterGain || ctx.destination);
       o.type = 'sawtooth';
       o.frequency.setValueAtTime(300, t + offset);
       o.frequency.exponentialRampToValueAtTime(150, t + offset + 0.08);
@@ -2276,75 +2408,91 @@ function playSfx(type) {
   }
 }
 
-// BGM - 오르골 톤 신나면서 행복한 멜로디 (라퓨타 분위기)
-// 4/4 박자, BPM 100, 단위: 1박 = 0.6초
-// C - Am - F - G 진행 + 통통 튀는 멜로디
+// BGM - 왈츠풍 오리지널 (하울의 움직이는 성 같은 분위기)
+// 3/4 박자, F major, BPM 90 - 왈츠
+// 코드: F - Dm - Bb - C (왈츠 클래식 진행)
 const BGM_NOTES = [
-  // === A 파트: 메인 멜로디 (행복하게 시작) ===
-  // 마디 1 (C)
+  // === A 파트 시작 (F major) - 메인 테마 ===
+  // 1마디: F장조 - 따뜻한 시작
+  { note: 'F5', dur: 1.0 },
+  { note: 'A5', dur: 0.5 },
+  { note: 'F5', dur: 1.5 },
+  
+  // 2마디: F→C - 흐르듯
+  { note: 'A5', dur: 1.0 },
+  { note: 'C6', dur: 0.5 },
+  { note: 'A5', dur: 1.5 },
+  
+  // 3마디: Dm - 살짝 그리운
+  { note: 'G5', dur: 1.0 },
+  { note: 'A5', dur: 0.5 },
+  { note: 'F5', dur: 1.5 },
+  
+  // 4마디: C - 해소
+  { note: 'E5', dur: 1.0 },
   { note: 'G5', dur: 0.5 },
-  { note: 'E5', dur: 0.5 },
+  { note: 'C5', dur: 1.5 },
+  
+  // === B 파트 (클라이맥스) ===
+  // 5마디: Bb - 따뜻하게 올라감
+  { note: 'D6', dur: 1.0 },
+  { note: 'C6', dur: 0.5 },
+  { note: 'Bb5', dur: 1.5 },
+  
+  // 6마디: F - 메인 테마 회상
+  { note: 'A5', dur: 1.0 },
   { note: 'G5', dur: 0.5 },
+  { note: 'F5', dur: 1.5 },
+  
+  // 7마디: Dm - 그리움 절정
+  { note: 'G5', dur: 0.5 },
+  { note: 'A5', dur: 0.5 },
+  { note: 'D6', dur: 0.5 },
   { note: 'C6', dur: 0.5 },
   { note: 'A5', dur: 1.0 },
+  
+  // 8마디: C → F (귀환)
   { note: 'G5', dur: 1.0 },
-  
-  // 마디 2 (Am)
   { note: 'E5', dur: 0.5 },
-  { note: 'F5', dur: 0.5 },
-  { note: 'G5', dur: 0.5 },
-  { note: 'E5', dur: 0.5 },
-  { note: 'C5', dur: 1.0 },
-  { note: 'E5', dur: 1.0 },
+  { note: 'F5', dur: 1.5 },
   
-  // 마디 3 (F)
+  // === 변주 파트 ===
+  // 9마디: 한 옥타브 위로
   { note: 'F5', dur: 0.5 },
   { note: 'A5', dur: 0.5 },
   { note: 'C6', dur: 0.5 },
+  { note: 'F6', dur: 0.5 },
+  { note: 'C6', dur: 0.5 },
   { note: 'A5', dur: 0.5 },
+  
+  // 10마디: 내려옴
+  { note: 'G5', dur: 0.5 },
+  { note: 'A5', dur: 0.5 },
+  { note: 'C6', dur: 1.0 },
+  { note: 'A5', dur: 1.0 },
+  
+  // 11마디: Bb 따스함
+  { note: 'D6', dur: 1.5 },
+  { note: 'C6', dur: 0.5 },
+  { note: 'Bb5', dur: 1.0 },
+  
+  // 12마디: C - 마무리 준비
+  { note: 'A5', dur: 0.5 },
+  { note: 'G5', dur: 0.5 },
+  { note: 'C6', dur: 1.0 },
+  { note: 'G5', dur: 1.0 },
+  
+  // === 마무리 (F major 평화롭게) ===
+  // 13마디
   { note: 'F5', dur: 1.0 },
   { note: 'A5', dur: 1.0 },
-  
-  // 마디 4 (G)
-  { note: 'G5', dur: 0.5 },
-  { note: 'B5', dur: 0.5 },
-  { note: 'D6', dur: 0.5 },
-  { note: 'B5', dur: 0.5 },
-  { note: 'G5', dur: 1.0 },
-  { note: 'B5', dur: 1.0 },
-  
-  // === B 파트: 클라이맥스 (좀 더 높은 음역) ===
-  // 마디 5 (C)
   { note: 'C6', dur: 1.0 },
-  { note: 'B5', dur: 0.5 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'G5', dur: 1.0 },
-  { note: 'E5', dur: 1.0 },
   
-  // 마디 6 (Am)
-  { note: 'A5', dur: 0.5 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'E6', dur: 1.0 },
-  { note: 'C6', dur: 1.0 },
-  { note: 'A5', dur: 1.0 },
-  
-  // 마디 7 (F)
-  { note: 'F5', dur: 0.5 },
-  { note: 'G5', dur: 0.5 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'A5', dur: 1.0 },
-  { note: 'F5', dur: 1.0 },
-  
-  // 마디 8 (G → C)
-  { note: 'G5', dur: 0.5 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'B5', dur: 0.5 },
-  { note: 'D6', dur: 0.5 },
-  { note: 'C6', dur: 2.0 },
+  // 14마디 - F 길게
+  { note: 'F5', dur: 3.0 },
   
   // === 짧은 쉼 ===
-  { note: 'REST', dur: 1.0 },
+  { note: 'REST', dur: 1.5 },
 ];
 
 let bgmIndex = 0;
@@ -2355,8 +2503,8 @@ function playBgmNote() {
   
   const item = BGM_NOTES[bgmIndex];
   
-  // BPM 100 = 한 박 600ms (오르골 정도의 적당한 빠르기)
-  const beat = 600;
+  // BPM 90 = 한 박 ~667ms (왈츠 느낌)
+  const beat = 667;
   
   if (item.note === 'REST') {
     bgmIndex = (bgmIndex + 1) % BGM_NOTES.length;
@@ -2437,15 +2585,7 @@ function startBGM() {
   if (!bgmGain) {
     bgmGain = ctx.createGain();
     bgmGain.gain.value = 0.38;
-    bgmGain.connect(ctx.destination);
-  } else {
-    // 묵음 상태였다면 다시 볼륨 복구
-    try {
-      const t = ctx.currentTime;
-      bgmGain.gain.cancelScheduledValues(t);
-      bgmGain.gain.setValueAtTime(bgmGain.gain.value, t);
-      bgmGain.gain.exponentialRampToValueAtTime(0.32, t + 0.3);
-    } catch(e) {}
+    bgmGain.connect(masterGain || ctx.destination);
   }
   
   bgmStartedOnce = true;
@@ -2457,7 +2597,8 @@ function stopBGM() {
     clearTimeout(bgmTimer);
     bgmTimer = null;
   }
-  bgmStartedOnce = false;
+  // bgmStartedOnce는 유지 - 끌 때마다 false로 만들면 다음 클릭에 다시 켜짐!
+  
   // bgmGain 자체를 묵음으로 (이미 시작된 음들 페이드아웃)
   if (bgmGain && audioCtx) {
     try {
@@ -2473,17 +2614,30 @@ function toggleSound() {
   soundEnabled = !soundEnabled;
   try { localStorage.setItem(SOUND_KEY, String(soundEnabled)); } catch(e) {}
   
+  // 마스터 게인으로 즉시 모든 소리 차단/복구
+  ensureAudio();
+  if (masterGain && audioCtx) {
+    try {
+      const t = audioCtx.currentTime;
+      masterGain.gain.cancelScheduledValues(t);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, t);
+      masterGain.gain.exponentialRampToValueAtTime(soundEnabled ? 1 : 0.0001, t + 0.2);
+    } catch(e) {}
+  }
+  
   if (soundEnabled) {
-    // 켜기
-    ensureAudio();
+    // BGM 시작 (필요시)
     setTimeout(() => {
       startBGM();
       playSfx('success');
-    }, 200);
+    }, 250);
     showToast('🔊 소리 켜짐');
   } else {
-    // 끄기: BGM 중지 + 묵음
-    stopBGM();
+    // BGM 타이머 정지 (소리는 이미 masterGain으로 차단됨)
+    if (bgmTimer) {
+      clearTimeout(bgmTimer);
+      bgmTimer = null;
+    }
     showToast('🔇 소리 꺼짐');
   }
   
@@ -2499,11 +2653,286 @@ function toggleSound() {
 
 // 사용자 첫 인터랙션 후 BGM 시작 (브라우저 정책)
 function tryStartBgmOnce() {
+  // 소리 꺼져있으면 자동 시작 안 함!
+  if (!soundEnabled) return;
   if (bgmStartedOnce) return;
   startBGM();
 }
 document.addEventListener('click', tryStartBgmOnce, { once: false });
 document.addEventListener('touchstart', tryStartBgmOnce, { once: false });
+
+
+// ==================== 코스튬 시스템 ====================
+const COSTUMES = {
+  // === 머리 (top) ===
+  pinkBow: {
+    id: 'pinkBow',
+    name: '분홍 리본',
+    emoji: '🎀',
+    category: 'top',
+    unlockLevel: 2,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160, 70)">
+        <!-- 왼쪽 리본 -->
+        <path d="M -35 -10 Q -50 -25 -45 0 Q -50 15 -35 5 L -10 0 Z" fill="#FF7BA0" stroke="#C8456E" stroke-width="1.5"/>
+        <!-- 오른쪽 리본 -->
+        <path d="M 35 -10 Q 50 -25 45 0 Q 50 15 35 5 L 10 0 Z" fill="#FF7BA0" stroke="#C8456E" stroke-width="1.5"/>
+        <!-- 중앙 매듭 -->
+        <ellipse cx="0" cy="0" rx="10" ry="13" fill="#FF5C8A" stroke="#C8456E" stroke-width="1.5"/>
+        <!-- 광택 -->
+        <ellipse cx="-25" cy="-5" rx="8" ry="4" fill="rgba(255,255,255,0.5)"/>
+        <ellipse cx="25" cy="-5" rx="8" ry="4" fill="rgba(255,255,255,0.5)"/>
+      </g>
+    </svg>`
+  },
+  
+  starHat: {
+    id: 'starHat',
+    name: '별 모자',
+    emoji: '🎩',
+    category: 'top',
+    unlockLevel: 5,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160, 50)">
+        <!-- 모자 챙 -->
+        <ellipse cx="0" cy="20" rx="50" ry="6" fill="#5A4A8E" stroke="#3A2A6E" stroke-width="1.5"/>
+        <!-- 모자 본체 -->
+        <path d="M -30 20 L -25 -25 Q -20 -35 0 -38 Q 20 -35 25 -25 L 30 20 Z" fill="#7060B0" stroke="#3A2A6E" stroke-width="1.5"/>
+        <!-- 별 장식 -->
+        <path d="M 0 -15 L 3 -7 L 11 -7 L 5 -2 L 7 6 L 0 1 L -7 6 L -5 -2 L -11 -7 L -3 -7 Z" fill="#FFD15C" stroke="#C89020" stroke-width="1"/>
+        <!-- 광택 -->
+        <path d="M -22 0 Q -20 -20 -10 -30" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"/>
+      </g>
+    </svg>`
+  },
+  
+  crown: {
+    id: 'crown',
+    name: '왕관',
+    emoji: '👑',
+    category: 'top',
+    unlockLevel: 10,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160, 60)">
+        <!-- 왕관 밴드 -->
+        <path d="M -40 10 L 40 10 L 40 20 L -40 20 Z" fill="#FFD15C" stroke="#C89020" stroke-width="1.5"/>
+        <!-- 왕관 뾰족 부분 -->
+        <path d="M -40 10 L -35 -15 L -20 5 L 0 -25 L 20 5 L 35 -15 L 40 10 Z" fill="#FFE89F" stroke="#C89020" stroke-width="1.5"/>
+        <!-- 보석들 -->
+        <circle cx="-25" cy="-5" r="3" fill="#FF5C8A"/>
+        <circle cx="0" cy="-12" r="4" fill="#6AB7FF"/>
+        <circle cx="25" cy="-5" r="3" fill="#4ECDC4"/>
+        <!-- 광택 -->
+        <path d="M -30 0 L -10 -10" stroke="rgba(255,255,255,0.6)" stroke-width="2" fill="none"/>
+      </g>
+    </svg>`
+  },
+  
+  // === 눈 (eye) ===
+  glasses: {
+    id: 'glasses',
+    name: '동그란 안경',
+    emoji: '👓',
+    category: 'eye',
+    unlockLevel: 3,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160, 135)">
+        <!-- 안경다리 좌 -->
+        <line x1="-40" y1="0" x2="-25" y2="0" stroke="#5A4A3A" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- 안경다리 우 -->
+        <line x1="25" y1="0" x2="40" y2="0" stroke="#5A4A3A" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- 중앙 연결 -->
+        <line x1="-7" y1="0" x2="7" y2="0" stroke="#5A4A3A" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- 왼쪽 렌즈 -->
+        <circle cx="-16" cy="0" r="15" fill="rgba(180,220,255,0.25)" stroke="#5A4A3A" stroke-width="2.5"/>
+        <!-- 오른쪽 렌즈 -->
+        <circle cx="16" cy="0" r="15" fill="rgba(180,220,255,0.25)" stroke="#5A4A3A" stroke-width="2.5"/>
+        <!-- 렌즈 광택 -->
+        <ellipse cx="-20" cy="-4" rx="5" ry="3" fill="rgba(255,255,255,0.6)" transform="rotate(-30, -20, -4)"/>
+        <ellipse cx="12" cy="-4" rx="5" ry="3" fill="rgba(255,255,255,0.6)" transform="rotate(-30, 12, -4)"/>
+      </g>
+    </svg>`
+  },
+  
+  sunglasses: {
+    id: 'sunglasses',
+    name: '선글라스',
+    emoji: '🕶️',
+    category: 'eye',
+    unlockLevel: 8,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160, 135)">
+        <line x1="-40" y1="0" x2="-30" y2="-2" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+        <line x1="30" y1="-2" x2="40" y2="0" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+        <line x1="-7" y1="0" x2="7" y2="0" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+        <rect x="-30" y="-12" width="25" height="20" rx="6" fill="#2A2A2A" stroke="#1A1A1A" stroke-width="2"/>
+        <rect x="5" y="-12" width="25" height="20" rx="6" fill="#2A2A2A" stroke="#1A1A1A" stroke-width="2"/>
+        <ellipse cx="-22" cy="-6" rx="6" ry="3" fill="rgba(255,255,255,0.5)"/>
+        <ellipse cx="13" cy="-6" rx="6" ry="3" fill="rgba(255,255,255,0.5)"/>
+      </g>
+    </svg>`
+  },
+  
+  // === 목 (neck) ===
+  bowtie: {
+    id: 'bowtie',
+    name: '나비넥타이',
+    emoji: '🎀',
+    category: 'neck',
+    unlockLevel: 4,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160, 215)">
+        <path d="M -30 -8 Q -45 -18 -45 0 Q -45 18 -30 8 L -8 0 Z" fill="#FF5C5C" stroke="#A03838" stroke-width="1.5"/>
+        <path d="M 30 -8 Q 45 -18 45 0 Q 45 18 30 8 L 8 0 Z" fill="#FF5C5C" stroke="#A03838" stroke-width="1.5"/>
+        <rect x="-9" y="-10" width="18" height="20" rx="3" fill="#D04040" stroke="#A03838" stroke-width="1.5"/>
+        <ellipse cx="-25" cy="-3" rx="6" ry="3" fill="rgba(255,255,255,0.4)"/>
+      </g>
+    </svg>`
+  },
+  
+  necklace: {
+    id: 'necklace',
+    name: '금색 목걸이',
+    emoji: '🔗',
+    category: 'neck',
+    unlockLevel: 7,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(160, 210)">
+        <path d="M -45 0 Q 0 35 45 0" fill="none" stroke="url(#chainGrad)" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- 펜던트 (별) -->
+        <g transform="translate(0, 30)">
+          <path d="M 0 -10 L 3 -3 L 11 -2 L 5 3 L 7 11 L 0 7 L -7 11 L -5 3 L -11 -2 L -3 -3 Z" fill="url(#starGrad)" stroke="#C89020" stroke-width="1.5"/>
+        </g>
+        <defs>
+          <linearGradient id="chainGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFD15C"/>
+            <stop offset="50%" stop-color="#FFE89F"/>
+            <stop offset="100%" stop-color="#FFD15C"/>
+          </linearGradient>
+          <radialGradient id="starGrad">
+            <stop offset="0%" stop-color="#FFFAE0"/>
+            <stop offset="100%" stop-color="#FFD15C"/>
+          </radialGradient>
+        </defs>
+      </g>
+    </svg>`
+  }
+};
+
+// 현재 착용 상태
+let equipped = {
+  top: null,
+  eye: null,
+  neck: null
+};
+
+const COSTUME_KEY = 'feke_v5_costumes';
+try {
+  const saved = localStorage.getItem(COSTUME_KEY);
+  if (saved) equipped = JSON.parse(saved);
+} catch(e) {}
+
+function saveCostumes() {
+  try { localStorage.setItem(COSTUME_KEY, JSON.stringify(equipped)); } catch(e) {}
+}
+
+// 코스튬 렌더링 (페케 위에)
+function renderCostumes() {
+  const overlay = document.getElementById('costumeOverlay');
+  if (!overlay) return;
+  
+  let svg = '';
+  // 순서: neck → top → eye (목→머리→눈 순서로 z-index)
+  ['neck', 'top', 'eye'].forEach(cat => {
+    const equipId = equipped[cat];
+    if (equipId && COSTUMES[equipId]) {
+      svg += COSTUMES[equipId].svg;
+    }
+  });
+  
+  overlay.innerHTML = svg;
+}
+
+// 옷장 열기
+function openCloset() {
+  const overlay = document.getElementById('closetOverlay');
+  const content = document.getElementById('closetContent');
+  if (!overlay || !content) return;
+  
+  // 카테고리별 분류
+  const categories = {
+    top: { name: '머리 장식', emoji: '🎩' },
+    eye: { name: '눈 장식', emoji: '👓' },
+    neck: { name: '목 장식', emoji: '🔗' }
+  };
+  
+  let html = '';
+  
+  Object.entries(categories).forEach(([catKey, catInfo]) => {
+    const items = Object.values(COSTUMES).filter(c => c.category === catKey);
+    if (items.length === 0) return;
+    
+    html += `<div class="closet-category">${catInfo.emoji} ${catInfo.name}</div>`;
+    html += `<div class="closet-grid">`;
+    
+    items.forEach(item => {
+      const unlocked = state.level >= item.unlockLevel;
+      const isEquipped = equipped[catKey] === item.id;
+      
+      html += `<div class="closet-slot ${unlocked ? '' : 'locked'} ${isEquipped ? 'equipped' : ''}" 
+        ${unlocked ? `onclick="equipCostume('${item.id}', '${catKey}')"` : ''}>
+        <span class="preview">${item.emoji}</span>
+        ${isEquipped ? '<div class="equipped-mark">✓</div>' : ''}
+        ${!unlocked ? `<div class="lock-info">LV ${item.unlockLevel}</div>` : ''}
+      </div>`;
+    });
+    
+    // 해제 버튼
+    if (equipped[catKey]) {
+      html += `</div><button class="unequip-btn" onclick="unequipCostume('${catKey}')">${catInfo.name} 벗기</button>`;
+    } else {
+      html += `</div>`;
+    }
+  });
+  
+  content.innerHTML = html;
+  
+  overlay.classList.add('show');
+  setTimeout(() => document.getElementById('closetSheet').classList.add('show'), 10);
+}
+
+function closeCloset(event) {
+  if (event && event.target.id !== 'closetOverlay') return;
+  document.getElementById('closetSheet').classList.remove('show');
+  setTimeout(() => document.getElementById('closetOverlay').classList.remove('show'), 300);
+}
+window.closeCloset = closeCloset;
+
+function equipCostume(itemId, category) {
+  const item = COSTUMES[itemId];
+  if (!item) return;
+  if (state.level < item.unlockLevel) return;
+  
+  equipped[category] = itemId;
+  saveCostumes();
+  renderCostumes();
+  haptic(10);
+  playSfx('coin');
+  
+  // 옷장 새로고침
+  openCloset();
+}
+
+function unequipCostume(category) {
+  equipped[category] = null;
+  saveCostumes();
+  renderCostumes();
+  haptic(5);
+  openCloset();
+}
+
+window.equipCostume = equipCostume;
+window.unequipCostume = unequipCostume;
 
 const IMAGES = {
   WAKE: IMG_WAKE, GRUMPY: IMG_GRUMPY, WINK: IMG_WINK, THINK: IMG_THINK,
