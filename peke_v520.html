@@ -3206,7 +3206,8 @@ body.theme-dark .action-card .cost {
         </defs>
       </svg>
       
-      <img id="petImage" class="pet-image anim-breathe" alt="페케">
+      <img id="petImage" class="pet-image anim-breathe" alt="페케"
+           onerror="if (this.src.indexOf('data:') !== 0 && typeof IMG_WAKE !== 'undefined') { this.onerror = null; this.src = IMG_WAKE; }">
       <div class="costume-overlay" id="costumeOverlay"></div>
       <div class="costume-edit-hint" id="costumeEditHint">손가락으로 옷을 움직여 보세요</div>
     </div>
@@ -5484,18 +5485,26 @@ async function setPetMood(mood, opts = {}) {
   currentMood = mood;
   const m = MOODS[mood] || MOODS.normal;
   applyMoodColors(mood);
-  
+
   const imageKey = opts.imageKey || pickMoodImage(mood);
   if (imageKey !== currentImageKey) {
     currentImageKey = imageKey;
     const pet = document.getElementById('petImage');
     pet.classList.add('fading');
     await sleep(300);
-    pet.src = IMAGES[imageKey];
+    // 안전: 해당 키가 없거나 빈 값이면 WAKE webp로 폴백
+    const safeSrc = IMAGES[imageKey] || (typeof IMG_WAKE !== 'undefined' ? IMG_WAKE : '');
+    // PNG 로드 실패 대비 onerror 재등록
+    pet.onerror = function() {
+      if (pet.src.indexOf('data:') !== 0 && typeof IMG_WAKE !== 'undefined') {
+        pet.onerror = null;
+        pet.src = IMG_WAKE;
+      }
+    };
+    pet.src = safeSrc;
     pet.className = 'pet-image ' + m.anim;
     void pet.offsetWidth;
     pet.classList.remove('fading');
-    // 이미지 바뀐 후 코스튬 위치 보정 재렌더
     try { renderCostumes(); } catch(e) {}
   } else {
     const pet = document.getElementById('petImage');
@@ -8102,8 +8111,14 @@ window.addEventListener('pagehide', saveState);
 
 // === 진입점 ===
 window.addEventListener('DOMContentLoaded', () => {
+  // 캐릭터 이미지 즉시 표시 (PNG 로드 실패해도 webp 폴백)
+  const pet = document.getElementById('petImage');
+  if (pet && typeof IMG_WAKE !== 'undefined') {
+    pet.src = IMG_WAKE;
+  }
+
   setupIntroImages();
-  
+
   // 이미 인트로 완료한 사용자는 메인으로
   if (state.introDone && state.petName && state.petName !== '친구') {
     document.getElementById('intro').classList.add('hidden');
