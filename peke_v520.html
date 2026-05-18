@@ -606,13 +606,21 @@ body {
 
 .pet-image.fading { opacity: 0; }
 
-/* 무드 애니메이션 */
-.pet-image.anim-breathe { animation: breathe 3.5s ease-in-out infinite; }
-.pet-image.anim-happy   { animation: happy-bounce 0.6s ease-in-out infinite; }
-.pet-image.anim-hungry  { animation: hungry-sway 2.2s ease-in-out infinite; }
-.pet-image.anim-sleep   { animation: sleep-breathe 4.5s ease-in-out infinite; }
-.pet-image.anim-sick    { animation: sick-tremble 3s ease-in-out infinite; }
-.pet-image.anim-still   { animation: still-breathe 5s ease-in-out infinite; }
+/* 무드 애니메이션 - 코스튬도 같은 애니메이션을 받아 페케와 함께 움직임 */
+.pet-image.anim-breathe,
+.costume-overlay.anim-breathe { animation: breathe 3.5s ease-in-out infinite; }
+.pet-image.anim-happy,
+.costume-overlay.anim-happy   { animation: happy-bounce 0.6s ease-in-out infinite; }
+.pet-image.anim-hungry,
+.costume-overlay.anim-hungry  { animation: hungry-sway 2.2s ease-in-out infinite; }
+.pet-image.anim-sleep,
+.costume-overlay.anim-sleep   { animation: sleep-breathe 4.5s ease-in-out infinite; }
+.pet-image.anim-sick,
+.costume-overlay.anim-sick    { animation: sick-tremble 3s ease-in-out infinite; }
+.pet-image.anim-still,
+.costume-overlay.anim-still   { animation: still-breathe 5s ease-in-out infinite; }
+/* transform-origin을 페케 중심으로 통일 */
+.costume-overlay { transform-origin: center center; }
 
 @keyframes breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.02); } }
 @keyframes happy-bounce { 0%, 100% { transform: translateY(0) scale(1) rotate(-1.5deg); } 50% { transform: translateY(-15px) scale(1.04) rotate(1.5deg); } }
@@ -3375,7 +3383,7 @@ body.theme-dark .action-card .cost {
       <div class="adv-page" id="advPageWalking">
         <div class="adv-paper" style="text-align:center;">
           <div class="adv-walking">
-            <img class="adv-walking-pet" id="advWalkingPet" alt="페케"/>
+            <img class="adv-walking-pet" id="advWalkingPet" alt="페케" onerror="if(this.src.indexOf('data:')!==0 && typeof IMG_WAKE!=='undefined'){this.onerror=null;this.src=IMG_WAKE;}"/>
             <div class="adv-walking-dots">· · ·</div>
             <div class="adv-walking-text" id="advWalkingText">페케가 걸어가고 있어요</div>
           </div>
@@ -3388,7 +3396,7 @@ body.theme-dark .action-card .cost {
           <div class="adv-scene" id="advEventScene">
             <div class="adv-scene-bg" id="advEventSceneBg"></div>
             <div class="adv-scene-deco" id="advEventSceneDeco"></div>
-            <img class="adv-scene-pet" id="advEventPet" alt="페케"/>
+            <img class="adv-scene-pet" id="advEventPet" alt="페케" onerror="if(this.src.indexOf('data:')!==0 && typeof IMG_WAKE!=='undefined'){this.onerror=null;this.src=IMG_WAKE;}"/>
             <div class="adv-scene-friend" id="advEventFriend"></div>
           </div>
           <div class="adv-title" id="advEventTitle">이벤트</div>
@@ -3416,7 +3424,7 @@ body.theme-dark .action-card .cost {
           <div class="adv-scene" id="advResultScene">
             <div class="adv-scene-bg" id="advResultSceneBg"></div>
             <div class="adv-scene-deco" id="advResultSceneDeco"></div>
-            <img class="adv-scene-pet" id="advResultPet" alt="페케"/>
+            <img class="adv-scene-pet" id="advResultPet" alt="페케" onerror="if(this.src.indexOf('data:')!==0 && typeof IMG_WAKE!=='undefined'){this.onerror=null;this.src=IMG_WAKE;}"/>
             <div class="adv-scene-friend" id="advResultFriend"></div>
           </div>
           <div class="adv-title" id="advResultTitle">결과</div>
@@ -3626,6 +3634,7 @@ function ensureAudio() {
 
 // 노트 → 주파수
 const NOTE_FREQS = {
+  'C3': 130.81, 'D3': 146.83, 'E3': 164.81, 'F3': 174.61, 'G3': 196.00, 'A3': 220.00, 'B3': 246.94,
   'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00, 'A4': 440.00, 'Bb4': 466.16, 'B4': 493.88,
   'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00, 'Bb5': 932.33, 'B5': 987.77,
   'C6': 1046.50, 'D6': 1174.66, 'E6': 1318.51, 'F6': 1396.91
@@ -3847,167 +3856,207 @@ function playSfx(type) {
 }
 
 // BGM - 왈츠풍 오리지널 (하울의 움직이는 성 같은 분위기)
-// 3/4 박자, F major, BPM 90 - 왈츠
-// 코드: F - Dm - Bb - C (왈츠 클래식 진행)
+// 4/4 박자, C major, BPM 78 - Lo-fi jazz
+// 코드 진행: Cmaj7 - Am7 - Dm7 - G7 (ii-V-I), Em7 - Am7 - Fmaj7 - G7
+// 7th/9th 색채음으로 세련된 느낌. chord 필드는 화음 동반 시 사용.
 const BGM_NOTES = [
-  // === A 파트 시작 (F major) - 메인 테마 ===
-  // 1마디: F장조 - 따뜻한 시작
-  { note: 'F5', dur: 1.0 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'F5', dur: 1.5 },
-  
-  // 2마디: F→C - 흐르듯
-  { note: 'A5', dur: 1.0 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'A5', dur: 1.5 },
-  
-  // 3마디: Dm - 살짝 그리운
-  { note: 'G5', dur: 1.0 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'F5', dur: 1.5 },
-  
-  // 4마디: C - 해소
-  { note: 'E5', dur: 1.0 },
-  { note: 'G5', dur: 0.5 },
-  { note: 'C5', dur: 1.5 },
-  
-  // === B 파트 (클라이맥스) ===
-  // 5마디: Bb - 따뜻하게 올라감
-  { note: 'D6', dur: 1.0 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'Bb5', dur: 1.5 },
-  
-  // 6마디: F - 메인 테마 회상
-  { note: 'A5', dur: 1.0 },
-  { note: 'G5', dur: 0.5 },
-  { note: 'F5', dur: 1.5 },
-  
-  // 7마디: Dm - 그리움 절정
-  { note: 'G5', dur: 0.5 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'D6', dur: 0.5 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'A5', dur: 1.0 },
-  
-  // 8마디: C → F (귀환)
-  { note: 'G5', dur: 1.0 },
-  { note: 'E5', dur: 0.5 },
-  { note: 'F5', dur: 1.5 },
-  
-  // === 변주 파트 ===
-  // 9마디: 한 옥타브 위로
-  { note: 'F5', dur: 0.5 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'F6', dur: 0.5 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'A5', dur: 0.5 },
-  
-  // 10마디: 내려옴
-  { note: 'G5', dur: 0.5 },
-  { note: 'A5', dur: 0.5 },
-  { note: 'C6', dur: 1.0 },
-  { note: 'A5', dur: 1.0 },
-  
-  // 11마디: Bb 따스함
-  { note: 'D6', dur: 1.5 },
-  { note: 'C6', dur: 0.5 },
-  { note: 'Bb5', dur: 1.0 },
-  
-  // 12마디: C - 마무리 준비
-  { note: 'A5', dur: 0.5 },
-  { note: 'G5', dur: 0.5 },
-  { note: 'C6', dur: 1.0 },
-  { note: 'G5', dur: 1.0 },
-  
-  // === 마무리 (F major 평화롭게) ===
-  // 13마디
-  { note: 'F5', dur: 1.0 },
-  { note: 'A5', dur: 1.0 },
-  { note: 'C6', dur: 1.0 },
-  
-  // 14마디 - F 길게
-  { note: 'F5', dur: 3.0 },
-  
-  // === 짧은 쉼 ===
-  { note: 'REST', dur: 1.5 },
+  // === Section A: Cmaj7 → Am7 → Dm7 → G7 ===
+  // Bar 1: Cmaj7 - 우아하게 시작
+  { note: 'E5',  dur: 1.0, chord: 'C' },
+  { note: 'G5',  dur: 0.5 },
+  { note: 'B5',  dur: 0.5 },
+  { note: 'C6',  dur: 2.0 },
+
+  // Bar 2: Am7 - 살짝 가라앉음
+  { note: 'A5',  dur: 1.0, chord: 'Am' },
+  { note: 'C6',  dur: 0.5 },
+  { note: 'E6',  dur: 0.5 },
+  { note: 'G5',  dur: 1.5 },
+  { note: 'A5',  dur: 0.5 },
+
+  // Bar 3: Dm7 - 흐름
+  { note: 'D5',  dur: 0.5, chord: 'Dm' },
+  { note: 'F5',  dur: 0.5 },
+  { note: 'A5',  dur: 1.0 },
+  { note: 'F5',  dur: 1.0 },
+  { note: 'D5',  dur: 1.0 },
+
+  // Bar 4: G7 - 해결 준비
+  { note: 'G5',  dur: 0.5, chord: 'G' },
+  { note: 'B5',  dur: 0.5 },
+  { note: 'D6',  dur: 1.0 },
+  { note: 'F6',  dur: 0.5 },
+  { note: 'E6',  dur: 1.5 },
+
+  // === Section B: Em7 → Am7 → Fmaj7 → G7 ===
+  // Bar 5: Em7
+  { note: 'E5',  dur: 0.5, chord: 'Em' },
+  { note: 'G5',  dur: 0.5 },
+  { note: 'B5',  dur: 0.5 },
+  { note: 'D6',  dur: 0.5 },
+  { note: 'B5',  dur: 2.0 },
+
+  // Bar 6: Am7 - 부드럽게
+  { note: 'A5',  dur: 1.0, chord: 'Am' },
+  { note: 'E6',  dur: 0.5 },
+  { note: 'C6',  dur: 0.5 },
+  { note: 'A5',  dur: 2.0 },
+
+  // Bar 7: Fmaj7 - 따뜻하게
+  { note: 'F5',  dur: 0.5, chord: 'F' },
+  { note: 'A5',  dur: 0.5 },
+  { note: 'C6',  dur: 0.5 },
+  { note: 'E6',  dur: 0.5 },
+  { note: 'D6',  dur: 1.0 },
+  { note: 'C6',  dur: 1.0 },
+
+  // Bar 8: G7 → Cmaj7 - resolve
+  { note: 'D6',  dur: 0.5, chord: 'G' },
+  { note: 'B5',  dur: 0.5 },
+  { note: 'G5',  dur: 1.0 },
+  { note: 'C6',  dur: 2.0, chord: 'C' },
+
+  // === Section C: 변주 - 옥타브 다양 ===
+  // Bar 9: Cmaj7 상승
+  { note: 'C5',  dur: 0.5, chord: 'C' },
+  { note: 'E5',  dur: 0.5 },
+  { note: 'G5',  dur: 0.5 },
+  { note: 'B5',  dur: 0.5 },
+  { note: 'C6',  dur: 1.0 },
+  { note: 'G5',  dur: 1.0 },
+
+  // Bar 10: Am7
+  { note: 'A5',  dur: 0.5, chord: 'Am' },
+  { note: 'C6',  dur: 0.5 },
+  { note: 'E6',  dur: 1.0 },
+  { note: 'D6',  dur: 1.0 },
+  { note: 'C6',  dur: 1.0 },
+
+  // Bar 11: Fmaj7
+  { note: 'F5',  dur: 0.5, chord: 'F' },
+  { note: 'A5',  dur: 0.5 },
+  { note: 'C6',  dur: 1.0 },
+  { note: 'B5',  dur: 2.0 },
+
+  // Bar 12: G7sus → C
+  { note: 'G5',  dur: 0.5, chord: 'G' },
+  { note: 'A5',  dur: 0.5 },
+  { note: 'B5',  dur: 1.0 },
+  { note: 'C6',  dur: 2.0, chord: 'C' },
+
+  // === 마무리 ===
+  { note: 'E5',  dur: 1.0, chord: 'C' },
+  { note: 'G5',  dur: 1.0 },
+  { note: 'C6',  dur: 4.0 },
+
+  { note: 'REST', dur: 2.0 },
 ];
+
+// 코드별 베이스+화음 음 (옥타브 4)
+const CHORD_NOTES = {
+  C:  { bass: 'C3', mid: ['C4', 'E4', 'G4'] },
+  Am: { bass: 'A3', mid: ['A4', 'C5', 'E4'] },
+  Dm: { bass: 'D3', mid: ['D4', 'F4', 'A4'] },
+  G:  { bass: 'G3', mid: ['G4', 'B4', 'D4'] },
+  Em: { bass: 'E3', mid: ['E4', 'G4', 'B4'] },
+  F:  { bass: 'F3', mid: ['F4', 'A4', 'C5'] },
+};
 
 let bgmIndex = 0;
 let bgmTimer = null;
 
 function playBgmNote() {
   if (!soundEnabled || !audioCtx) return;
-  
+
   const item = BGM_NOTES[bgmIndex];
-  
-  // BPM 90 = 한 박 ~667ms (왈츠 느낌)
-  const beat = 667;
-  
+
+  // BPM 78 = 한 박 ~769ms (lo-fi 느린 템포)
+  const beat = 769;
+
   if (item.note === 'REST') {
     bgmIndex = (bgmIndex + 1) % BGM_NOTES.length;
     bgmTimer = setTimeout(playBgmNote, item.dur * beat);
     return;
   }
-  
+
   const freq = NOTE_FREQS[item.note];
   if (!freq) {
     bgmIndex = (bgmIndex + 1) % BGM_NOTES.length;
     bgmTimer = setTimeout(playBgmNote, item.dur * beat);
     return;
   }
-  
+
   const t = audioCtx.currentTime;
-  
-  // ====== 오르골 메인 톤 (triangle - 따스한 톤) ======
+  const noteDur = Math.min(item.dur * 0.7, 1.4);
+
+  // ====== 메인 멜로디 (부드러운 패드 + 살짝 메탈릭) ======
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.connect(gain);
   gain.connect(bgmGain || audioCtx.destination);
-  
-  osc.type = 'triangle';  // 오르골 톤
+  osc.type = 'triangle';
   osc.frequency.setValueAtTime(freq, t);
-  
-  // 오르골 envelope: 빠른 attack + 빠른 decay + 약간의 sustain + 자연스러운 release
-  const dur = Math.min(item.dur * 0.6, 0.8);  // 음 짧게 (오르골은 짧게 통통)
   gain.gain.setValueAtTime(0.0001, t);
-  gain.gain.exponentialRampToValueAtTime(0.18, t + 0.01);  // 매우 빠른 attack (오르골의 "땡!")
-  gain.gain.exponentialRampToValueAtTime(0.06, t + 0.15);  // 빠른 decay
-  gain.gain.exponentialRampToValueAtTime(0.001, t + dur);  // 자연스러운 release
-  
+  gain.gain.linearRampToValueAtTime(0.16, t + 0.05);   // 부드러운 attack
+  gain.gain.exponentialRampToValueAtTime(0.08, t + 0.25);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + noteDur);
   osc.start(t);
-  osc.stop(t + dur);
-  
-  // ====== 오르골 메탈릭 톤 (sine 한 옥타브 위, 작게) ======
-  // 오르골의 "찰랑" 하는 메탈릭 느낌
+  osc.stop(t + noteDur);
+
+  // ====== 옥타브 위 sparkle (sine, 작게) ======
   const sparkle = audioCtx.createOscillator();
-  const sparkleGain = audioCtx.createGain();
-  sparkle.connect(sparkleGain);
-  sparkleGain.connect(bgmGain || audioCtx.destination);
+  const spG = audioCtx.createGain();
+  sparkle.connect(spG);
+  spG.connect(bgmGain || audioCtx.destination);
   sparkle.type = 'sine';
   sparkle.frequency.setValueAtTime(freq * 2, t);
-  sparkleGain.gain.setValueAtTime(0.0001, t);
-  sparkleGain.gain.exponentialRampToValueAtTime(0.04, t + 0.005);
-  sparkleGain.gain.exponentialRampToValueAtTime(0.001, t + dur * 0.5);
+  spG.gain.setValueAtTime(0.0001, t);
+  spG.gain.linearRampToValueAtTime(0.035, t + 0.04);
+  spG.gain.exponentialRampToValueAtTime(0.001, t + noteDur * 0.6);
   sparkle.start(t);
-  sparkle.stop(t + dur * 0.5);
-  
-  // ====== 베이스 (옥타브 아래, sine, 부드럽게) ======
-  // 매 박마다가 아니라 강박(2박 이상 음)에만 베이스
-  if (item.dur >= 1.0) {
-    const bass = audioCtx.createOscillator();
-    const bassGain = audioCtx.createGain();
-    bass.connect(bassGain);
-    bassGain.connect(bgmGain || audioCtx.destination);
-    bass.type = 'sine';
-    bass.frequency.setValueAtTime(freq / 2, t);
-    bassGain.gain.setValueAtTime(0.0001, t);
-    bassGain.gain.exponentialRampToValueAtTime(0.05, t + 0.05);
-    bassGain.gain.exponentialRampToValueAtTime(0.001, t + Math.min(item.dur * 0.8, 1.2));
-    bass.start(t);
-    bass.stop(t + Math.min(item.dur * 0.8, 1.2));
+  sparkle.stop(t + noteDur * 0.6);
+
+  // ====== 화음 패드 (chord 명시 시) ======
+  if (item.chord && CHORD_NOTES[item.chord]) {
+    const cn = CHORD_NOTES[item.chord];
+    // 코드 화음 음 3개 부드럽게 깔기
+    cn.mid.forEach(noteName => {
+      const cFreq = NOTE_FREQS[noteName];
+      if (!cFreq) return;
+      const co = audioCtx.createOscillator();
+      const cg = audioCtx.createGain();
+      co.connect(cg);
+      cg.connect(bgmGain || audioCtx.destination);
+      co.type = 'sine';
+      co.frequency.setValueAtTime(cFreq, t);
+      const padDur = Math.min(item.dur * 1.0, 2.0);
+      cg.gain.setValueAtTime(0.0001, t);
+      cg.gain.linearRampToValueAtTime(0.022, t + 0.15);  // 천천히 들어옴
+      cg.gain.exponentialRampToValueAtTime(0.012, t + padDur * 0.7);
+      cg.gain.exponentialRampToValueAtTime(0.0005, t + padDur);
+      co.start(t);
+      co.stop(t + padDur);
+    });
+
+    // 베이스 (코드 루트, sine, 부드럽게)
+    const bFreq = NOTE_FREQS[cn.bass];
+    if (bFreq) {
+      const bo = audioCtx.createOscillator();
+      const bg = audioCtx.createGain();
+      bo.connect(bg);
+      bg.connect(bgmGain || audioCtx.destination);
+      bo.type = 'sine';
+      bo.frequency.setValueAtTime(bFreq, t);
+      const baseDur = Math.min(item.dur * 1.0, 2.0);
+      bg.gain.setValueAtTime(0.0001, t);
+      bg.gain.linearRampToValueAtTime(0.07, t + 0.06);
+      bg.gain.exponentialRampToValueAtTime(0.025, t + baseDur * 0.7);
+      bg.gain.exponentialRampToValueAtTime(0.0005, t + baseDur);
+      bo.start(t);
+      bo.stop(t + baseDur);
+    }
   }
-  
+
   bgmIndex = (bgmIndex + 1) % BGM_NOTES.length;
   bgmTimer = setTimeout(playBgmNote, item.dur * beat);
 }
@@ -4314,7 +4363,7 @@ function openRoom() {
   let html = '<div class="closet-category">🏠 배경 테마</div><div class="closet-grid">';
   
   Object.values(THEMES).forEach(theme => {
-    const unlocked = state.level >= theme.unlockLevel;
+    const unlocked = (typeof DEBUG_UNLOCK_ALL !== 'undefined' && DEBUG_UNLOCK_ALL) || state.level >= theme.unlockLevel;
     const isActive = currentTheme === theme.id;
     
     html += `<div class="closet-slot ${unlocked ? '' : 'locked'} ${isActive ? 'equipped' : ''}" 
@@ -4345,8 +4394,8 @@ function openRoom() {
 function selectTheme(themeId) {
   const theme = THEMES[themeId];
   if (!theme) return;
-  if (state.level < theme.unlockLevel) return;
-  
+  if (!(typeof DEBUG_UNLOCK_ALL !== 'undefined' && DEBUG_UNLOCK_ALL) && state.level < theme.unlockLevel) return;
+
   currentTheme = themeId;
   saveTheme();
   applyTheme();
@@ -4613,20 +4662,20 @@ const COSTUMES = {
           <stop offset="100%" stop-color="rgba(140,195,255,0.3)"/>
         </linearGradient>
       </defs>
-      <g transform="translate(160, 135)">
-        <!-- 다리 (양쪽) -->
-        <line x1="-66" y1="-2" x2="-44" y2="0" stroke="#4A3828" stroke-width="4" stroke-linecap="round"/>
-        <line x1="44" y1="0" x2="66" y2="-2" stroke="#4A3828" stroke-width="4" stroke-linecap="round"/>
-        <!-- 코걸이 (가운데) -->
-        <path d="M -14 -2 Q 0 4 14 -2" stroke="#4A3828" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <!-- 렌즈 (크게: r=28, 간격 넓게) -->
-        <circle cx="-28" cy="0" r="28" fill="url(#lensGlass)" stroke="#4A3828" stroke-width="3.5"/>
-        <circle cx="28" cy="0" r="28" fill="url(#lensGlass)" stroke="#4A3828" stroke-width="3.5"/>
+      <g transform="translate(160, 150)">
+        <!-- 다리 (양쪽 더 길게) -->
+        <line x1="-78" y1="-2" x2="-52" y2="0" stroke="#4A3828" stroke-width="4.5" stroke-linecap="round"/>
+        <line x1="52" y1="0" x2="78" y2="-2" stroke="#4A3828" stroke-width="4.5" stroke-linecap="round"/>
+        <!-- 코걸이 (둥근 곡선) -->
+        <path d="M -18 -2 Q 0 6 18 -2" stroke="#4A3828" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- 렌즈 (r=32, 페케 두 눈 위치에 맞춤) -->
+        <circle cx="-34" cy="0" r="32" fill="url(#lensGlass)" stroke="#4A3828" stroke-width="4"/>
+        <circle cx="34" cy="0" r="32" fill="url(#lensGlass)" stroke="#4A3828" stroke-width="4"/>
         <!-- 광택 -->
-        <ellipse cx="-36" cy="-10" rx="10" ry="5" fill="rgba(255,255,255,0.85)" transform="rotate(-28 -36 -10)"/>
-        <ellipse cx="20" cy="-10" rx="10" ry="5" fill="rgba(255,255,255,0.85)" transform="rotate(-28 20 -10)"/>
-        <ellipse cx="-22" cy="10" rx="5" ry="2.4" fill="rgba(255,255,255,0.55)"/>
-        <ellipse cx="34" cy="10" rx="5" ry="2.4" fill="rgba(255,255,255,0.55)"/>
+        <ellipse cx="-42" cy="-12" rx="12" ry="6" fill="rgba(255,255,255,0.85)" transform="rotate(-28 -42 -12)"/>
+        <ellipse cx="26" cy="-12" rx="12" ry="6" fill="rgba(255,255,255,0.85)" transform="rotate(-28 26 -12)"/>
+        <ellipse cx="-26" cy="12" rx="6" ry="3" fill="rgba(255,255,255,0.55)"/>
+        <ellipse cx="42" cy="12" rx="6" ry="3" fill="rgba(255,255,255,0.55)"/>
       </g>
     </svg>`
   },
@@ -4645,20 +4694,20 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#000000"/>
         </linearGradient>
       </defs>
-      <g transform="translate(160, 135)">
+      <g transform="translate(160, 150)">
         <!-- 다리 -->
-        <line x1="-66" y1="-2" x2="-50" y2="-5" stroke="#1A1A1A" stroke-width="4.5" stroke-linecap="round"/>
-        <line x1="50" y1="-5" x2="66" y2="-2" stroke="#1A1A1A" stroke-width="4.5" stroke-linecap="round"/>
+        <line x1="-78" y1="-2" x2="-58" y2="-6" stroke="#1A1A1A" stroke-width="5" stroke-linecap="round"/>
+        <line x1="58" y1="-6" x2="78" y2="-2" stroke="#1A1A1A" stroke-width="5" stroke-linecap="round"/>
         <!-- 코걸이 -->
-        <line x1="-10" y1="-2" x2="10" y2="-2" stroke="#1A1A1A" stroke-width="4.5" stroke-linecap="round"/>
-        <!-- 렌즈 (크게) -->
-        <rect x="-50" y="-20" width="40" height="32" rx="10" fill="url(#shadeLens)" stroke="#000000" stroke-width="3"/>
-        <rect x="10" y="-20" width="40" height="32" rx="10" fill="url(#shadeLens)" stroke="#000000" stroke-width="3"/>
+        <line x1="-14" y1="-2" x2="14" y2="-2" stroke="#1A1A1A" stroke-width="5" stroke-linecap="round"/>
+        <!-- 렌즈 (눈 폭 맞춤) -->
+        <rect x="-58" y="-22" width="44" height="36" rx="12" fill="url(#shadeLens)" stroke="#000000" stroke-width="3"/>
+        <rect x="14" y="-22" width="44" height="36" rx="12" fill="url(#shadeLens)" stroke="#000000" stroke-width="3"/>
         <!-- 광택 -->
-        <ellipse cx="-36" cy="-10" rx="11" ry="4" fill="rgba(255,255,255,0.8)"/>
-        <ellipse cx="24" cy="-10" rx="11" ry="4" fill="rgba(255,255,255,0.8)"/>
-        <ellipse cx="-22" cy="4" rx="5" ry="2" fill="rgba(255,255,255,0.4)"/>
-        <ellipse cx="38" cy="4" rx="5" ry="2" fill="rgba(255,255,255,0.4)"/>
+        <ellipse cx="-42" cy="-12" rx="13" ry="4.5" fill="rgba(255,255,255,0.8)"/>
+        <ellipse cx="30" cy="-12" rx="13" ry="4.5" fill="rgba(255,255,255,0.8)"/>
+        <ellipse cx="-26" cy="6" rx="6" ry="2.4" fill="rgba(255,255,255,0.4)"/>
+        <ellipse cx="46" cy="6" rx="6" ry="2.4" fill="rgba(255,255,255,0.4)"/>
       </g>
     </svg>`
   },
@@ -4971,6 +5020,11 @@ const COSTUMES = {
   }
 };
 
+// ===== 디버그: 모든 잠금 해제 (테스트용) =====
+// false로 바꾸면 원래대로 레벨 잠금 적용
+const DEBUG_UNLOCK_ALL = true;
+window.DEBUG_UNLOCK_ALL = DEBUG_UNLOCK_ALL;
+
 // 현재 착용 상태
 let equipped = {
   top: null,
@@ -5071,7 +5125,7 @@ function openCloset() {
     html += `<div class="closet-grid">`;
     
     items.forEach(item => {
-      const unlocked = state.level >= item.unlockLevel;
+      const unlocked = DEBUG_UNLOCK_ALL || state.level >= item.unlockLevel;
       const isEquipped = equipped[catKey] === item.id;
       
       html += `<div class="closet-slot ${unlocked ? '' : 'locked'} ${isEquipped ? 'equipped' : ''}" 
@@ -5120,8 +5174,8 @@ window.closeCloset = closeCloset;
 function equipCostume(itemId, category) {
   const item = COSTUMES[itemId];
   if (!item) return;
-  if (state.level < item.unlockLevel) return;
-  
+  if (!DEBUG_UNLOCK_ALL && state.level < item.unlockLevel) return;
+
   equipped[category] = itemId;
   saveCostumes();
   renderCostumes();
@@ -5153,12 +5207,27 @@ function toggleCostumeEdit() {
   const hint = document.getElementById('costumeEditHint');
   if (overlay) overlay.classList.toggle('editing', costumeEditMode);
   if (hint) hint.classList.toggle('show', costumeEditMode);
-  // 옷장 안의 토글 라벨도 갱신
   const btn = document.getElementById('costumeEditToggleBtn');
   if (btn) btn.textContent = costumeEditMode ? '✓ 편집 끝내기' : '✏️ 위치 직접 조정';
-  if (costumeEditMode && typeof closeCloset === 'function') closeCloset();
+  // 편집 모드 켜질 때 옷장 시트와 modal-overlay를 즉시 제거 → 클릭 가로채는 것 방지
+  if (costumeEditMode) {
+    const sheet = document.getElementById('closetSheet');
+    const closetOv = document.getElementById('closetOverlay');
+    if (sheet) sheet.classList.remove('show');
+    if (closetOv) closetOv.classList.remove('show');
+  }
 }
 window.toggleCostumeEdit = toggleCostumeEdit;
+
+// SVG 자식부터 가장 가까운 .costume-piece div 찾기 (closest 미지원 환경 대비)
+function findCostumePiece(target, stopAt) {
+  let n = target;
+  while (n && n !== stopAt && n !== document.body && n.nodeType === 1) {
+    if (n.classList && n.classList.contains && n.classList.contains('costume-piece')) return n;
+    n = n.parentNode;
+  }
+  return null;
+}
 
 // 한 번만 overlay에 위임 등록
 let _costumeDragBound = false;
@@ -5191,10 +5260,11 @@ function attachCostumeDrag() {
   };
   const onDown = (e) => {
     if (!costumeEditMode) return;
-    // 이벤트가 SVG 자식(path/circle 등)에서 발생 → closest로 piece div 찾기
-    const piece = e.target && e.target.closest && e.target.closest('.costume-piece');
+    // SVG 자식부터 부모 traversal로 .costume-piece 찾기
+    const piece = findCostumePiece(e.target, overlay);
     if (!piece) return;
     if (e.cancelable) e.preventDefault();
+    e.stopPropagation();
     const p = (e.touches ? e.touches[0] : e);
     const cat = piece.dataset.cat;
     const key = (typeof currentImageKey === 'string' && currentImageKey) ? currentImageKey : 'WAKE';
@@ -5211,12 +5281,11 @@ function attachCostumeDrag() {
     window.addEventListener('mouseup', onUp);
     window.addEventListener('touchend', onUp);
   };
-  // overlay에 한 번만 등록 (capture로 SVG 자식의 이벤트도 캐치)
-  overlay.addEventListener('mousedown', onDown);
-  overlay.addEventListener('touchstart', onDown, { passive: false });
+  // capture phase로 SVG 자식의 이벤트를 가장 먼저 캐치
+  overlay.addEventListener('mousedown', onDown, true);
+  overlay.addEventListener('touchstart', onDown, { passive: false, capture: true });
 }
 window.attachCostumeDrag = attachCostumeDrag;
-// DOM 로딩되면 한 번 등록
 document.addEventListener('DOMContentLoaded', () => { try { attachCostumeDrag(); } catch(_) {} });
 
 // 현재 자세의 사용자 오프셋 초기화
@@ -5487,14 +5556,19 @@ async function setPetMood(mood, opts = {}) {
   applyMoodColors(mood);
 
   const imageKey = opts.imageKey || pickMoodImage(mood);
+  // 코스튬 overlay에도 같은 anim 클래스를 동기화하는 헬퍼
+  const syncOverlayAnim = () => {
+    const ov = document.getElementById('costumeOverlay');
+    if (!ov) return;
+    ['anim-breathe','anim-happy','anim-hungry','anim-sleep','anim-sick','anim-still'].forEach(c => ov.classList.remove(c));
+    ov.classList.add(m.anim);
+  };
   if (imageKey !== currentImageKey) {
     currentImageKey = imageKey;
     const pet = document.getElementById('petImage');
     pet.classList.add('fading');
     await sleep(300);
-    // 안전: 해당 키가 없거나 빈 값이면 WAKE webp로 폴백
     const safeSrc = IMAGES[imageKey] || (typeof IMG_WAKE !== 'undefined' ? IMG_WAKE : '');
-    // PNG 로드 실패 대비 onerror 재등록
     pet.onerror = function() {
       if (pet.src.indexOf('data:') !== 0 && typeof IMG_WAKE !== 'undefined') {
         pet.onerror = null;
@@ -5505,10 +5579,12 @@ async function setPetMood(mood, opts = {}) {
     pet.className = 'pet-image ' + m.anim;
     void pet.offsetWidth;
     pet.classList.remove('fading');
+    syncOverlayAnim();
     try { renderCostumes(); } catch(e) {}
   } else {
     const pet = document.getElementById('petImage');
     pet.className = 'pet-image ' + m.anim;
+    syncOverlayAnim();
   }
   
   if (!opts.silent) {
@@ -10714,7 +10790,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const list = dexFilter === 'all' ? DEX : DEX.filter(d => d.biome === dexFilter);
     for (const d of list) {
       const c = (state.adventure.friends || {})[d.id] || 0;
-      const unlocked = c > 0;
+      const unlocked = c > 0 || (typeof DEBUG_UNLOCK_ALL !== 'undefined' && DEBUG_UNLOCK_ALL);
       const slot = document.createElement('div');
       const r = RARITY_INFO[d.rarity] || RARITY_INFO.common;
       slot.className = 'adv-dex-slot' + (unlocked ? '' : ' locked');
