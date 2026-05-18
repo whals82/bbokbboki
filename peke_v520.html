@@ -8,43 +8,58 @@
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
 <style>
 :root {
-  --bg-main: #FFF0E0;
+  --bg-main: #FFF6EC;
 
-  --txt-primary: #3D2E2E;
-  --txt-secondary: #6B5454;
-  --txt-tertiary: #9C8B8B;
+  --txt-primary: #4A3636;
+  --txt-secondary: #7A5C5C;
+  --txt-tertiary: #A89494;
 
-  --card-bg: rgba(255, 255, 255, 0.7);
-  --card-border: rgba(255, 255, 255, 0.9);
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --card-border: rgba(255, 255, 255, 0.95);
 
   --accent-warm: #FF8C42;
   --accent-rose: #FF7BA0;
-  --accent-mint: #4ECDC4;
-  --accent-sky: #6AB7FF;
-  --accent-gold: #FFB938;
+  --accent-mint: #6FDDD0;
+  --accent-sky: #7CC0FF;
+  --accent-gold: #FFC85C;
 
-  /* === Toss Design System tokens === */
+  /* === Cute palette (귀여움 강화) === */
+  --cute-pink:        #FF9BBE;
+  --cute-pink-soft:   #FFE5EC;
+  --cute-pink-deep:   #C8488B;
+  --cute-cream:       #FFF4E0;
+  --cute-peach:       #FFC8A8;
+  --cute-mint:        #C8F0E2;
+  --cute-lavender:    #E5D8FF;
+  --cute-sky:         #D0E8FF;
+
+  /* === Toss Design System tokens (보강 - 라운드 더 크게) === */
   --toss-blue: #3182F6;
   --toss-blue-hover: #1B64DA;
   --toss-blue-soft: #E8F2FE;
-  --toss-gray-900: #191F28;
-  --toss-gray-800: #333D4B;
-  --toss-gray-700: #4E5968;
-  --toss-gray-500: #8B95A1;
-  --toss-gray-300: #B0B8C1;
-  --toss-gray-200: #D1D6DB;
-  --toss-gray-100: #F2F4F6;
-  --toss-gray-50:  #F9FAFB;
-  --toss-red:      #F04452;
-  --toss-radius-lg: 20px;
-  --toss-radius-md: 14px;
-  --toss-radius-sm: 10px;
-  --toss-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --toss-gray-900: #2A2238;
+  --toss-gray-800: #44394E;
+  --toss-gray-700: #5C4F6E;
+  --toss-gray-500: #9C8FA8;
+  --toss-gray-300: #C0B5C8;
+  --toss-gray-200: #DDD4E0;
+  --toss-gray-100: #F2EDF5;
+  --toss-gray-50:  #FAF8FB;
+  --toss-red:      #F06080;
+  --toss-radius-lg: 24px;
+  --toss-radius-md: 18px;
+  --toss-radius-sm: 12px;
+  --toss-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  --shadow-sm: 0 2px 8px rgba(180, 130, 100, 0.08);
-  --shadow-md: 0 6px 20px rgba(180, 130, 100, 0.12);
-  --shadow-lg: 0 12px 30px rgba(180, 130, 100, 0.15);
-  --shadow-sheet: 0 -8px 28px rgba(25, 31, 40, 0.12);
+  /* 부드러운 핑크/크림 톤 그림자 */
+  --shadow-sm: 0 2px 10px rgba(255, 160, 180, 0.12);
+  --shadow-md: 0 6px 22px rgba(255, 140, 170, 0.18);
+  --shadow-lg: 0 12px 32px rgba(255, 130, 165, 0.22);
+  --shadow-sheet: 0 -8px 32px rgba(80, 50, 70, 0.14);
+
+  /* 폰트 패밀리 - 동글동글 핸드라이팅 톤 우선 */
+  --font-cute: 'Gowun Dodum', 'Cafe24Ssurround', 'Pretendard', sans-serif;
+  --font-body: 'Gowun Dodum', 'Pretendard', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -289,13 +304,14 @@ body {
 
 .lvl-chip {
   font-size: 11px; font-weight: 700;
-  background: var(--toss-blue-soft);
-  border: none;
+  background: linear-gradient(135deg, #FFE5EC, #FFD0E0);
+  border: 1.5px solid #FFC0D8;
   padding: 5px 11px;
   border-radius: 100px;
-  color: var(--toss-blue);
+  color: #C8488B;
   font-family: 'Pretendard', sans-serif;
   letter-spacing: -0.1px;
+  box-shadow: 0 2px 6px rgba(255, 150, 190, 0.2);
 }
 
 .exp-line {
@@ -316,17 +332,17 @@ body {
 
 .coin-chip {
   display: flex; align-items: center; gap: 5px;
-  background: #FFFFFF;
-  border: none;
+  background: linear-gradient(135deg, #FFFEF0, #FFF4D0);
+  border: 1.5px solid #FFE090;
   padding: 7px 13px; border-radius: 100px;
   font-size: 13px; font-weight: 700;
-  color: var(--toss-gray-900);
+  color: #8C6010;
   font-family: 'Pretendard', sans-serif;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.2px;
-  box-shadow: 0 2px 8px rgba(25, 31, 40, 0.06);
+  box-shadow: 0 2px 8px rgba(255, 200, 60, 0.2);
 }
-.coin-chip::before { content: '✦'; color: var(--accent-gold); }
+.coin-chip::before { content: '✦'; color: #FFA800; filter: drop-shadow(0 1px 2px rgba(255,160,0,0.4)); }
 
 .menu-chip {
   width: 34px; height: 34px;
@@ -469,22 +485,25 @@ body {
 
 .stat-bar-wrap {
   flex: 1;
-  height: 8px;
-  background: rgba(180, 130, 100, 0.1);
+  height: 10px;
+  background: rgba(255, 200, 220, 0.25);
   border-radius: 100px;
   overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(180, 100, 130, 0.08);
 }
 
 .stat-bar {
   height: 100%; border-radius: 100px;
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 0.6s var(--toss-ease);
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 0 6px currentColor;
 }
 
-.stat-bar.hunger { background: linear-gradient(90deg, #FFB938, #FF8C42); }
-.stat-bar.happy  { background: linear-gradient(90deg, #FFB3D4, #FF7BA0); }
-.stat-bar.energy { background: linear-gradient(90deg, #8CE0D4, #4ECDC4); }
-.stat-bar.health { background: linear-gradient(90deg, #9ED4FF, #6AB7FF); }
-.stat-bar.low { background: linear-gradient(90deg, #FFB3B3, #FF7373) !important; }
+.stat-bar.hunger { background: linear-gradient(90deg, #FFD46E, #FF9C5C); color: rgba(255,160,80,0.3); }
+.stat-bar.happy  { background: linear-gradient(90deg, #FFC8DC, #FF98BC); color: rgba(255,140,180,0.3); }
+.stat-bar.energy { background: linear-gradient(90deg, #A8EDE0, #6FDDD0); color: rgba(110,220,200,0.3); }
+.stat-bar.health { background: linear-gradient(90deg, #B8E0FF, #88C8FF); color: rgba(140,200,255,0.3); }
+.stat-bar.low    { background: linear-gradient(90deg, #FFC8C8, #FF9090) !important; color: rgba(255,120,120,0.3) !important; }
 
 .stat-value {
   font-size: 13px;
@@ -693,22 +712,28 @@ body {
 
 .action-card {
   position: relative;
-  background: white;
-  border: none;
-  border-radius: 14px;
-  padding: 8px 2px 7px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF8FB 100%);
+  border: 1.5px solid rgba(255, 200, 220, 0.5);
+  border-radius: 18px;
+  padding: 9px 2px 8px;
   display: flex; flex-direction: column; align-items: center; gap: 5px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-  font-family: inherit;
+  transition: all 0.2s var(--toss-ease);
+  font-family: var(--font-cute);
   color: var(--txt-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 3px 10px rgba(255, 170, 200, 0.15), inset 0 1px 0 rgba(255,255,255,0.9);
   overflow: hidden;
 }
 
+.action-card:hover {
+  border-color: var(--cute-pink);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(255, 150, 190, 0.22), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
 .action-card:active {
-  transform: scale(0.94) translateY(2px);
-  box-shadow: 0 1px 4px rgba(180, 130, 100, 0.1);
+  transform: scale(0.94) translateY(1px);
+  box-shadow: 0 1px 4px rgba(255, 160, 190, 0.15);
 }
 
 .action-card:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -1733,6 +1758,14 @@ body.minigame-active .pet-stage {
 .sheet-item:hover { background: var(--toss-gray-50); }
 .sheet-item:active { transform: scale(0.99); background: var(--toss-gray-100); }
 
+/* 테스트 모드 버튼 (개발 중 표시) */
+.sheet-item.test-mode {
+  background: linear-gradient(135deg, #FFF4E0 0%, #FFE5C8 100%);
+  border: 1.5px dashed #FFB85C;
+}
+.sheet-item.test-mode:hover { background: linear-gradient(135deg, #FFECCC 0%, #FFD8A8 100%); }
+.sheet-item.test-mode .desc { color: #C87820; font-weight: 600; }
+
 .sheet-item .desc {
   font-size: 12px;
   font-weight: 500;
@@ -1781,6 +1814,11 @@ body.minigame-active .pet-stage {
   justify-content: center;
 }
 
+/* 등 장식 전용 오버레이 - 페케 이미지(z-index 2)보다 뒤 */
+.costume-back-overlay {
+  z-index: 1;
+}
+
 .costume-overlay .costume-piece {
   pointer-events: none;
   position: absolute;
@@ -1790,59 +1828,174 @@ body.minigame-active .pet-stage {
   justify-content: center;
 }
 
-/* 편집 모드: 드래그 가능 (그려진 SVG 영역에서만 hit testing) */
-.costume-overlay.editing { pointer-events: none; }
-.costume-overlay.editing .costume-piece {
-  /* div는 여전히 none — 그래야 다른 piece가 가려지지 않음 */
-  pointer-events: none;
-  animation: costume-edit-pulse 2s ease-in-out infinite;
+/* 옷장의 "메인화면에서 직접 조정" 큰 버튼 */
+.closet-adjust-btn {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--cute-pink);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #FFE5EC 0%, #FFD0E0 100%);
+  color: var(--cute-pink-deep);
+  font-family: var(--font-cute);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  cursor: pointer;
+  transition: transform 0.15s var(--toss-ease), box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 150, 190, 0.3), inset 0 1px 0 rgba(255,255,255,0.7);
 }
-/* 실제 SVG 그려진 요소에서만 hit testing되도록 */
-.costume-overlay.editing .costume-piece svg,
-.costume-overlay.editing .costume-piece svg * {
-  pointer-events: visiblePainted;
-  cursor: grab;
+.closet-adjust-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 130, 175, 0.4), inset 0 1px 0 rgba(255,255,255,0.7);
 }
-/* fill=none인 path도 stroke 영역에서 잡히도록 */
-.costume-overlay.editing .costume-piece svg path,
-.costume-overlay.editing .costume-piece svg line,
-.costume-overlay.editing .costume-piece svg circle,
-.costume-overlay.editing .costume-piece svg ellipse,
-.costume-overlay.editing .costume-piece svg rect {
-  pointer-events: all;
-}
-.costume-overlay.editing .costume-piece svg:active,
-.costume-overlay.editing .costume-piece svg *:active {
-  cursor: grabbing;
-}
-@keyframes costume-edit-pulse {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(49,130,246,0)); }
-  50%      { filter: drop-shadow(0 0 6px rgba(49,130,246,0.7)); }
+.closet-adjust-btn:active:not(:disabled) { transform: scale(0.97); }
+.closet-adjust-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--toss-gray-100);
+  border-color: var(--toss-gray-200);
+  color: var(--toss-gray-500);
+  box-shadow: none;
 }
 
-/* 편집 모드 안내 배지 */
-.costume-edit-hint {
-  position: absolute;
-  top: 14px; left: 50%;
-  transform: translateX(-50%);
-  background: var(--toss-blue);
-  color: #fff;
-  font-family: 'Pretendard', sans-serif;
+/* 화살표 미세조정 버튼 (옷장 + floating 패드 공용) */
+.nudge-btn {
+  width: 38px; height: 38px;
+  border: 1.5px solid #FFD4E0;
+  border-radius: 12px;
+  background: #FFF8FB;
+  font-size: 16px;
+  font-weight: 700;
+  color: #C8488B;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.nudge-btn:active {
+  background: #FFC0D8;
+  color: #8C2868;
+  transform: scale(0.92);
+}
+
+/* Floating 미세조정 토글 (페케 보면서 조정) */
+.nudge-floating-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 24%;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFB8D4 0%, #FF8FB8 100%);
+  box-shadow: 0 4px 14px rgba(255, 100, 160, 0.45), inset 0 1px 0 rgba(255,255,255,0.6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 800;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 2px solid #fff;
+}
+.nudge-floating-toggle:hover { transform: scale(1.06); }
+.nudge-floating-toggle:active { transform: scale(0.94); }
+.nudge-floating-toggle.hidden { display: none; }
+
+/* Floating 미세조정 패널 */
+.nudge-floating-panel {
+  position: fixed;
+  right: 16px;
+  bottom: 24%;
+  width: 280px;
+  max-width: calc(100vw - 32px);
+  background: linear-gradient(180deg, #FFFEFD 0%, #FFF6F8 100%);
+  border: 2px solid #FFD4E0;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(255,140,180,0.25), 0 2px 6px rgba(0,0,0,0.08);
+  z-index: 801;
+  padding: 12px 14px 14px;
+  display: none;
+  animation: nudge-panel-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.nudge-floating-panel.show { display: block; }
+@keyframes nudge-panel-in {
+  from { opacity: 0; transform: translateX(20px) scale(0.9); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+.nudge-panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px dashed #FFD4E0;
+}
+.nudge-panel-title {
+  font-size: 14px; font-weight: 700; color: #C8488B;
+  letter-spacing: -0.3px;
+}
+.nudge-panel-close {
+  border: none; background: transparent;
+  font-size: 18px; color: #C8488B; cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  line-height: 1;
+}
+.nudge-panel-close:hover { background: #FFE5EC; }
+.nudge-panel-body {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.nudge-row {
+  display: flex; align-items: center; gap: 6px;
+}
+.nudge-row-label {
+  min-width: 76px;
+  font-size: 12px; font-weight: 600; color: #8C5A78;
+  letter-spacing: -0.2px;
+}
+.nudge-row .nudge-btn {
+  width: 32px; height: 32px; font-size: 14px;
+}
+.nudge-empty {
+  font-size: 12px; color: #B898A8; text-align: center; padding: 14px 8px 10px;
+  line-height: 1.5;
+}
+.nudge-hint {
+  font-size: 11px; color: #B080A0;
+  background: #FFF6FA;
+  border-radius: 8px;
+  padding: 6px 10px;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: -0.2px;
+}
+.nudge-actions {
+  display: flex; gap: 6px;
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px dashed #FFD4E0;
+}
+.nudge-actions .nudge-action-btn { flex: 1; }
+.nudge-action-btn {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1.5px solid var(--cute-pink);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FFE5EC, #FFD0E0);
+  color: var(--cute-pink-deep);
+  font-family: var(--font-cute);
   font-size: 12px;
   font-weight: 700;
-  padding: 7px 13px;
-  border-radius: 100px;
-  z-index: 600;
+  cursor: pointer;
+  transition: transform 0.1s var(--toss-ease), background 0.15s ease;
+  margin-top: 8px;
   letter-spacing: -0.2px;
-  box-shadow: 0 4px 12px rgba(49,130,246,0.4);
-  display: none;
-  pointer-events: none;
 }
-.costume-edit-hint.show { display: block; animation: ce-hint-in 0.3s var(--toss-ease); }
-@keyframes ce-hint-in {
-  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+.nudge-action-btn:hover { background: linear-gradient(135deg, #FFD8E2, #FFC0D8); }
+.nudge-action-btn:active { transform: scale(0.96); }
+.nudge-action-btn.secondary {
+  background: #fff;
+  border-color: #FFE0EC;
+  color: #B06088;
+  font-size: 11px;
+  padding: 8px 6px;
+  margin-top: 0;
 }
+.nudge-action-btn.secondary:hover { background: #FFF8FB; }
 
 .costume-svg {
   width: 100%;
@@ -1869,32 +2022,39 @@ body.minigame-active .pet-stage {
 
 .closet-slot {
   aspect-ratio: 1;
-  background: #FFF8F0;
-  border: 2px solid #FFEBD8;
-  border-radius: 14px;
+  background: linear-gradient(180deg, #FFFEFE, #FFF6F8);
+  border: 2px solid #FFE0EC;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s var(--toss-ease);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 2px 6px rgba(255, 180, 200, 0.12);
+}
+
+.closet-slot:not(.locked):hover {
+  border-color: var(--cute-pink);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 150, 190, 0.25);
 }
 
 .closet-slot:not(.locked):active {
-  transform: scale(0.96);
+  transform: scale(0.95);
 }
 
 .closet-slot.locked {
-  background: #F0E5D5;
-  border-color: #D5C5B5;
+  background: #F0E8EE;
+  border-color: #DDD0D8;
   cursor: not-allowed;
 }
 
 .closet-slot.equipped {
-  border-color: var(--accent-warm);
-  background: #FFF0E0;
-  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+  border-color: var(--cute-pink);
+  background: linear-gradient(180deg, #FFF0F5, #FFE5EC);
+  box-shadow: 0 0 0 3px rgba(255, 155, 190, 0.25), 0 4px 12px rgba(255, 150, 190, 0.3);
 }
 
 .closet-slot .preview {
@@ -1999,7 +2159,7 @@ body.minigame-active .pet-stage {
   100% { transform: translateY(110vh) translateX(var(--drift, 30px)) rotate(720deg); opacity: 0; }
 }
 
-/* 별이 빛나는 밤 배경 */
+/* 별이 빛나는 밤 - 부드럽고 따뜻한 남청 */
 .theme-star {
   position: absolute;
   background: #FFFFFF;
@@ -2013,51 +2173,133 @@ body.minigame-active .pet-stage {
   50% { opacity: 1; transform: scale(1.3); }
 }
 
+/* 밤하늘 큰 달 - 노랗고 따뜻 */
 .theme-moon {
   position: absolute;
-  top: 14%;
-  right: 14%;
-  width: 65px; height: 65px;
+  top: 12%;
+  right: 12%;
+  width: 78px; height: 78px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #FFFAE0 0%, #FFEBC0 50%, #E8C888 100%);
-  box-shadow: 
-    0 0 30px rgba(255, 235, 192, 0.6),
-    0 0 60px rgba(255, 235, 192, 0.3),
-    inset -8px -8px 14px rgba(120, 90, 50, 0.15);
+  box-shadow:
+    0 0 36px rgba(255, 235, 192, 0.7),
+    0 0 72px rgba(255, 235, 192, 0.4),
+    inset -10px -10px 18px rgba(120, 90, 50, 0.18);
   animation: moon-glow 6s ease-in-out infinite;
   z-index: 2;
 }
 
-/* 우주 - 행성 */
+/* 우주 - 은하수 배경 (보라/핑크/파랑 nebula) */
+body:not(.theme-dark) ~ * .theme-overlay,
+.theme-overlay.space-nebula {
+  /* placeholder */
+}
+.space-nebula-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 30%, rgba(180,80,200,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 70% 65%, rgba(80,140,230,0.32) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 50% 50%, rgba(255,120,180,0.18) 0%, transparent 65%);
+  filter: blur(2px);
+  animation: nebula-drift 18s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+@keyframes nebula-drift {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+  50%      { transform: scale(1.06) rotate(6deg); opacity: 1; }
+}
+
+/* 우주 - 큰 행성 */
 .theme-planet {
   position: absolute;
   border-radius: 50%;
   z-index: 2;
-  filter: drop-shadow(0 0 20px rgba(255, 200, 150, 0.4));
+  filter: drop-shadow(0 0 24px rgba(255, 200, 150, 0.5));
 }
 
+/* p1: 화성같은 주황 행성 (왼쪽 위) */
 .theme-planet.p1 {
-  top: 10%; left: 8%;
-  width: 40px; height: 40px;
-  background: radial-gradient(circle at 30% 30%, #FFB87A, #D4783C 60%, #8C4A1E);
-  animation: planet-float-1 8s ease-in-out infinite;
+  top: 8%; left: 6%;
+  width: 56px; height: 56px;
+  background:
+    radial-gradient(circle at 30% 30%, #FFD4A0, #FF8B40 55%, #B04818);
+  box-shadow: inset -8px -10px 18px rgba(60,20,0,0.4);
+  animation: planet-float-1 9s ease-in-out infinite;
+}
+.theme-planet.p1::before {
+  content: '';
+  position: absolute;
+  top: 22%; left: 18%;
+  width: 18px; height: 8px;
+  background: radial-gradient(ellipse, rgba(160,60,20,0.6), transparent);
+  border-radius: 50%;
+}
+.theme-planet.p1::after {
+  content: '';
+  position: absolute;
+  bottom: 24%; right: 16%;
+  width: 14px; height: 6px;
+  background: radial-gradient(ellipse, rgba(160,60,20,0.5), transparent);
+  border-radius: 50%;
 }
 
+/* p2: 토성 (큰 고리) */
 .theme-planet.p2 {
-  top: 18%; right: 12%;
-  width: 55px; height: 55px;
-  background: radial-gradient(circle at 30% 30%, #B8D5FF, #6AB7FF 60%, #2A78D0);
-  animation: planet-float-2 10s ease-in-out infinite;
+  top: 24%; right: 8%;
+  width: 78px; height: 78px;
+  background:
+    radial-gradient(circle at 30% 30%, #FFE0B0, #FFB870 50%, #C8782A);
+  box-shadow: inset -10px -12px 20px rgba(80,40,0,0.4);
+  animation: planet-float-2 11s ease-in-out infinite;
 }
-
 .theme-planet.p2::after {
   content: '';
   position: absolute;
-  top: 50%; left: -15%;
-  width: 130%; height: 14px;
-  background: linear-gradient(90deg, transparent, rgba(255,200,100,0.6), transparent);
+  top: 50%; left: -38%;
+  width: 176%; height: 22px;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255,210,140,0.85) 30%, rgba(255,180,90,0.95) 50%, rgba(255,210,140,0.85) 70%, transparent 100%);
   border-radius: 50%;
-  transform: translateY(-50%) rotate(-20deg);
+  transform: translateY(-50%) rotate(-22deg);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+.theme-planet.p2::before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 1px); left: -38%;
+  width: 176%; height: 2px;
+  background: rgba(120,60,0,0.45);
+  border-radius: 50%;
+  transform: translateY(-50%) rotate(-22deg);
+  z-index: 3;
+}
+
+/* 우주 - 작은 보라 행성 (왼쪽 아래) */
+.theme-planet.p3 {
+  bottom: 30%; left: 14%;
+  width: 32px; height: 32px;
+  background: radial-gradient(circle at 35% 30%, #E0B8FF, #9A5FE0 55%, #5C2898);
+  box-shadow: inset -5px -6px 10px rgba(40,10,80,0.4);
+  animation: planet-float-1 7s ease-in-out infinite reverse;
+}
+
+/* 우주 - 유성 (대각선으로 떨어지는) */
+.theme-meteor {
+  position: absolute;
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), rgba(180,220,255,0.5));
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px rgba(180,220,255,0.8));
+  animation: meteor-fall 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes meteor-fall {
+  0%   { transform: translate(-40px, -20px) rotate(20deg); opacity: 0; }
+  10%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translate(280px, 200px) rotate(20deg); opacity: 0; }
 }
 
 @keyframes planet-float-1 {
@@ -2067,7 +2309,7 @@ body.minigame-active .pet-stage {
 
 @keyframes planet-float-2 {
   0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(8px) rotate(180deg); }
+  50% { transform: translateY(8px) rotate(8deg); }
 }
 
 /* 별자리 (희미한 선) */
@@ -2075,7 +2317,7 @@ body.minigame-active .pet-stage {
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.4;
+  opacity: 0.5;
   pointer-events: none;
 }
 
@@ -2128,22 +2370,31 @@ body.theme-dark .action-card .cost {
 .adv-card-btn {
   position: relative;
   width: 100%;
-  border: none;
-  border-radius: 18px;
+  border: 2px solid #FFD4E0;
+  border-radius: 22px;
   padding: 14px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-cute);
   text-align: left;
-  background: linear-gradient(135deg, #F5E5C8 0%, #F0D5A8 50%, #E5B888 100%);
-  box-shadow: 0 4px 12px rgba(180, 130, 80, 0.3),
-              inset 0 1px 0 rgba(255,255,255,0.6),
-              inset 0 -2px 0 rgba(140, 90, 50, 0.2);
+  background:
+    linear-gradient(135deg, #FFE0EC 0%, #FFD0E0 35%, #FFE5C8 70%, #FFD8B0 100%);
+  box-shadow:
+    0 6px 18px rgba(255, 140, 180, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -2px 0 rgba(220, 120, 160, 0.18);
   overflow: hidden;
-  color: #5A3818;
-  transition: transform 0.15s ease;
+  color: #8C3858;
+  transition: transform 0.15s var(--toss-ease), box-shadow 0.2s ease;
+}
+.adv-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 22px rgba(255, 140, 180, 0.38),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -2px 0 rgba(220, 120, 160, 0.2);
 }
 .adv-card-btn:active { transform: scale(0.97); }
 .adv-card-btn.disabled-energy {
@@ -3224,10 +3475,10 @@ body.theme-dark .action-card .cost {
         </defs>
       </svg>
       
+      <div class="costume-overlay costume-back-overlay" id="costumeBackOverlay"></div>
       <img id="petImage" class="pet-image anim-breathe" alt="페케"
            onerror="if (this.src.indexOf('data:') !== 0 && typeof IMG_WAKE !== 'undefined') { this.onerror = null; this.src = IMG_WAKE; }">
       <div class="costume-overlay" id="costumeOverlay"></div>
-      <div class="costume-edit-hint" id="costumeEditHint">손가락으로 옷을 움직여 보세요</div>
     </div>
     
     <!-- 미니게임 HUD -->
@@ -3497,6 +3748,20 @@ body.theme-dark .action-card .cost {
     </div>
   </div>
 
+  <!-- Floating 미세조정 패드 (옷장 닫고도 페케 보면서 조정 가능) -->
+  <div class="nudge-floating-toggle" id="nudgeToggle" onclick="toggleNudgePanel()" title="장식 위치 조정">
+    <span class="nudge-toggle-emoji">✏️</span>
+  </div>
+  <div class="nudge-floating-panel" id="nudgePanel">
+    <div class="nudge-panel-header">
+      <span class="nudge-panel-title">✨ 장식 위치 조정</span>
+      <button class="nudge-panel-close" onclick="toggleNudgePanel()" aria-label="닫기">✕</button>
+    </div>
+    <div class="nudge-panel-body" id="nudgePanelBody">
+      <!-- nudge 패드 동적 생성 -->
+    </div>
+  </div>
+
   <!-- 메뉴 시트 -->
   <div class="modal-overlay" id="sheetOverlay" onclick="closeMenu(event)">
     <div class="sheet" id="sheet">
@@ -3536,6 +3801,13 @@ body.theme-dark .action-card .cost {
           <div class="sheet-item-text">
             <span>🎁 럭키 박스</span>
             <span class="desc">30 ✦ · 랜덤 보상 받기</span>
+          </div>
+          <span class="sheet-item-arrow">›</span>
+        </button>
+        <button class="sheet-item test-mode" onclick="fillAllGauges(); closeMenu();">
+          <div class="sheet-item-text">
+            <span>⚡ 모든 게이지 100%</span>
+            <span class="desc">테스트 모드 · 배고픔/행복/에너지/체력 풀충전</span>
           </div>
           <span class="sheet-item-arrow">›</span>
         </button>
@@ -4209,9 +4481,9 @@ const THEMES = {
     id: 'starry',
     name: '별이 빛나는 밤',
     emoji: '🌙',
-    desc: '큰 달과 별들',
+    desc: '따뜻한 남청 하늘 + 큰 달',
     unlockLevel: 5,
-    bg: '#2D2868',
+    bg: '#3A2C72',
     dark: true,
     overlay: 'starry',
   },
@@ -4219,9 +4491,9 @@ const THEMES = {
     id: 'space',
     name: '우주',
     emoji: '🌌',
-    desc: '행성과 별자리',
+    desc: '깊은 우주 · 토성 · 화성 · 유성',
     unlockLevel: 10,
-    bg: '#1A1438',
+    bg: '#0A0820',
     dark: true,
     overlay: 'space',
   },
@@ -4242,21 +4514,25 @@ function saveTheme() {
 function applyTheme() {
   const theme = THEMES[currentTheme] || THEMES.default;
   const root = document.documentElement;
-  
+
   // 다크 모드 클래스
   document.body.classList.toggle('theme-dark', theme.dark);
-  
-  // 기본 테마면 무드 시스템에 맡김 (아무것도 안 함)
+
+  // 기본 테마면 무드 시스템에 맡김 (CSS 변수 초기화 필수!)
   if (currentTheme === 'default') {
     clearThemeOverlay();
+    // 이전 테마(우주/밤하늘 등)의 색이 남아있지 않도록 --bg-main 제거
+    root.style.removeProperty('--bg-main');
+    // 무드 시스템이 즉시 갱신되도록 render() 호출
+    try { if (typeof render === 'function') render(); } catch(_){}
     return;
   }
-  
+
   // 배경 색상 적용 (단, 자거나 아플 땐 무드 색이 우선)
   if (currentMood !== 'asleep' && currentMood !== 'sick' && theme.bg) {
     root.style.setProperty('--bg-main', theme.bg);
   }
-  
+
   // 오버레이 (벚꽃잎/별/우주)
   renderThemeOverlay(theme.overlay);
 }
@@ -4309,51 +4585,82 @@ function renderThemeOverlay(type) {
       overlay.appendChild(star);
     }
   } else if (type === 'space') {
-    // 별자리 SVG
+    // 0) 은하수 그라데이션 배경 (보라/핑크/파랑 nebula)
+    const nebula = document.createElement('div');
+    nebula.className = 'space-nebula-bg';
+    overlay.appendChild(nebula);
+
+    // 1) 별자리 SVG (더 많고 디테일하게)
     const constellationSvg = `
       <svg class="theme-constellation" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="rgba(180, 200, 255, 0.5)" stroke-width="1" fill="rgba(255,255,255,0.9)">
-          <!-- 작은 별자리들 -->
-          <line x1="50" y1="100" x2="80" y2="130"/>
-          <line x1="80" y1="130" x2="110" y2="120"/>
-          <line x1="110" y1="120" x2="130" y2="150"/>
-          <circle cx="50" cy="100" r="1.5"/>
-          <circle cx="80" cy="130" r="2"/>
-          <circle cx="110" cy="120" r="1.5"/>
-          <circle cx="130" cy="150" r="2"/>
-          
-          <line x1="280" y1="180" x2="320" y2="200"/>
-          <line x1="320" y1="200" x2="350" y2="170"/>
-          <line x1="320" y1="200" x2="330" y2="240"/>
-          <circle cx="280" cy="180" r="1.5"/>
-          <circle cx="320" cy="200" r="2"/>
-          <circle cx="350" cy="170" r="1.5"/>
-          <circle cx="330" cy="240" r="2"/>
+        <g stroke="rgba(200, 220, 255, 0.55)" stroke-width="1.2" fill="rgba(255,255,255,0.95)">
+          <!-- 북두칠성 같은 별자리 -->
+          <line x1="50" y1="120" x2="80" y2="150"/>
+          <line x1="80" y1="150" x2="118" y2="140"/>
+          <line x1="118" y1="140" x2="140" y2="170"/>
+          <line x1="140" y1="170" x2="170" y2="160"/>
+          <circle cx="50" cy="120" r="2"/>
+          <circle cx="80" cy="150" r="2.4"/>
+          <circle cx="118" cy="140" r="2"/>
+          <circle cx="140" cy="170" r="2.4"/>
+          <circle cx="170" cy="160" r="2"/>
+
+          <!-- 작은 삼각형 별자리 -->
+          <line x1="280" y1="220" x2="320" y2="240"/>
+          <line x1="320" y1="240" x2="350" y2="210"/>
+          <line x1="350" y1="210" x2="280" y2="220"/>
+          <circle cx="280" cy="220" r="2"/>
+          <circle cx="320" cy="240" r="2.4"/>
+          <circle cx="350" cy="210" r="2"/>
+
+          <!-- 아래쪽 별자리 -->
+          <line x1="80" y1="520" x2="130" y2="540"/>
+          <line x1="130" y1="540" x2="160" y2="510"/>
+          <line x1="160" y1="510" x2="200" y2="540"/>
+          <circle cx="80" cy="520" r="2"/>
+          <circle cx="130" cy="540" r="2.4"/>
+          <circle cx="160" cy="510" r="2"/>
+          <circle cx="200" cy="540" r="2"/>
         </g>
       </svg>
     `;
-    overlay.innerHTML = constellationSvg;
-    
-    // 행성 2개
+    overlay.insertAdjacentHTML('beforeend', constellationSvg);
+
+    // 2) 행성 3개 - 화성, 토성, 작은 보라
     const p1 = document.createElement('div');
     p1.className = 'theme-planet p1';
     overlay.appendChild(p1);
-    
+
     const p2 = document.createElement('div');
     p2.className = 'theme-planet p2';
     overlay.appendChild(p2);
-    
-    // 별들 더 많이 (작게)
-    for (let i = 0; i < 35; i++) {
+
+    const p3 = document.createElement('div');
+    p3.className = 'theme-planet p3';
+    overlay.appendChild(p3);
+
+    // 3) 별들 (60개로 늘림, 깊이감)
+    for (let i = 0; i < 60; i++) {
       const star = document.createElement('div');
       star.className = 'theme-star';
       star.style.left = (Math.random() * 100) + '%';
       star.style.top = (Math.random() * 100) + '%';
-      const size = 1 + Math.random() * 2;
+      const size = 1 + Math.random() * 2.2;
       star.style.width = size + 'px';
       star.style.height = size + 'px';
       star.style.animationDelay = (Math.random() * 3) + 's';
       overlay.appendChild(star);
+    }
+
+    // 4) 유성 3개 (서로 다른 위치/타이밍)
+    for (let i = 0; i < 3; i++) {
+      const meteor = document.createElement('div');
+      meteor.className = 'theme-meteor';
+      meteor.style.left = (10 + Math.random() * 60) + '%';
+      meteor.style.top = (Math.random() * 40) + '%';
+      meteor.style.animationDelay = (i * 2.5) + 's';
+      meteor.style.animationDuration = (3 + Math.random() * 2) + 's';
+      overlay.appendChild(meteor);
     }
   }
   
@@ -4423,7 +4730,7 @@ window.selectTheme = selectTheme;
 // SVG 좌표계 320x320 기준. 정자세(THINK, GRUMPY 등)는 dx=0, dy=0.
 const IMG_OFFSETS = {
   DEFAULT:    { dx: 0,   dy: 0,   hidden: [] },
-  BATH:       { dx: 0,   dy: 30,  hidden: ['neck','back','feet'] },
+  BATH:       { dx: 0,   dy: 30,  hidden: ['neck','back'] },
   EATING:     { dx: 0,   dy: 12,  hidden: [] },
   PROUD:      { dx: 0,   dy: -5,  hidden: ['top'] },
   THINK:      { dx: 0,   dy: 0,   hidden: [] },
@@ -4431,16 +4738,16 @@ const IMG_OFFSETS = {
   WINK:       { dx: 0,   dy: 0,   hidden: [] },
   BEG:        { dx: 0,   dy: 4,   hidden: [] },
   GRUMPY:     { dx: 0,   dy: 0,   hidden: [] },
-  PETTED:     { dx: 0,   dy: 14,  hidden: ['feet'] },
+  PETTED:     { dx: 0,   dy: 14,  hidden: [] },
   HEALED:     { dx: 0,   dy: 4,   hidden: [] },
   SAD_HUNGRY: { dx: 0,   dy: 18,  hidden: [] },
   LOVE:       { dx: 0,   dy: 4,   hidden: [] },
   PLAYBOW:    { dx: -16, dy: 48,  hidden: ['neck','back'] },
   BALL:       { dx: 0,   dy: -8,  hidden: [] },
-  SICK:       { dx: 0,   dy: 12,  hidden: ['feet'] },
-  NESTED:     { dx: -6,  dy: 26,  hidden: ['neck','back','feet'] },
-  WAKE:       { dx: 0,   dy: 14,  hidden: ['feet'] },
-  SLEEP:      { dx: 0,   dy: 0,   hidden: ['top','eye','neck','back','feet'] },
+  SICK:       { dx: 0,   dy: 12,  hidden: [] },
+  NESTED:     { dx: -6,  dy: 26,  hidden: ['neck','back'] },
+  WAKE:       { dx: 0,   dy: 14,  hidden: [] },
+  SLEEP:      { dx: 0,   dy: 0,   hidden: ['top','eye','neck','back'] },
   HUNGRY2:    { dx: 0,   dy: 6,   hidden: [] },
   YAWN:       { dx: 0,   dy: 18,  hidden: [] },
   WALKING:    { dx: 0,   dy: 0,   hidden: [] },
@@ -4978,53 +5285,115 @@ const COSTUMES = {
     </svg>`
   },
 
-  socks: {
-    id: 'socks', name: '줄무늬 양말', emoji: '🧦',
-    category: 'feet', unlockLevel: 6,
+  demonWings: {
+    id: 'demonWings', name: '악마 날개', emoji: '😈',
+    category: 'back', unlockLevel: 13,
     svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <pattern id="sockStripe" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width="8" height="8" fill="#FFFFFF"/>
-          <rect x="0" y="0" width="8" height="4" fill="#FF6F8C"/>
-        </pattern>
+        <linearGradient id="dwSkin" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#5E2240"/>
+          <stop offset="60%" stop-color="#3A1028"/>
+          <stop offset="100%" stop-color="#1E0814"/>
+        </linearGradient>
+        <linearGradient id="dwMembrane" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#A03868"/>
+          <stop offset="100%" stop-color="#4E1430"/>
+        </linearGradient>
       </defs>
-      <g transform="translate(160, 268)">
-        <!-- 왼쪽 양말 -->
-        <path d="M -36 -4 Q -36 14 -24 14 L -16 14 Q -8 14 -8 4 L -8 -10 Q -8 -16 -22 -16 Q -36 -16 -36 -4 Z" fill="url(#sockStripe)" stroke="#A82838" stroke-width="1.6" stroke-linejoin="round"/>
-        <rect x="-32" y="-14" width="22" height="4" fill="#FFFFFF" stroke="#A82838" stroke-width="0.8"/>
-        <!-- 오른쪽 양말 -->
-        <path d="M 36 -4 Q 36 14 24 14 L 16 14 Q 8 14 8 4 L 8 -10 Q 8 -16 22 -16 Q 36 -16 36 -4 Z" fill="url(#sockStripe)" stroke="#A82838" stroke-width="1.6" stroke-linejoin="round"/>
-        <rect x="10" y="-14" width="22" height="4" fill="#FFFFFF" stroke="#A82838" stroke-width="0.8"/>
+      <g transform="translate(160, 180)">
+        <!-- 왼쪽 박쥐 날개 (뼈대 + 막) -->
+        <path d="M -8 -2 Q -32 -20 -60 -12 Q -78 -4 -82 14 Q -68 6 -52 12 Q -38 6 -28 18 Q -18 12 -10 20 Q -6 14 -8 6 Z"
+              fill="url(#dwMembrane)" stroke="#220812" stroke-width="1.6" stroke-linejoin="round"/>
+        <!-- 왼쪽 뼈대 -->
+        <g stroke="url(#dwSkin)" stroke-width="2" fill="none" stroke-linecap="round">
+          <path d="M -8 0 Q -40 -8 -78 0"/>
+          <path d="M -8 0 Q -36 8 -50 14"/>
+          <path d="M -8 0 Q -28 10 -28 22"/>
+        </g>
+        <!-- 왼쪽 가시 끝 -->
+        <path d="M -78 0 L -84 -4 L -78 -8" fill="url(#dwSkin)"/>
+        <path d="M -50 14 L -56 18 L -50 20" fill="url(#dwSkin)"/>
+        <!-- 오른쪽 박쥐 날개 -->
+        <path d="M 8 -2 Q 32 -20 60 -12 Q 78 -4 82 14 Q 68 6 52 12 Q 38 6 28 18 Q 18 12 10 20 Q 6 14 8 6 Z"
+              fill="url(#dwMembrane)" stroke="#220812" stroke-width="1.6" stroke-linejoin="round"/>
+        <g stroke="url(#dwSkin)" stroke-width="2" fill="none" stroke-linecap="round">
+          <path d="M 8 0 Q 40 -8 78 0"/>
+          <path d="M 8 0 Q 36 8 50 14"/>
+          <path d="M 8 0 Q 28 10 28 22"/>
+        </g>
+        <path d="M 78 0 L 84 -4 L 78 -8" fill="url(#dwSkin)"/>
+        <path d="M 50 14 L 56 18 L 50 20" fill="url(#dwSkin)"/>
       </g>
     </svg>`
   },
 
-  backpack: {
-    id: 'backpack', name: '미니 가방', emoji: '🎒',
-    category: 'back', unlockLevel: 13,
+  butterflyWings: {
+    id: 'butterflyWings', name: '나비 날개', emoji: '🦋',
+    category: 'back', unlockLevel: 11,
     svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="bagGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#FFB89C"/>
-          <stop offset="100%" stop-color="#E07854"/>
+        <radialGradient id="bwLeft" cx="70%" cy="35%">
+          <stop offset="0%" stop-color="#FFE0A8"/>
+          <stop offset="45%" stop-color="#FF8FB8"/>
+          <stop offset="100%" stop-color="#7C40C8"/>
+        </radialGradient>
+        <radialGradient id="bwRight" cx="30%" cy="35%">
+          <stop offset="0%" stop-color="#FFE0A8"/>
+          <stop offset="45%" stop-color="#FF8FB8"/>
+          <stop offset="100%" stop-color="#7C40C8"/>
+        </radialGradient>
+      </defs>
+      <g transform="translate(160, 180)">
+        <!-- 왼쪽 윗날개 (큰 곡선) -->
+        <path d="M -6 -2 Q -36 -28 -72 -18 Q -88 -2 -76 14 Q -52 18 -34 8 Q -16 4 -6 8 Z"
+              fill="url(#bwLeft)" stroke="#502488" stroke-width="1.6" stroke-linejoin="round"/>
+        <!-- 왼쪽 아랫날개 (작은 둥근) -->
+        <path d="M -6 8 Q -28 18 -42 32 Q -50 44 -34 46 Q -16 44 -6 28 Z"
+              fill="url(#bwLeft)" stroke="#502488" stroke-width="1.6" stroke-linejoin="round" opacity="0.95"/>
+        <!-- 왼쪽 무늬 -->
+        <circle cx="-44" cy="-6" r="5" fill="#FFFFFF" opacity="0.85"/>
+        <circle cx="-44" cy="-6" r="2.2" fill="#502488"/>
+        <circle cx="-30" cy="32" r="3.5" fill="#FFFFFF" opacity="0.8"/>
+        <!-- 오른쪽 윗날개 -->
+        <path d="M 6 -2 Q 36 -28 72 -18 Q 88 -2 76 14 Q 52 18 34 8 Q 16 4 6 8 Z"
+              fill="url(#bwRight)" stroke="#502488" stroke-width="1.6" stroke-linejoin="round"/>
+        <!-- 오른쪽 아랫날개 -->
+        <path d="M 6 8 Q 28 18 42 32 Q 50 44 34 46 Q 16 44 6 28 Z"
+              fill="url(#bwRight)" stroke="#502488" stroke-width="1.6" stroke-linejoin="round" opacity="0.95"/>
+        <!-- 오른쪽 무늬 -->
+        <circle cx="44" cy="-6" r="5" fill="#FFFFFF" opacity="0.85"/>
+        <circle cx="44" cy="-6" r="2.2" fill="#502488"/>
+        <circle cx="30" cy="32" r="3.5" fill="#FFFFFF" opacity="0.8"/>
+        <!-- 반짝 -->
+        <text x="-66" y="-12" font-size="7" fill="#FFE45C" opacity="0.9">✦</text>
+        <text x="58" y="-10" font-size="7" fill="#FFE45C" opacity="0.9">✦</text>
+      </g>
+    </svg>`
+  },
+
+  dragonflyWings: {
+    id: 'dragonflyWings', name: '잠자리 날개', emoji: '🪶',
+    category: 'back', unlockLevel: 9,
+    svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="dfWing" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="rgba(180,230,255,0.85)"/>
+          <stop offset="60%" stop-color="rgba(140,210,250,0.55)"/>
+          <stop offset="100%" stop-color="rgba(100,180,235,0.35)"/>
         </linearGradient>
       </defs>
-      <g transform="translate(210, 190)">
-        <!-- 어깨끈 (몸 쪽으로) -->
-        <path d="M -52 -10 Q -38 -16 -22 -12" fill="none" stroke="#A8543C" stroke-width="4" stroke-linecap="round"/>
-        <!-- 가방 본체 -->
-        <rect x="-24" y="-18" width="44" height="46" rx="10" fill="url(#bagGrad)" stroke="#7A3A20" stroke-width="2"/>
-        <!-- 윗 덮개 -->
-        <path d="M -24 -18 Q -24 -28 -14 -28 L 10 -28 Q 20 -28 20 -18 L 20 0 L -24 0 Z" fill="url(#bagGrad)" stroke="#7A3A20" stroke-width="1.8" stroke-linejoin="round"/>
-        <!-- 잠금 버클 -->
-        <rect x="-6" y="-4" width="12" height="6" rx="2" fill="#FFD45C" stroke="#A87810" stroke-width="1.2"/>
-        <!-- 옆 주머니 -->
-        <rect x="-22" y="6" width="14" height="16" rx="3" fill="#FF9874" stroke="#7A3A20" stroke-width="1.4"/>
-        <!-- 별 키링 -->
-        <g transform="translate(20, 30)">
-          <line x1="0" y1="-8" x2="0" y2="-2" stroke="#A87010" stroke-width="1.2"/>
-          <path d="M 0 -2 L 2 2 L 6 3 L 3 6 L 4 10 L 0 8 L -4 10 L -3 6 L -6 3 L -2 2 Z" fill="#FFD45C" stroke="#A87010" stroke-width="0.9"/>
-        </g>
+      <g transform="translate(160, 180)">
+        <!-- 왼쪽 위 -->
+        <ellipse cx="-46" cy="-8" rx="34" ry="10" fill="url(#dfWing)" stroke="#5E9BC8" stroke-width="1.3" transform="rotate(-18 -46 -8)"/>
+        <!-- 왼쪽 아래 -->
+        <ellipse cx="-40" cy="14" rx="30" ry="8.5" fill="url(#dfWing)" stroke="#5E9BC8" stroke-width="1.3" transform="rotate(14 -40 14)"/>
+        <!-- 오른쪽 위 -->
+        <ellipse cx="46" cy="-8" rx="34" ry="10" fill="url(#dfWing)" stroke="#5E9BC8" stroke-width="1.3" transform="rotate(18 46 -8)"/>
+        <!-- 오른쪽 아래 -->
+        <ellipse cx="40" cy="14" rx="30" ry="8.5" fill="url(#dfWing)" stroke="#5E9BC8" stroke-width="1.3" transform="rotate(-14 40 14)"/>
+        <!-- 광택 -->
+        <ellipse cx="-50" cy="-12" rx="10" ry="3" fill="rgba(255,255,255,0.6)" transform="rotate(-18 -50 -12)"/>
+        <ellipse cx="50" cy="-12" rx="10" ry="3" fill="rgba(255,255,255,0.6)" transform="rotate(18 50 -12)"/>
       </g>
     </svg>`
   }
@@ -5040,8 +5409,7 @@ let equipped = {
   top: null,
   eye: null,
   neck: null,
-  back: null,
-  feet: null
+  back: null
 };
 
 const COSTUME_KEY = 'feke_v5_costumes';
@@ -5049,7 +5417,9 @@ try {
   const saved = localStorage.getItem(COSTUME_KEY);
   if (saved) {
     const parsed = JSON.parse(saved);
-    equipped = { top: null, eye: null, neck: null, back: null, feet: null, ...parsed };
+    equipped = { top: null, eye: null, neck: null, back: null, ...parsed };
+    // 발 장식 제거 (구버전 호환)
+    if ('feet' in equipped) delete equipped.feet;
   }
 } catch(e) {}
 
@@ -5070,20 +5440,20 @@ function saveCostumes() {
 }
 
 // 코스튬 렌더링 - 페케 자세별 자동 보정 + 사용자 드래그 오프셋
+// back 카테고리는 페케 뒤로 (costumeBackOverlay), 나머지는 앞(costumeOverlay)
 function renderCostumes() {
-  const overlay = document.getElementById('costumeOverlay');
-  if (!overlay) return;
+  const frontOverlay = document.getElementById('costumeOverlay');
+  const backOverlay  = document.getElementById('costumeBackOverlay');
+  if (!frontOverlay) return;
 
   const key = (typeof currentImageKey === 'string' && currentImageKey) ? currentImageKey : 'WAKE';
   const offset = IMG_OFFSETS[key] || IMG_OFFSETS.DEFAULT;
   const userByCat = (costumeUserOffsets[key]) || {};
 
-  let html = '';
-  // 순서: back → feet → neck → top → eye (뒤에서 앞으로)
-  ['back', 'feet', 'neck', 'top', 'eye'].forEach(cat => {
+  const buildPiece = (cat) => {
     const equipId = equipped[cat];
-    if (!equipId || !COSTUMES[equipId]) return;
-    if ((offset.hidden || []).indexOf(cat) !== -1) return;
+    if (!equipId || !COSTUMES[equipId]) return '';
+    if ((offset.hidden || []).indexOf(cat) !== -1) return '';
 
     const u = userByCat[cat] || { dx: 0, dy: 0 };
     const totalDx = (offset.dx || 0) + (u.dx || 0);
@@ -5096,29 +5466,13 @@ function renderCostumes() {
         (m, x, y) => `transform="translate(${parseFloat(x) + totalDx}, ${parseFloat(y) + totalDy})"`
       );
     }
-    // 편집 모드에서 드래그 hitbox를 SVG 내부에 삽입 (카테고리별 영역)
-    // 카테고리별 대략적 드래그 영역 (320x320 viewBox 기준)
-    const hitboxes = {
-      top:  { x: 100, y: 20,  w: 120, h: 110 },
-      eye:  { x: 80,  y: 110, w: 160, h: 80  },
-      neck: { x: 90,  y: 180, w: 140, h: 70  },
-      back: { x: 60,  y: 130, w: 200, h: 130 },
-      feet: { x: 80,  y: 240, w: 160, h: 70  },
-    };
-    const h = hitboxes[cat];
-    const hitboxRect = h
-      ? `<rect class="costume-hitbox" x="${h.x + totalDx}" y="${h.y + totalDy}" width="${h.w}" height="${h.h}" fill="transparent" pointer-events="all"/>`
-      : '';
-    // SVG에 hitbox를 마지막 자식으로 삽입(앞에 그려진 요소 위에 오도록)
-    if (hitboxRect) {
-      svg = svg.replace(/<\/svg>\s*$/, hitboxRect + '</svg>');
-    }
-    html += `<div class="costume-piece" data-cat="${cat}" data-id="${equipId}">${svg}</div>`;
-  });
+    return `<div class="costume-piece" data-cat="${cat}" data-id="${equipId}">${svg}</div>`;
+  };
 
-  overlay.innerHTML = html;
-  // 새로 렌더링 후 드래그 핸들 부착
-  if (typeof attachCostumeDrag === 'function') attachCostumeDrag();
+  // back은 뒤 오버레이로
+  if (backOverlay) backOverlay.innerHTML = buildPiece('back');
+  // 나머지는 앞 오버레이 (순서: neck → top → eye)
+  frontOverlay.innerHTML = ['neck', 'top', 'eye'].map(buildPiece).join('');
 }
 window.renderCostumes = renderCostumes;
 
@@ -5132,13 +5486,12 @@ function openCloset() {
   const titleEl = document.querySelector('#closetSheet .sheet-title');
   if (titleEl) titleEl.textContent = '👗 옷장';
   
-  // 카테고리별 분류
+  // 카테고리별 분류 (발 장식 제거됨)
   const categories = {
     top:  { name: '머리 장식', emoji: '🎩' },
     eye:  { name: '눈 장식',   emoji: '👓' },
     neck: { name: '목 장식',   emoji: '🔗' },
-    back: { name: '등 장식',   emoji: '👼' },
-    feet: { name: '발 장식',   emoji: '🧦' }
+    back: { name: '등 장식',   emoji: '👼' }
   };
   
   let html = '';
@@ -5170,17 +5523,19 @@ function openCloset() {
     }
   });
 
-  // 위치 조정/초기화 (편집 토글)
+  // 위치 조정 - 옷장 닫고 메인화면에서 페케 보면서 조정하도록 안내
+  const hasAny = ['top','eye','neck','back'].some(c => !!equipped[c]);
   html += `
     <div style="margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--toss-gray-100);">
-      <div style="font-size: 13px; font-weight: 700; color: var(--toss-gray-700); margin-bottom: 8px; letter-spacing: -0.3px;">위치 조정</div>
-      <div style="font-size: 12px; color: var(--toss-gray-500); margin-bottom: 12px; line-height: 1.5; letter-spacing: -0.2px;">
-        리본·목걸이 위치가 어색하다면 직접 옮길 수 있어요.<br/>
-        조정한 위치는 자세별로 자동 저장돼요.
+      <div style="font-size: 13px; font-weight: 700; color: var(--cute-pink-deep); margin-bottom: 8px; letter-spacing: -0.3px;">✨ 장식 위치 조정</div>
+      <div style="font-size: 12px; color: var(--toss-gray-600); margin-bottom: 14px; line-height: 1.5; letter-spacing: -0.2px;">
+        ${hasAny
+          ? '메인화면에서 페케를 보면서 화살표로 위치를 직접 옮길 수 있어요.<br/>조정한 위치는 자세별로 자동 저장돼요.'
+          : '장식을 먼저 착용하면 위치를 조정할 수 있어요.'}
       </div>
-      <button id="costumeEditToggleBtn" class="modal-btn" style="background: var(--toss-blue-soft); color: var(--toss-blue); margin-bottom: 8px;" onclick="toggleCostumeEdit()">${costumeEditMode ? '✓ 편집 끝내기' : '✏️ 위치 직접 조정'}</button>
-      <button class="modal-btn secondary" style="margin-bottom: 6px;" onclick="resetCostumeOffsetsForPose()">현재 자세 위치 초기화</button>
-      <button class="modal-btn secondary" onclick="resetAllCostumeOffsets()">모든 자세 위치 초기화</button>
+      <button class="closet-adjust-btn" ${hasAny ? '' : 'disabled'} onclick="openMainScreenAdjuster()">
+        ✏️ 메인화면에서 직접 조정하기 →
+      </button>
     </div>
   `;
 
@@ -5207,9 +5562,10 @@ function equipCostume(itemId, category) {
   renderCostumes();
   haptic(10);
   playSfx('coin');
-  
-  // 옷장 새로고침
+
+  // 옷장/floating 패널 새로고침
   openCloset();
+  if (typeof renderNudgePanelBody === 'function') renderNudgePanelBody();
 }
 
 function unequipCostume(category) {
@@ -5218,101 +5574,122 @@ function unequipCostume(category) {
   renderCostumes();
   haptic(5);
   openCloset();
+  if (typeof renderNudgePanelBody === 'function') renderNudgePanelBody();
 }
 
 window.equipCostume = equipCostume;
 window.unequipCostume = unequipCostume;
 
-// ===== 코스튬 드래그 / 편집 모드 =====
-let costumeEditMode = false;
-let costumeDragState = null;
+// ===== 코스튬 위치 미세조정 (화살표 버튼) =====
+// 메인화면 floating 패널: 옷장 안 열어도 페케 보면서 조정 가능
+function renderNudgePanelBody() {
+  const body = document.getElementById('nudgePanelBody');
+  if (!body) return;
+  const labels = {
+    top:  { name: '머리', emoji: '🎩' },
+    eye:  { name: '눈',   emoji: '👓' },
+    neck: { name: '목',   emoji: '🔗' },
+    back: { name: '등',   emoji: '👼' }
+  };
+  let rows = '';
+  ['top','eye','neck','back'].forEach(cat => {
+    if (!equipped[cat]) return;
+    const info = labels[cat];
+    rows += `
+      <div class="nudge-row">
+        <div class="nudge-row-label">${info.emoji} ${info.name}</div>
+        <button class="nudge-btn" onclick="nudgeCostume('${cat}', -4, 0)">←</button>
+        <button class="nudge-btn" onclick="nudgeCostume('${cat}', 4, 0)">→</button>
+        <button class="nudge-btn" onclick="nudgeCostume('${cat}', 0, -4)">↑</button>
+        <button class="nudge-btn" onclick="nudgeCostume('${cat}', 0, 4)">↓</button>
+      </div>`;
+  });
 
-function toggleCostumeEdit() {
-  costumeEditMode = !costumeEditMode;
-  const overlay = document.getElementById('costumeOverlay');
-  const hint = document.getElementById('costumeEditHint');
-  if (overlay) overlay.classList.toggle('editing', costumeEditMode);
-  if (hint) hint.classList.toggle('show', costumeEditMode);
-  const btn = document.getElementById('costumeEditToggleBtn');
-  if (btn) btn.textContent = costumeEditMode ? '✓ 편집 끝내기' : '✏️ 위치 직접 조정';
-  // 편집 모드 켜질 때 옷장 시트와 modal-overlay를 즉시 제거 → 클릭 가로채는 것 방지
-  if (costumeEditMode) {
-    const sheet = document.getElementById('closetSheet');
-    const closetOv = document.getElementById('closetOverlay');
-    if (sheet) sheet.classList.remove('show');
-    if (closetOv) closetOv.classList.remove('show');
+  if (!rows) {
+    body.innerHTML = `
+      <div class="nudge-empty">아직 착용한 장식이 없어요.<br/>옷장에서 먼저 장식을 입혀주세요!</div>
+      <button class="nudge-action-btn" onclick="reopenClosetFromNudge()">👗 옷장 열기</button>
+    `;
+    return;
+  }
+
+  body.innerHTML = `
+    <div class="nudge-hint">화살표 1탭 = 4px 이동 · 자세별 자동 저장</div>
+    ${rows}
+    <div class="nudge-actions">
+      <button class="nudge-action-btn secondary" onclick="resetCostumeOffsetsForPose()">현재 자세 초기화</button>
+      <button class="nudge-action-btn secondary" onclick="resetAllCostumeOffsets()">전체 초기화</button>
+    </div>
+    <button class="nudge-action-btn" onclick="reopenClosetFromNudge()">👗 옷장으로 돌아가기</button>
+  `;
+}
+
+// floating 패널 → 옷장으로 복귀
+function reopenClosetFromNudge() {
+  const panel = document.getElementById('nudgePanel');
+  const toggle = document.getElementById('nudgeToggle');
+  if (panel) panel.classList.remove('show');
+  if (toggle) toggle.classList.remove('hidden');
+  setTimeout(() => {
+    if (typeof openCloset === 'function') openCloset();
+  }, 200);
+}
+window.reopenClosetFromNudge = reopenClosetFromNudge;
+
+function toggleNudgePanel() {
+  const panel = document.getElementById('nudgePanel');
+  const toggle = document.getElementById('nudgeToggle');
+  if (!panel || !toggle) return;
+  const opening = !panel.classList.contains('show');
+  if (opening) {
+    renderNudgePanelBody();
+    panel.classList.add('show');
+    toggle.classList.add('hidden');
+  } else {
+    panel.classList.remove('show');
+    toggle.classList.remove('hidden');
   }
 }
-window.toggleCostumeEdit = toggleCostumeEdit;
+window.toggleNudgePanel = toggleNudgePanel;
+window.renderNudgePanelBody = renderNudgePanelBody;
 
-// SVG 자식부터 가장 가까운 .costume-piece div 찾기 (closest 미지원 환경 대비)
-function findCostumePiece(target, stopAt) {
-  let n = target;
-  while (n && n !== stopAt && n !== document.body && n.nodeType === 1) {
-    if (n.classList && n.classList.contains && n.classList.contains('costume-piece')) return n;
-    n = n.parentNode;
-  }
-  return null;
+// 옷장의 "메인화면에서 직접 조정" 버튼 → 옷장 닫고 floating 패널 자동 오픈
+function openMainScreenAdjuster() {
+  // 옷장 시트와 오버레이 즉시 닫기
+  const sheet = document.getElementById('closetSheet');
+  const closetOv = document.getElementById('closetOverlay');
+  if (sheet) sheet.classList.remove('show');
+  if (closetOv) closetOv.classList.remove('show');
+
+  // 메뉴 시트도 혹시 열려있으면 닫기
+  try { if (typeof closeMenu === 'function') closeMenu(); } catch(_){}
+
+  // 옷장 닫히는 애니메이션(300ms) 후 floating 패널 오픈
+  setTimeout(() => {
+    const panel = document.getElementById('nudgePanel');
+    const toggle = document.getElementById('nudgeToggle');
+    if (panel && !panel.classList.contains('show')) {
+      renderNudgePanelBody();
+      panel.classList.add('show');
+      if (toggle) toggle.classList.add('hidden');
+    }
+  }, 320);
+
+  try { if (typeof haptic === 'function') haptic(10); } catch(_){}
 }
+window.openMainScreenAdjuster = openMainScreenAdjuster;
 
-// 한 번만 overlay에 위임 등록
-let _costumeDragBound = false;
-function attachCostumeDrag() {
-  const overlay = document.getElementById('costumeOverlay');
-  if (!overlay || _costumeDragBound) return;
-  _costumeDragBound = true;
-
-  const onMove = (e) => {
-    if (!costumeDragState) return;
-    if (e.cancelable) e.preventDefault();
-    const p = (e.touches ? e.touches[0] : e);
-    const rect = overlay.getBoundingClientRect();
-    const scale = 320 / Math.max(1, Math.min(rect.width, rect.height));
-    const dxScreen = p.clientX - costumeDragState.startX;
-    const dyScreen = p.clientY - costumeDragState.startY;
-    const dx = costumeDragState.baseDx + dxScreen * scale;
-    const dy = costumeDragState.baseDy + dyScreen * scale;
-    costumeUserOffsets[costumeDragState.key][costumeDragState.cat] = { dx, dy };
-    renderCostumes();
-  };
-  const onUp = () => {
-    if (!costumeDragState) return;
-    saveCostumeOffsets();
-    costumeDragState = null;
-    window.removeEventListener('mousemove', onMove);
-    window.removeEventListener('touchmove', onMove);
-    window.removeEventListener('mouseup', onUp);
-    window.removeEventListener('touchend', onUp);
-  };
-  const onDown = (e) => {
-    if (!costumeEditMode) return;
-    // SVG 자식부터 부모 traversal로 .costume-piece 찾기
-    const piece = findCostumePiece(e.target, overlay);
-    if (!piece) return;
-    if (e.cancelable) e.preventDefault();
-    e.stopPropagation();
-    const p = (e.touches ? e.touches[0] : e);
-    const cat = piece.dataset.cat;
-    const key = (typeof currentImageKey === 'string' && currentImageKey) ? currentImageKey : 'WAKE';
-    if (!costumeUserOffsets[key]) costumeUserOffsets[key] = {};
-    if (!costumeUserOffsets[key][cat]) costumeUserOffsets[key][cat] = { dx: 0, dy: 0 };
-    costumeDragState = {
-      startX: p.clientX, startY: p.clientY,
-      baseDx: costumeUserOffsets[key][cat].dx,
-      baseDy: costumeUserOffsets[key][cat].dy,
-      cat, key, piece
-    };
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('touchmove', onMove, { passive: false });
-    window.addEventListener('mouseup', onUp);
-    window.addEventListener('touchend', onUp);
-  };
-  // capture phase로 SVG 자식의 이벤트를 가장 먼저 캐치
-  overlay.addEventListener('mousedown', onDown, true);
-  overlay.addEventListener('touchstart', onDown, { passive: false, capture: true });
+// 화살표 버튼으로 1탭=4px씩 이동 (자세별로 저장)
+function nudgeCostume(cat, dx, dy) {
+  const key = (typeof currentImageKey === 'string' && currentImageKey) ? currentImageKey : 'WAKE';
+  if (!costumeUserOffsets[key]) costumeUserOffsets[key] = {};
+  if (!costumeUserOffsets[key][cat]) costumeUserOffsets[key][cat] = { dx: 0, dy: 0 };
+  costumeUserOffsets[key][cat].dx += dx;
+  costumeUserOffsets[key][cat].dy += dy;
+  saveCostumeOffsets();
+  renderCostumes();
 }
-window.attachCostumeDrag = attachCostumeDrag;
-document.addEventListener('DOMContentLoaded', () => { try { attachCostumeDrag(); } catch(_) {} });
+window.nudgeCostume = nudgeCostume;
 
 // 현재 자세의 사용자 오프셋 초기화
 function resetCostumeOffsetsForPose() {
@@ -7976,12 +8353,26 @@ function doReset() {
   if (sheetOv) sheetOv.classList.remove('show');
   const sheet = document.getElementById('sheet');
   if (sheet) sheet.classList.remove('show');
-  
+
   // 약간의 딜레이 후 모달 표시
   setTimeout(() => {
     showResetConfirm();
   }, 350);
 }
+
+// TEST MODE: 모든 게이지 100%로 채우기 (개발 중 임시)
+function fillAllGauges() {
+  state.hunger = 100;
+  state.happy = 100;
+  state.energy = 100;
+  state.health = 100;
+  if (state.isSleeping) state.isSleeping = false;
+  saveState();
+  try { if (typeof render === 'function') render(); } catch(_){}
+  try { if (typeof showToast === 'function') showToast('⚡ 모든 게이지 100% 충전!'); } catch(_){}
+  try { if (typeof playSfx === 'function') playSfx('coin'); } catch(_){}
+}
+window.fillAllGauges = fillAllGauges;
 
 function showResetConfirm() {
   const overlay = document.getElementById('resetConfirmOverlay');
@@ -10382,16 +10773,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // ----- 진입/종료 -----
+  // TEST MODE: 에너지 조건 해제 - 언제든 모험 가능
   function openAdventure() {
-    // 에너지가 가득 차야(>=100) 모험 가능
-    if (typeof state !== 'undefined' && state && typeof state.energy === 'number' && state.energy < 100) {
-      const need = Math.max(0, 100 - Math.floor(state.energy));
-      const msg = `에너지가 가득 차야 모험을 떠날 수 있어요! (${Math.floor(state.energy)}/100)`;
-      if (typeof showToast === 'function') showToast(msg);
-      else if (typeof alert === 'function') alert(msg);
-      try { if (typeof closeMenu === 'function') closeMenu(); } catch(_){}
-      return;
-    }
     if (typeof closeMenu === 'function') closeMenu();
     const sc = screen();
     if (!sc) return;
@@ -10434,19 +10817,10 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!el || !state.adventure) return;
     const count = Object.values(state.adventure.friends || {}).filter(c => c > 0).length;
     el.textContent = count;
-    // 에너지 100 미만이면 카드에 표시
+    // TEST MODE: 에너지 게이트 해제
     try {
-      const sub = document.querySelector('.adv-card-sub');
       const btn = document.querySelector('.adv-card-btn');
-      if (sub && typeof state.energy === 'number') {
-        if (state.energy < 100) {
-          sub.innerHTML = `에너지 ${Math.floor(state.energy)}/100 — 가득 차야 떠날 수 있어요`;
-          if (btn) btn.classList.add('disabled-energy');
-        } else {
-          sub.innerHTML = `<span id="advFriendCount">${count}</span>명의 친구를 만났어요`;
-          if (btn) btn.classList.remove('disabled-energy');
-        }
-      }
+      if (btn) btn.classList.remove('disabled-energy');
     } catch(_){}
   }
   window.updateFriendCountMain = updateFriendCountMain;
