@@ -2146,6 +2146,11 @@ body.theme-dark .action-card .cost {
   transition: transform 0.15s ease;
 }
 .adv-card-btn:active { transform: scale(0.97); }
+.adv-card-btn.disabled-energy {
+  filter: grayscale(0.4) brightness(0.95);
+  background: linear-gradient(135deg, #E8DDD0 0%, #D8C8B8 50%, #B8A898 100%);
+}
+.adv-card-btn.disabled-energy .adv-card-sub { color: #B85850; font-weight: 600; }
 .adv-card-deco {
   position: absolute;
   font-size: 14px;
@@ -2529,12 +2534,14 @@ body.theme-dark .action-card .cost {
 }
 .adv-walking-pet {
   display: inline-block;
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   object-fit: contain;
   filter: drop-shadow(0 6px 10px rgba(120, 80, 40, 0.25));
   animation: adv-walk-anim 0.6s ease-in-out infinite;
   transform: scaleX(-1);  /* 페케 오른쪽 보게 */
+  position: relative;
+  z-index: 10;
 }
 @keyframes adv-walk-anim {
   0%, 100% { transform: scaleX(-1) translateY(0) rotate(-2deg); }
@@ -2873,6 +2880,7 @@ body.theme-dark .action-card .cost {
   inset: 0;
   background: linear-gradient(180deg, #B5E0F5 0%, #E0F0DC 70%, #98C870 100%);
   transition: background 0.5s ease;
+  z-index: 0;
 }
 .adv-scene.mood-meadow   .adv-scene-bg { background: linear-gradient(180deg, #FFE5F0 0%, #FFD5E5 40%, #C8E895 100%); }
 .adv-scene.mood-forest   .adv-scene-bg { background: linear-gradient(180deg, #D5E8C8 0%, #98C870 50%, #5A8838 100%); }
@@ -2891,6 +2899,7 @@ body.theme-dark .action-card .cost {
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  z-index: 1;
 }
 .adv-deco-item {
   position: absolute;
@@ -2914,11 +2923,11 @@ body.theme-dark .action-card .cost {
   position: absolute;
   bottom: 8px;
   left: 24%;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
-  z-index: 3;
+  z-index: 10;
   animation: adv-pet-breathe 2.4s ease-in-out infinite;
 }
 @keyframes adv-pet-breathe {
@@ -2933,7 +2942,7 @@ body.theme-dark .action-card .cost {
   right: 18%;
   width: 80px;
   height: 80px;
-  z-index: 4;
+  z-index: 11;
   animation: adv-friend-bob 1.6s ease-in-out infinite;
   opacity: 0;
 }
@@ -3030,10 +3039,11 @@ body.theme-dark .action-card .cost {
   position: absolute;
   bottom: 0;
   left: 0; right: 0;
-  height: 40%;
+  height: 26%;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 8%),
-    linear-gradient(180deg, #88C8C0 0%, #4878 100%);
+    linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 10%),
+    linear-gradient(180deg, #A8DCD8 0%, #5898A8 100%);
+  border-top: 1px solid rgba(255,255,255,0.3);
 }
 
 /* 잔디 영역 (밑 부분) */
@@ -3041,7 +3051,7 @@ body.theme-dark .action-card .cost {
   position: absolute;
   bottom: 0;
   left: 0; right: 0;
-  height: 22%;
+  height: 18%;
   background: linear-gradient(180deg, #98D078 0%, #5A8838 100%);
   border-top: 2px solid #4A782A;
 }
@@ -4414,25 +4424,25 @@ window.selectTheme = selectTheme;
 const IMG_OFFSETS = {
   DEFAULT:    { dx: 0,   dy: 0,   hidden: [] },
   BATH:       { dx: 0,   dy: 30,  hidden: ['neck','back','feet'] },
-  EATING:     { dx: 0,   dy: 15,  hidden: [] },
+  EATING:     { dx: 0,   dy: 12,  hidden: [] },
   PROUD:      { dx: 0,   dy: -5,  hidden: ['top'] },
   THINK:      { dx: 0,   dy: 0,   hidden: [] },
   SHOCKED:    { dx: 0,   dy: 0,   hidden: [] },
   WINK:       { dx: 0,   dy: 0,   hidden: [] },
-  BEG:        { dx: 0,   dy: 5,   hidden: [] },
+  BEG:        { dx: 0,   dy: 4,   hidden: [] },
   GRUMPY:     { dx: 0,   dy: 0,   hidden: [] },
-  PETTED:     { dx: 0,   dy: 18,  hidden: ['feet'] },
-  HEALED:     { dx: 0,   dy: 5,   hidden: [] },
-  SAD_HUNGRY: { dx: 0,   dy: 22,  hidden: [] },
-  LOVE:       { dx: 0,   dy: 5,   hidden: [] },
-  PLAYBOW:    { dx: -20, dy: 55,  hidden: ['neck','back'] },
-  BALL:       { dx: 0,   dy: -10, hidden: [] },
-  SICK:       { dx: 0,   dy: 15,  hidden: ['feet'] },
-  NESTED:     { dx: -8,  dy: 30,  hidden: ['neck','back','feet'] },
-  WAKE:       { dx: 0,   dy: 18,  hidden: ['feet'] },
+  PETTED:     { dx: 0,   dy: 14,  hidden: ['feet'] },
+  HEALED:     { dx: 0,   dy: 4,   hidden: [] },
+  SAD_HUNGRY: { dx: 0,   dy: 18,  hidden: [] },
+  LOVE:       { dx: 0,   dy: 4,   hidden: [] },
+  PLAYBOW:    { dx: -16, dy: 48,  hidden: ['neck','back'] },
+  BALL:       { dx: 0,   dy: -8,  hidden: [] },
+  SICK:       { dx: 0,   dy: 12,  hidden: ['feet'] },
+  NESTED:     { dx: -6,  dy: 26,  hidden: ['neck','back','feet'] },
+  WAKE:       { dx: 0,   dy: 14,  hidden: ['feet'] },
   SLEEP:      { dx: 0,   dy: 0,   hidden: ['top','eye','neck','back','feet'] },
-  HUNGRY2:    { dx: 0,   dy: 8,   hidden: [] },
-  YAWN:       { dx: 0,   dy: 22,  hidden: [] },
+  HUNGRY2:    { dx: 0,   dy: 6,   hidden: [] },
+  YAWN:       { dx: 0,   dy: 18,  hidden: [] },
   WALKING:    { dx: 0,   dy: 0,   hidden: [] },
 };
 
@@ -4462,7 +4472,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#C03868"/>
         </radialGradient>
       </defs>
-      <g transform="translate(160, 70)">
+      <g transform="translate(160, 66)">
         <!-- 왼쪽 윙 (통통하고 둥근 곡선) -->
         <path d="M -8 -2
                  Q -22 -22 -42 -22
@@ -4523,7 +4533,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#C89020"/>
         </radialGradient>
       </defs>
-      <g transform="translate(160, 50)">
+      <g transform="translate(160, 60)">
         <!-- 모자 챙 -->
         <ellipse cx="0" cy="22" rx="54" ry="7" fill="url(#hatBrim)" stroke="#2E1C60" stroke-width="1.8"/>
         <ellipse cx="0" cy="20" rx="52" ry="5" fill="#4A3580" opacity="0.5"/>
@@ -4571,7 +4581,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#1A9088"/>
         </radialGradient>
       </defs>
-      <g transform="translate(160, 60)">
+      <g transform="translate(160, 64)">
         <!-- 왕관 밴드 -->
         <path d="M -42 8 L 42 8 L 42 22 L -42 22 Z" fill="url(#crownBand)" stroke="#8C5A08" stroke-width="1.8"/>
         <!-- 왕관 뾰족 부분 -->
@@ -4613,7 +4623,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#E0C0D0"/>
         </radialGradient>
       </defs>
-      <g transform="translate(160, 68)">
+      <g transform="translate(160, 66)">
         <!-- 화관 띠 (잎사귀) -->
         <path d="M -42 5 Q -20 -8 0 -5 Q 20 -8 42 5" fill="none" stroke="#5C8A40" stroke-width="3" stroke-linecap="round"/>
         <path d="M -38 0 Q -36 -5 -30 -3" fill="#7AB050" stroke="#3E6028" stroke-width="0.8"/>
@@ -4737,7 +4747,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#801818"/>
         </radialGradient>
       </defs>
-      <g transform="translate(160, 215)">
+      <g transform="translate(160, 210)">
         <!-- 왼쪽 윙 (통통) -->
         <path d="M -6 0
                  Q -22 -16 -40 -16
@@ -4822,7 +4832,7 @@ const COSTUMES = {
           <line x1="5" y1="0" x2="5" y2="10" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
         </pattern>
       </defs>
-      <g transform="translate(160, 212)">
+      <g transform="translate(160, 210)">
         <path d="M -50 -6 Q -40 8 -20 8 L 20 8 Q 40 8 50 -6 L 50 6 Q 30 18 -30 18 L -50 6 Z" fill="url(#checkPattern)" stroke="#902028" stroke-width="1.8" stroke-linejoin="round"/>
         <path d="M 18 14 L 14 38 L 26 36 L 22 14 Z" fill="url(#checkPattern)" stroke="#902028" stroke-width="1.5"/>
         <line x1="14" y1="38" x2="13" y2="44" stroke="#902028" stroke-width="1.2"/>
@@ -4898,7 +4908,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#E0E8F8"/>
         </linearGradient>
       </defs>
-      <g transform="translate(160, 175)">
+      <g transform="translate(160, 180)">
         <!-- 왼쪽 날개 -->
         <path d="M -8 0 Q -56 -12 -82 12 Q -78 30 -56 28 Q -36 32 -24 24 Q -12 22 -8 12 Z"
               fill="url(#wgFeather)" stroke="#A8B0C8" stroke-width="1.6" stroke-linejoin="round"/>
@@ -4934,7 +4944,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#E04880"/>
         </radialGradient>
       </defs>
-      <g transform="translate(160, 60)">
+      <g transform="translate(160, 64)">
         <!-- 곡선 밴드 -->
         <path d="M -36 18 Q 0 0 36 18" fill="none" stroke="url(#trBand)" stroke-width="6" stroke-linecap="round"/>
         <!-- 가운데 큰 보석 -->
@@ -4956,7 +4966,7 @@ const COSTUMES = {
     id: 'headband', name: '곰돌이 머리띠', emoji: '🐻',
     category: 'top', unlockLevel: 8,
     svg: `<svg class="costume-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(160, 64)">
+      <g transform="translate(160, 66)">
         <!-- 머리띠 (검정 곡선) -->
         <path d="M -34 20 Q 0 -2 34 20" fill="none" stroke="#3A2010" stroke-width="5" stroke-linecap="round"/>
         <!-- 양쪽 동그란 귀 -->
@@ -4999,7 +5009,7 @@ const COSTUMES = {
           <stop offset="100%" stop-color="#E07854"/>
         </linearGradient>
       </defs>
-      <g transform="translate(220, 200)">
+      <g transform="translate(210, 190)">
         <!-- 어깨끈 (몸 쪽으로) -->
         <path d="M -52 -10 Q -38 -16 -22 -12" fill="none" stroke="#A8543C" stroke-width="4" stroke-linecap="round"/>
         <!-- 가방 본체 -->
@@ -5086,7 +5096,23 @@ function renderCostumes() {
         (m, x, y) => `transform="translate(${parseFloat(x) + totalDx}, ${parseFloat(y) + totalDy})"`
       );
     }
-    // 드래그 식별용 wrapping (div로 감싸야 HTML 이벤트가 동작)
+    // 편집 모드에서 드래그 hitbox를 SVG 내부에 삽입 (카테고리별 영역)
+    // 카테고리별 대략적 드래그 영역 (320x320 viewBox 기준)
+    const hitboxes = {
+      top:  { x: 100, y: 20,  w: 120, h: 110 },
+      eye:  { x: 80,  y: 110, w: 160, h: 80  },
+      neck: { x: 90,  y: 180, w: 140, h: 70  },
+      back: { x: 60,  y: 130, w: 200, h: 130 },
+      feet: { x: 80,  y: 240, w: 160, h: 70  },
+    };
+    const h = hitboxes[cat];
+    const hitboxRect = h
+      ? `<rect class="costume-hitbox" x="${h.x + totalDx}" y="${h.y + totalDy}" width="${h.w}" height="${h.h}" fill="transparent" pointer-events="all"/>`
+      : '';
+    // SVG에 hitbox를 마지막 자식으로 삽입(앞에 그려진 요소 위에 오도록)
+    if (hitboxRect) {
+      svg = svg.replace(/<\/svg>\s*$/, hitboxRect + '</svg>');
+    }
     html += `<div class="costume-piece" data-cat="${cat}" data-id="${equipId}">${svg}</div>`;
   });
 
@@ -5648,6 +5674,9 @@ function render() {
   toggleAlert('btnPlay', state.happy < 35 && !state.isSleeping);
   toggleAlert('btnSleep', state.energy < 25 && !state.isSleeping);
   toggleAlert('btnMedicine', state.health < 40);
+
+  // 모험 카드 에너지 표시 갱신
+  try { if (typeof window.updateFriendCountMain === 'function') window.updateFriendCountMain(); } catch(_){}
   
   const now = Date.now();
   ['feed','play','sleep','medicine','bath','pet'].forEach(act => {
@@ -9695,62 +9724,62 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ===== 풍경 SVG (이벤트 배경에 추가되는 큰 요소) =====
   const SCENE_DECO = {
-    // 큰 나무
-    treeBig: `<svg style="position:absolute; bottom:5%; right:5%; width:50%; height:80%;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="35" rx="35" ry="32" fill="#7AB058" stroke="#4E7838" stroke-width="1.5"/>
-      <ellipse cx="50" cy="35" rx="20" ry="18" fill="#98D078" opacity="0.7"/>
-      <rect x="44" y="60" width="12" height="32" fill="#7A4818" stroke="#4A2810" stroke-width="1.4"/>
-      <path d="M 44 70 L 48 73 M 56 78 L 52 80" stroke="#4A2810" stroke-width="0.8" fill="none"/>
+    // 큰 나무 (페케 뒤로 보이도록 우측 상단으로 작게)
+    treeBig: `<svg style="position:absolute; bottom:18%; right:4%; width:30%; height:62%; z-index:2;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <ellipse cx="50" cy="35" rx="32" ry="30" fill="#7AB058" stroke="#4E7838" stroke-width="1.5"/>
+      <ellipse cx="50" cy="35" rx="18" ry="16" fill="#98D078" opacity="0.7"/>
+      <rect x="46" y="60" width="8" height="30" fill="#7A4818" stroke="#4A2810" stroke-width="1.2"/>
+      <path d="M 46 70 L 50 73 M 54 78 L 50 80" stroke="#4A2810" stroke-width="0.8" fill="none"/>
     </svg>`,
-    // 작은 나무들 (꽃밭/숲)
-    treeSmall: `<svg style="position:absolute; bottom:8%; left:6%; width:18%; height:35%;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="45" rx="30" ry="32" fill="#7AB058" stroke="#4E7838" stroke-width="1.5"/>
-      <rect x="44" y="70" width="12" height="25" fill="#7A4818" stroke="#4A2810" stroke-width="1.4"/>
+    // 작은 나무들 (꽃밭/숲) - 페케 반대편(좌측)
+    treeSmall: `<svg style="position:absolute; bottom:18%; left:3%; width:18%; height:36%; z-index:2;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <ellipse cx="50" cy="45" rx="28" ry="30" fill="#7AB058" stroke="#4E7838" stroke-width="1.5"/>
+      <rect x="46" y="70" width="8" height="25" fill="#7A4818" stroke="#4A2810" stroke-width="1.2"/>
     </svg>`,
     // 호숫물 (반사)
-    pond: `<div class="adv-pond-deco"></div>`,
+    pond: `<div class="adv-pond-deco" style="z-index:1;"></div>`,
     // 무지개
-    rainbow: `<div class="adv-rainbow-deco"></div><div class="adv-rainbow-deco-2"></div>`,
+    rainbow: `<div class="adv-rainbow-deco" style="z-index:1;"></div><div class="adv-rainbow-deco-2" style="z-index:1;"></div>`,
     // 비
-    rain: `<div class="adv-rain-deco"></div>`,
+    rain: `<div class="adv-rain-deco" style="z-index:5;"></div>`,
     // 밤 별
-    stars: `<div class="adv-stars-deco"></div>`,
+    stars: `<div class="adv-stars-deco" style="z-index:1;"></div>`,
     // 잔디 (대부분 이벤트에 깔리는 바닥)
-    ground: `<div class="adv-scene-ground"></div>`,
+    ground: `<div class="adv-scene-ground" style="z-index:1;"></div>`,
     // 떠다니는 꽃잎
     petals: `
-      <div class="adv-deco-item" style="top: 10%; left: 15%; animation-delay: 0s;">🌸</div>
-      <div class="adv-deco-item" style="top: 25%; left: 70%; animation-delay: 1.5s;">🌸</div>
-      <div class="adv-deco-item" style="top: 40%; left: 35%; animation-delay: 3s;">🌺</div>
-      <div class="adv-deco-item" style="top: 15%; left: 55%; animation-delay: 4s;">🌸</div>
+      <div class="adv-deco-item" style="top: 10%; left: 8%; animation-delay: 0s; z-index:6;">🌸</div>
+      <div class="adv-deco-item" style="top: 22%; left: 88%; animation-delay: 1.5s; z-index:6;">🌸</div>
+      <div class="adv-deco-item" style="top: 42%; left: 6%; animation-delay: 3s; z-index:6;">🌺</div>
+      <div class="adv-deco-item" style="top: 14%; left: 90%; animation-delay: 4s; z-index:6;">🌸</div>
     `,
-    // 떠다니는 나뭇잎
+    // 떠다니는 나뭇잎 (페케 영역(24-65%) 회피)
     leaves: `
-      <div class="adv-deco-item" style="top: 12%; left: 20%;">🍃</div>
-      <div class="adv-deco-item" style="top: 30%; left: 65%; animation-delay: 2s;">🍃</div>
-      <div class="adv-deco-item" style="top: 50%; left: 40%; animation-delay: 1s;">🍂</div>
+      <div class="adv-deco-item" style="top: 10%; left: 8%; z-index:6;">🍃</div>
+      <div class="adv-deco-item" style="top: 28%; left: 86%; animation-delay: 2s; z-index:6;">🍃</div>
+      <div class="adv-deco-item" style="top: 48%; left: 6%; animation-delay: 1s; z-index:6;">🍂</div>
     `,
     // 햇살 효과
-    sunshine: `<div style="position:absolute; top:8%; right:12%; font-size:42px; filter:drop-shadow(0 0 12px rgba(255,220,100,0.6)); animation: adv-cloud-drift 8s ease-in-out infinite;">☀️</div>`,
+    sunshine: `<div style="position:absolute; top:6%; right:8%; font-size:36px; filter:drop-shadow(0 0 12px rgba(255,220,100,0.6)); z-index:2;">☀️</div>`,
     // 달
-    moon: `<div style="position:absolute; top:8%; right:14%; font-size:36px; filter:drop-shadow(0 0 12px rgba(255,250,200,0.6));">🌙</div>`,
-    // 구름
+    moon: `<div style="position:absolute; top:6%; right:10%; font-size:32px; filter:drop-shadow(0 0 12px rgba(255,250,200,0.6)); z-index:2;">🌙</div>`,
+    // 구름 - 페케 영역 회피 (좌측 끝 / 우측 끝 상단)
     clouds: `
-      <div style="position:absolute; top:12%; left:10%; font-size:32px; opacity:0.85;">☁️</div>
-      <div style="position:absolute; top:6%; right:25%; font-size:24px; opacity:0.7;">☁️</div>
+      <div style="position:absolute; top:8%; left:4%; font-size:28px; opacity:0.85; z-index:2;">☁️</div>
+      <div style="position:absolute; top:4%; right:8%; font-size:22px; opacity:0.7; z-index:2;">☁️</div>
     `,
-    // 풀잎/잔디 (장식)
+    // 풀잎/잔디 (장식) - 지면 위
     grassTufts: `
-      <div style="position:absolute; bottom:5%; left:5%; font-size:20px;">🌿</div>
-      <div style="position:absolute; bottom:4%; left:45%; font-size:18px;">🌿</div>
-      <div style="position:absolute; bottom:6%; right:35%; font-size:16px;">🌱</div>
+      <div style="position:absolute; bottom:4%; left:4%; font-size:18px; z-index:2;">🌿</div>
+      <div style="position:absolute; bottom:3%; left:42%; font-size:16px; z-index:2;">🌿</div>
+      <div style="position:absolute; bottom:5%; right:32%; font-size:14px; z-index:2;">🌱</div>
     `,
     // 꽃 (지면)
     flowers: `
-      <div style="position:absolute; bottom:4%; left:8%; font-size:22px;">🌷</div>
-      <div style="position:absolute; bottom:7%; left:30%; font-size:20px;">🌼</div>
-      <div style="position:absolute; bottom:5%; right:25%; font-size:22px;">🌸</div>
-      <div style="position:absolute; bottom:8%; right:10%; font-size:18px;">🌻</div>
+      <div style="position:absolute; bottom:3%; left:6%; font-size:20px; z-index:2;">🌷</div>
+      <div style="position:absolute; bottom:6%; left:14%; font-size:16px; z-index:2;">🌼</div>
+      <div style="position:absolute; bottom:4%; right:24%; font-size:20px; z-index:2;">🌸</div>
+      <div style="position:absolute; bottom:7%; right:8%; font-size:16px; z-index:2;">🌻</div>
     `,
   };
 
@@ -10354,6 +10383,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ----- 진입/종료 -----
   function openAdventure() {
+    // 에너지가 가득 차야(>=100) 모험 가능
+    if (typeof state !== 'undefined' && state && typeof state.energy === 'number' && state.energy < 100) {
+      const need = Math.max(0, 100 - Math.floor(state.energy));
+      const msg = `에너지가 가득 차야 모험을 떠날 수 있어요! (${Math.floor(state.energy)}/100)`;
+      if (typeof showToast === 'function') showToast(msg);
+      else if (typeof alert === 'function') alert(msg);
+      try { if (typeof closeMenu === 'function') closeMenu(); } catch(_){}
+      return;
+    }
     if (typeof closeMenu === 'function') closeMenu();
     const sc = screen();
     if (!sc) return;
@@ -10396,6 +10434,20 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!el || !state.adventure) return;
     const count = Object.values(state.adventure.friends || {}).filter(c => c > 0).length;
     el.textContent = count;
+    // 에너지 100 미만이면 카드에 표시
+    try {
+      const sub = document.querySelector('.adv-card-sub');
+      const btn = document.querySelector('.adv-card-btn');
+      if (sub && typeof state.energy === 'number') {
+        if (state.energy < 100) {
+          sub.innerHTML = `에너지 ${Math.floor(state.energy)}/100 — 가득 차야 떠날 수 있어요`;
+          if (btn) btn.classList.add('disabled-energy');
+        } else {
+          sub.innerHTML = `<span id="advFriendCount">${count}</span>명의 친구를 만났어요`;
+          if (btn) btn.classList.remove('disabled-energy');
+        }
+      }
+    } catch(_){}
   }
   window.updateFriendCountMain = updateFriendCountMain;
 
@@ -10406,17 +10458,27 @@ window.addEventListener('DOMContentLoaded', () => {
     el.textContent = `${count} / ${DEX.length}`;
   }
 
-  // 모험 걷기: 실제로 걷거나 활기차게 뛰는 자세만
-  const ADV_WALK_POOL  = ['ADV_WALK', 'EX04', 'EX13', 'EX25'];
-  // 이벤트 카드: 친구를 만나는 순간 - 호기심/인사/놀람 표정만
-  const ADV_EVENT_POOL = ['ADV_CARD', 'EX07', 'EX08', 'EX17', 'EX31'];
+  // 모험 걷기: data URL 우선 - 어떤 환경에서도 즉시 표시되도록
+  const ADV_WALK_POOL  = ['ADV_WALK', 'WALKING', 'WAKE'];
+  // 이벤트 카드: 친구를 만나는 순간
+  const ADV_EVENT_POOL = ['ADV_CARD', 'SHOCKED', 'THINK', 'WINK'];
   function pickWalkImg() {
-    const k = ADV_WALK_POOL[Math.floor(Math.random() * ADV_WALK_POOL.length)];
-    return (typeof IMAGES !== 'undefined' && IMAGES[k]) ? IMAGES[k] : (typeof IMG_ADV_WALK !== 'undefined' ? IMG_ADV_WALK : '');
+    for (const k of ADV_WALK_POOL) {
+      if (typeof IMAGES !== 'undefined' && IMAGES[k] && typeof IMAGES[k] === 'string' && IMAGES[k].indexOf('data:') === 0) {
+        return IMAGES[k];
+      }
+    }
+    return (typeof IMG_ADV_WALK !== 'undefined' ? IMG_ADV_WALK : (typeof IMG_WAKE !== 'undefined' ? IMG_WAKE : ''));
   }
   function pickEventCardImg() {
-    const k = ADV_EVENT_POOL[Math.floor(Math.random() * ADV_EVENT_POOL.length)];
-    return (typeof IMAGES !== 'undefined' && IMAGES[k]) ? IMAGES[k] : (typeof IMG_ADV_CARD !== 'undefined' ? IMG_ADV_CARD : '');
+    const idx = Math.floor(Math.random() * ADV_EVENT_POOL.length);
+    for (let i = 0; i < ADV_EVENT_POOL.length; i++) {
+      const k = ADV_EVENT_POOL[(idx + i) % ADV_EVENT_POOL.length];
+      if (typeof IMAGES !== 'undefined' && IMAGES[k] && typeof IMAGES[k] === 'string' && IMAGES[k].indexOf('data:') === 0) {
+        return IMAGES[k];
+      }
+    }
+    return (typeof IMG_ADV_CARD !== 'undefined' ? IMG_ADV_CARD : (typeof IMG_WAKE !== 'undefined' ? IMG_WAKE : ''));
   }
 
   // ----- 행선지 -> 진행중 -----
